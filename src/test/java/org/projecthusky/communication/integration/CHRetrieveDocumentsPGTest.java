@@ -23,6 +23,7 @@ import org.openehealth.ipf.commons.ihe.xds.core.responses.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -45,6 +46,9 @@ class CHRetrieveDocumentsPGTest extends XdsTestUtils {
 
     @Autowired
     private ConvenienceCommunication convenienceCommunication;
+    
+    @Value(value = "${test.epdpg.xds.ret.uri:https://epdplayground.i4mi.bfh.ch:6443/Repository/services/RepositoryService}")
+    private String repositoryURL;
 
     final private String applicationOid = "2.16.840.1.113883.3.72.6.5.100.1399";
     final private String facilityOid = "Waldpsital Bern";
@@ -69,7 +73,7 @@ class CHRetrieveDocumentsPGTest extends XdsTestUtils {
         final AffinityDomain affinityDomain = new AffinityDomain();
         final Destination dest = new Destination();
 
-        dest.setUri(new URI("https://epdplayground.i4mi.bfh.ch:6443/Repository/services/RepositoryService"));
+        dest.setUri(new URI(repositoryURL));
 
         dest.setSenderApplicationOid(senderApplicationOid);
 

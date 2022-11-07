@@ -41,7 +41,7 @@ import org.projecthusky.xua.hl7v3.impl.CodedWithEquivalentsBuilder;
 import org.projecthusky.xua.hl7v3.impl.InstanceIdentifierBuilder;
 import org.projecthusky.xua.saml2.Assertion;
 import org.projecthusky.xua.saml2.impl.AssertionBuilderImpl;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -95,15 +95,19 @@ public class SimplePpfClientTest {
 	@Value(value = "${test.ppq.uri:https://ehealthsuisse.ihe-europe.net:10443/ppq-repository}")
 	private String urlToPpq;
 	
-	//@Value(value = "${test.xua.uri:https://ehealthsuisse.ihe-europe.net:10443/STS}")
-	private static final String urlToXua = "https://ehealthsuisse.ihe-europe.net:10443/STS";
+	@Value(value = "${test.xua.uri:https://ehealthsuisse.ihe-europe.net:10443/STS}")
+	private String urlToXua;
 	
-	//@Value(value = "${test.idp.uri:https://ehealthsuisse.ihe-europe.net/idp/profile/SAML2/SOAP/ECP}")
-	private static final String urlToIdp = "https://ehealthsuisse.ihe-europe.net/idp/profile/SAML2/SOAP/ECP";
+	@Value(value = "${test.idp.uri:https://ehealthsuisse.ihe-europe.net/idp/profile/SAML2/SOAP/ECP}")
+	private String urlToIdp = "https://ehealthsuisse.ihe-europe.net/idp/profile/SAML2/SOAP/ECP";
 	
+	@Value(value = "${test.ppq.keystore.file:src/test/resources/testKeystore.jks}")
+	private String clientKeyStore;
+	@Value(value = "${test.ppq.keystore.password:changeit}")
+	private String clientKeyStorePass;
+	@Value(value = "${test.ppq.keystore.type:JKS}")
+	private String clientKeyStoreType;
 	
-	private static final String clientKeyStore = "src/test/resources/testKeystore.jks";
-	private static final String clientKeyStorePass = "changeit";
 	private static SecurityHeaderElement xuaAssertion = null;
 
 	/**
@@ -111,23 +115,25 @@ public class SimplePpfClientTest {
 	 * truststore. Moreover it stores XUA assertion for user aandrews from gazelle
 	 * environment.
 	 */
-	@BeforeAll
-	public static void setup() throws FileNotFoundException, IOException, DeserializeException, ClientSendException {
+	@BeforeEach
+	public void setup() throws FileNotFoundException, IOException, DeserializeException, ClientSendException {
 		try {
 			InitializationService.initialize();
 			Xacml20Utils.initializeHerasaf();
 
 			System.setProperty("javax.net.ssl.keyStore", clientKeyStore);
 			System.setProperty("javax.net.ssl.keyStorePassword", clientKeyStorePass);
+			System.setProperty("javax.net.ssl.keyStoreType", clientKeyStoreType);
 			System.setProperty("javax.net.ssl.trustStore", clientKeyStore);
 			System.setProperty("javax.net.ssl.trustStorePassword", clientKeyStorePass);
+			System.setProperty("javax.net.ssl.trustStoreType", clientKeyStoreType);
 		} catch (InitializationException e1) {
 			e1.printStackTrace();
 		}
 
 		// initialize XUA client to query XUA assertion
 		XuaClientConfig xuaClientConfig = new XuaClientConfigBuilderImpl().clientKeyStore(clientKeyStore)
-				.clientKeyStorePassword(clientKeyStorePass).clientKeyStoreType("jks").url(urlToXua).create();
+				.clientKeyStorePassword(clientKeyStorePass).clientKeyStoreType(clientKeyStoreType).url(urlToXua).create();
 
 		XuaClient xuaClient = ClientFactory.getXuaClient(xuaClientConfig);
 
@@ -165,7 +171,7 @@ public class SimplePpfClientTest {
 	 * @return received IDP assertion
 	 * @throws ClientSendException
 	 */
-	private static Assertion requestIdpAssertion(String user, String password) throws ClientSendException {
+	private Assertion requestIdpAssertion(String user, String password) throws ClientSendException {
 		IdpClientBasicAuthConfigImpl idpClientConfig = new IdpClientBasicAuthConfigBuilderImpl()
 				.basicAuthPassword(password).basicAuthUsername(user).url(urlToIdp).create();
 

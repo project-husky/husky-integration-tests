@@ -32,6 +32,7 @@ import org.opensaml.core.config.InitializationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -55,7 +56,12 @@ class CHRegistryStoredQueryPGTest extends XdsTestUtils {
 	// Spring dependency injection which sets CamelContext, etc.
 	@Autowired
 	private ConvenienceCommunication convenienceCommunication;
-
+	
+	
+	@Value(value = "${test.epdpg.xds.xcq.uri:https://epdplayground.i4mi.bfh.ch:7443/Registry/services/RegistryService}")
+    private String registryURL;
+		
+		
 	protected AuditContext auditContext = new DefaultAuditContext();
 
 	final private String applicationOid = "2.16.840.1.113883.3.72.6.5.100.1399";
@@ -96,7 +102,7 @@ class CHRegistryStoredQueryPGTest extends XdsTestUtils {
 		affinityDomain = new AffinityDomain();
 		final Destination dest = new Destination();
 
-		dest.setUri(new URI("https://epdplayground.i4mi.bfh.ch:7443/Registry/services/RegistryService"));
+		dest.setUri(new URI(registryURL));
 
 		dest.setSenderApplicationOid(senderApplicationOid);
 		dest.setReceiverApplicationOid(applicationOid);

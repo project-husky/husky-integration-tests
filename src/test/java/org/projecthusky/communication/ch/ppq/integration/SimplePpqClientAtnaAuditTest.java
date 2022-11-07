@@ -58,8 +58,16 @@ class SimplePpqClientAtnaAuditTest {
 
 	@Value(value = "${test.ppq.uri:https://ehealthsuisse.ihe-europe.net:10443/ppq-repository}")
 	private String urlToPpq;
-	private String clientKeyStore = "src/test/resources/testKeystore.jks";
-	private String clientKeyStorePass = "changeit";
+	
+	@Value(value = "${test.ppq.keystore.file:src/test/resources/testKeystore.jks}")
+	private String clientKeyStore;
+	@Value(value = "${test.ppq.keystore.password:changeit}")
+	private String clientKeyStorePass;
+	@Value(value = "${test.ppq.keystore.type:JKS}")
+	private String clientKeyStoreType;
+	
+	@Value(value = "${test.log.file:log/TestEHC.log}")
+	private String logFile;
 
 	/**
 	 * This method initializes IPF and OpenSAML XACML modules and sets key- and
@@ -73,8 +81,10 @@ class SimplePpqClientAtnaAuditTest {
 
 			System.setProperty("javax.net.ssl.keyStore", clientKeyStore);
 			System.setProperty("javax.net.ssl.keyStorePassword", clientKeyStorePass);
+			System.setProperty("javax.net.ssl.keyStoreType", clientKeyStoreType);
 			System.setProperty("javax.net.ssl.trustStore", clientKeyStore);
 			System.setProperty("javax.net.ssl.trustStorePassword", clientKeyStorePass);
+			System.setProperty("javax.net.ssl.trustStoreType", clientKeyStoreType);
 		} catch (InitializationException e1) {
 			e1.printStackTrace();
 		}
@@ -122,7 +132,7 @@ class SimplePpqClientAtnaAuditTest {
 	 * @throws IOException
 	 */
 	private String checkAuditLogging() throws IOException {
-		File originLogFile = new File("log/TestEHC.log");
+		File originLogFile = new File(logFile);
 
 		// extract content of log file
 		String logContent = new String(Files.readAllBytes(originLogFile.toPath()));

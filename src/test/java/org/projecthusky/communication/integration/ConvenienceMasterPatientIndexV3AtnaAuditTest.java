@@ -60,6 +60,9 @@ class ConvenienceMasterPatientIndexV3AtnaAuditTest {
 	
 	@Value(value = "${test.pixq.uri:https://ehealthsuisse.ihe-europe.net/PAMSimulator-ejb/PIXManager_Service/PIXManager_PortType}")
 	private String pixUri;
+	
+	@Value(value = "${test.log.file:log/TestEHC.log}")
+	private String logFile;
 
 	final private String applicationName = "2.16.840.1.113883.3.72.6.5.100.1399";
 	final private String facilityName = null;
@@ -224,7 +227,7 @@ class ConvenienceMasterPatientIndexV3AtnaAuditTest {
 	 * @throws IOException
 	 */
 	private String checkAuditLogging() throws IOException {
-		File originLogFile = new File("log/Spring-TestEHC.log");
+		File originLogFile = new File(logFile);
 
 		// extract content of log file
 		String logContent = new String(Files.readAllBytes(originLogFile.toPath()));

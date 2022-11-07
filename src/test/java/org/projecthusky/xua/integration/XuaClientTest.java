@@ -13,6 +13,7 @@ import java.util.List;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.io.IOUtils;
+import org.projecthusky.communication.testhelper.TestApplication;
 import org.projecthusky.xua.communication.clients.XuaClient;
 import org.projecthusky.xua.communication.clients.impl.ClientFactory;
 import org.projecthusky.xua.communication.clients.impl.ServerTestHelper;
@@ -33,7 +34,11 @@ import org.projecthusky.xua.hl7v3.Role;
 import org.projecthusky.xua.hl7v3.impl.CodedWithEquivalentsBuilder;
 import org.projecthusky.xua.saml2.impl.AttributeImpl;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.openehealth.ipf.commons.ihe.xacml20.stub.saml20.assertion.AttributeStatementType;
 import org.openehealth.ipf.commons.ihe.xacml20.stub.saml20.assertion.AttributeType;
 import org.openehealth.ipf.commons.ihe.xacml20.stub.saml20.assertion.StatementAbstractType;
@@ -44,12 +49,22 @@ import org.xml.sax.SAXException;
  * The purpose of this test class is to check if the assertion query works for a
  * user.
  */
+@ExtendWith(value = SpringExtension.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = { TestApplication.class })
+@EnableAutoConfiguration
 class XuaClientTest extends ServerTestHelper {
 
 	@Value(value = "${test.xua.uri:https://ehealthsuisse.ihe-europe.net:10443/STS}")
 	private String urlToXua;
-	private String clientKeyStore = "src/test/resources/testKeystoreXua.jks";
-	private String clientKeyStorePass = "changeit";
+	
+	@Value(value = "${test.xua.keystore.file:src/test/resources/testKeystoreXua.jks}")
+	private String clientKeyStore;
+	@Value(value = "${test.xua.keystore.password:changeit}")
+	private String clientKeyStorePass;
+	@Value(value = "${test.xua.keystore.type:jks}")
+	private String clientKeyStoreType;
+	@Value(value = "${test.xua.assertion.file:src/test/resources/Assertion.xml}")
+	private String xuaAssertionFile;
 
 	/**
 	 * This test checks the behavior of the
@@ -64,11 +79,11 @@ class XuaClientTest extends ServerTestHelper {
 
 		// initialize XUA client to query XUA assertion
 		XuaClientConfig xuaClientConfig = new XuaClientConfigBuilderImpl().clientKeyStore(clientKeyStore)
-				.clientKeyStorePassword(clientKeyStorePass).clientKeyStoreType("jks").url(urlToXua).create();
+				.clientKeyStorePassword(clientKeyStorePass).clientKeyStoreType(clientKeyStoreType).url(urlToXua).create();
 
 		XuaClient client = ClientFactory.getXuaClient(xuaClientConfig);
 
-		try (InputStream is = new FileInputStream(new File("src/test/resources/Assertion.xml"))) {
+		try (InputStream is = new FileInputStream(new File(xuaAssertionFile))) {
 
 			var idpAssertion = new AssertionDeserializerImpl().fromXmlByteArray(IOUtils.toByteArray(is));
 
@@ -161,11 +176,11 @@ class XuaClientTest extends ServerTestHelper {
 
 		// initialize XUA client to query XUA assertion
 		XuaClientConfig xuaClientConfig = new XuaClientConfigBuilderImpl().clientKeyStore(clientKeyStore)
-				.clientKeyStorePassword(clientKeyStorePass).clientKeyStoreType("jks").url(urlToXua).create();
+				.clientKeyStorePassword(clientKeyStorePass).clientKeyStoreType(clientKeyStoreType).url(urlToXua).create();
 
 		XuaClient client = ClientFactory.getXuaClient(xuaClientConfig);
 
-		try (InputStream is = new FileInputStream(new File("src/test/resources/Assertion.xml"))) {
+		try (InputStream is = new FileInputStream(new File(xuaAssertionFile))) {
 
 			var idpAssertion = new AssertionDeserializerImpl().fromXmlByteArray(IOUtils.toByteArray(is));
 
@@ -201,11 +216,11 @@ class XuaClientTest extends ServerTestHelper {
 
 		// initialize XUA client to query XUA assertion
 		XuaClientConfig xuaClientConfig = new XuaClientConfigBuilderImpl().clientKeyStore(clientKeyStore)
-				.clientKeyStorePassword(clientKeyStorePass).clientKeyStoreType("jks").url(urlToXua).create();
+				.clientKeyStorePassword(clientKeyStorePass).clientKeyStoreType(clientKeyStoreType).url(urlToXua).create();
 
 		XuaClient client = ClientFactory.getXuaClient(xuaClientConfig);
 
-		try (InputStream is = new FileInputStream(new File("src/test/resources/Assertion.xml"))) {
+		try (InputStream is = new FileInputStream(new File(xuaAssertionFile))) {
 
 			var idpAssertion = new AssertionDeserializerImpl().fromXmlByteArray(IOUtils.toByteArray(is));
 

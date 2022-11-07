@@ -33,6 +33,7 @@ import org.opensaml.core.config.InitializationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -64,6 +65,10 @@ class CHProvideAndRegisterDocumentSetPGTest extends XdsTestUtils {
     // Spring dependency injection which sets CamelContext, etc.
     @Autowired
     private ConvenienceCommunication convenienceCommunication;
+    
+    // set the URL of the community repository you want to store the document to
+    @Value(value = "${test.epdpg.xds.pnr.uri:https://epdplayground.i4mi.bfh.ch:6443/Repository/services/RepositoryService}")
+    private String repositoryURL;
 
     private AffinityDomain affinityDomain = null;
 
@@ -93,9 +98,6 @@ class CHProvideAndRegisterDocumentSetPGTest extends XdsTestUtils {
         app.run();
 
         final Destination dest = new Destination();
-
-        // set the URL of the community repository you want to store the document to
-        final String repositoryURL = "https://epdplayground.i4mi.bfh.ch:6443/Repository/services/RepositoryService";
 
         dest.setUri(new URI(repositoryURL));
 

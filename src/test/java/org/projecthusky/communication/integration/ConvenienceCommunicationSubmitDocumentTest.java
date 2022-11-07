@@ -37,6 +37,7 @@ import org.openehealth.ipf.commons.ihe.xds.core.responses.Status;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -57,6 +58,9 @@ class ConvenienceCommunicationSubmitDocumentTest extends XdsTestUtils {
 
 	@Autowired
 	private ConvenienceCommunication convenienceCommunication;
+	
+	@Value(value = "${test.xds.pnr.uri:http://ehealthsuisse.ihe-europe.net:8280/xdstools7/sim/epr-testing__for_init_gw_testing/rep/prb}")
+	private String pnrUri;
 
 	final private String applicationName = "2.16.840.1.113883.3.72.6.5.100.1399";
 	final private String facilityName = null;
@@ -84,8 +88,7 @@ class ConvenienceCommunicationSubmitDocumentTest extends XdsTestUtils {
 		final Destination dest = new Destination();
 
 		try {
-			dest.setUri(new URI(
-					"http://ehealthsuisse.ihe-europe.net:8280/xdstools7/sim/epr-testing__for_init_gw_testing/rep/prb"));
+			dest.setUri(new URI(pnrUri));
 		} catch (final URISyntaxException e) {
 			e.printStackTrace();
 		}

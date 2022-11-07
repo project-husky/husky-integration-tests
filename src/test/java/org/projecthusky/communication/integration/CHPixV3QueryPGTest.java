@@ -24,6 +24,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -50,7 +51,8 @@ class CHPixV3QueryPGTest {
     @Autowired
     private ConvenienceMasterPatientIndexV3 convenienceMasterPatientIndexV3Client;
 
-    final String pixUri = "https://epdplayground.i4mi.bfh.ch:7443/PIXPDQ/services/PIXPDQV3ManagerService";
+    @Value(value = "${test.epdpg.pixq.uri:https://epdplayground.i4mi.bfh.ch:7443/PIXPDQ/services/PIXPDQV3ManagerService}")
+    private String pixUri;
 
     final String facilityOid = "2.16.840.1.113883.3.72.6.1";
     final String receiverApplicationOid = "1.1.1.99.1";

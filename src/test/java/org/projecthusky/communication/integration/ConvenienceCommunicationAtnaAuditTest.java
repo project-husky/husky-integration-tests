@@ -35,6 +35,7 @@ import org.openehealth.ipf.commons.ihe.xds.core.responses.RetrievedDocument;
 import org.openehealth.ipf.commons.ihe.xds.core.responses.RetrievedDocumentSet;
 import org.openehealth.ipf.commons.ihe.xds.core.responses.Status;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -58,6 +59,18 @@ class ConvenienceCommunicationAtnaAuditTest extends XdsTestUtils {
 
 	@Autowired
 	protected AuditContext auditContext;
+	
+	@Value(value = "${test.xds.xcq.uri:http://ehealthsuisse.ihe-europe.net:8280/xdstools7/sim/epr-testing__for_init_gw_testing/rep/xcq}")
+	private String xcqUri;
+	
+	@Value(value = "${test.xds.ret.uri:http://ehealthsuisse.ihe-europe.net:8280/xdstools7/sim/epr-testing__for_init_gw_testing/rep/ret}")
+	private String retUri;
+	
+	@Value(value = "${test.xds.pnr.uri:http://ehealthsuisse.ihe-europe.net:8280/xdstools7/sim/epr-testing__for_init_gw_testing/rep/prb}")
+	private String pnrUri;
+	
+	@Value(value = "${test.log.file:log/TestEHC.log}")
+	private String logFile;
 
 	final private String applicationName = "2.16.840.1.113883.3.72.6.5.100.1399";
 	final private String facilityName = null;
@@ -90,8 +103,7 @@ class ConvenienceCommunicationAtnaAuditTest extends XdsTestUtils {
 		final Destination dest = new Destination();
 
 		try {
-			dest.setUri(new URI(
-					"http://ehealthsuisse.ihe-europe.net:8280/xdstools7/sim/epr-testing__for_init_gw_testing/rep/xcq"));
+			dest.setUri(new URI(xcqUri));
 		} catch (final URISyntaxException e) {
 			e.printStackTrace();
 		}
@@ -148,8 +160,7 @@ class ConvenienceCommunicationAtnaAuditTest extends XdsTestUtils {
 		final Destination dest = new Destination();
 
 		try {
-			dest.setUri(new URI(
-					"http://ehealthsuisse.ihe-europe.net:8280/xdstools7/sim/epr-testing__for_init_gw_testing/rep/ret"));
+			dest.setUri(new URI(retUri));
 		} catch (final URISyntaxException e) {
 			e.printStackTrace();
 		}
@@ -205,8 +216,7 @@ class ConvenienceCommunicationAtnaAuditTest extends XdsTestUtils {
 		final Destination dest = new Destination();
 
 		try {
-			dest.setUri(new URI(
-					"http://ehealthsuisse.ihe-europe.net:8280/xdstools7/sim/epr-testing__for_init_gw_testing/rep/prb"));
+			dest.setUri(new URI(pnrUri));
 		} catch (final URISyntaxException e) {
 			e.printStackTrace();
 		}
@@ -252,7 +262,7 @@ class ConvenienceCommunicationAtnaAuditTest extends XdsTestUtils {
 	 * @throws IOException
 	 */
 	private String checkAuditLogging() throws IOException {
-		File originLogFile = new File("log/Spring-TestEHC.log");
+		File originLogFile = new File(logFile);
 
 		// extract content of log file
 		String logContent = new String(Files.readAllBytes(originLogFile.toPath()));

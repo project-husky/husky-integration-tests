@@ -36,6 +36,7 @@ import org.openehealth.ipf.commons.ihe.xds.core.responses.Status;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -54,7 +55,10 @@ class ConvenienceCommunicationRetrieveDocumentsTest extends XdsTestUtils {
 
 	@Autowired
 	private ConvenienceCommunication convenienceCommunication;
-
+	
+	@Value(value = "${test.xds.ret.uri:http://ehealthsuisse.ihe-europe.net:8280/xdstools7/sim/epr-testing__for_init_gw_testing/rep/ret}")
+	private String retUri;
+	
 	final private String applicationName = "2.16.840.1.113883.3.72.6.5.100.1399";
 	final private String facilityName = null;
 
@@ -86,8 +90,7 @@ class ConvenienceCommunicationRetrieveDocumentsTest extends XdsTestUtils {
 		final Destination dest = new Destination();
 
 		try {
-			dest.setUri(new URI(
-					"http://ehealthsuisse.ihe-europe.net:8280/xdstools7/sim/epr-testing__for_init_gw_testing/rep/ret"));
+			dest.setUri(new URI(retUri));
 		} catch (final URISyntaxException e) {
 			e.printStackTrace();
 		}
@@ -139,8 +142,7 @@ class ConvenienceCommunicationRetrieveDocumentsTest extends XdsTestUtils {
 		final Destination dest = new Destination();
 
 		try {
-			dest.setUri(new URI(
-					"http://ehealthsuisse.ihe-europe.net:8280/xdstools7/sim/epr-testing__for_init_gw_testing/rep/ret"));
+			dest.setUri(new URI(retUri));
 		} catch (final URISyntaxException e) {
 			e.printStackTrace();
 		}
@@ -191,8 +193,7 @@ class ConvenienceCommunicationRetrieveDocumentsTest extends XdsTestUtils {
 		final Destination dest = new Destination();
 
 		try {
-			dest.setUri(new URI(
-					"http://ehealthsuisse.ihe-europe.net:8280/xdstools7/sim/epr-testing__for_init_gw_testing/rep/ret"));
+			dest.setUri(new URI(retUri));
 		} catch (final URISyntaxException e) {
 			e.printStackTrace();
 		}
