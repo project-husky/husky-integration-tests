@@ -10,3 +10,4 @@ work
 **/log/*
 .idea/
 *.iml
+.DS_Store
