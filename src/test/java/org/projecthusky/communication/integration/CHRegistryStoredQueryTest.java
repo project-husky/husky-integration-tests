@@ -106,6 +106,13 @@ class CHRegistryStoredQueryTest extends XdsTestUtils {
 
 	@Value(value = "${test.xds.xcq.uri:http://ehealthsuisse.ihe-europe.net:8280/xdstools7/sim/epr-testing__for_init_gw_testing/rep/xcq}")
 	private String registryUri;
+	
+	@Value(value = "${test.xua.keystore.file:src/test/resources/testKeystore.jks}")
+	private String clientKeyStore;
+	@Value(value = "${test.xua.keystore.password:changeit}")
+	private String clientKeyStorePass;
+	@Value(value = "${test.xua.keystore.type:JKS}")
+	private String clientKeyStoreType;
 
 	/**
 	 * This method initializes opensaml, creates and start spring test application
@@ -204,12 +211,10 @@ class CHRegistryStoredQueryTest extends XdsTestUtils {
 	 */
 	private Assertion getXUserAssertion() throws Exception {
 
-		final String clientKeyStore = "src/test/resources/testKeystoreXua.jks";
-		final String clientKeyStorePass = "changeit";
 
 		// initialize XUA client to query XUA assertion
 		XuaClientConfig xuaClientConfig = new XuaClientConfigBuilderImpl().clientKeyStore(clientKeyStore)
-				.clientKeyStorePassword(clientKeyStorePass).clientKeyStoreType("jks").url(urlToXua).create();
+				.clientKeyStorePassword(clientKeyStorePass).clientKeyStoreType(clientKeyStoreType).url(urlToXua).create();
 
 		XuaClient client = ClientFactory.getXuaClient(xuaClientConfig);
 

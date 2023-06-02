@@ -21,7 +21,6 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
 import org.projecthusky.xua.exceptions.SerializeException;
 import org.projecthusky.xua.serialization.OpenSaml2Serializer;
 import org.projecthusky.xua.serialization.impl.OpenSaml2SerializerImpl;
@@ -73,5 +72,5 @@ public abstract class InitializerTestHelper {
 			LoggerFactory.getLogger(getClass()).error("Error", e);
 		}
 	}
-
+	
 }
