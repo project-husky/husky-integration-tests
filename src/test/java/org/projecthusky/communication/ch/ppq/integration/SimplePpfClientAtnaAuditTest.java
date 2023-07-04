@@ -102,6 +102,13 @@ class SimplePpfClientAtnaAuditTest {
 	@Value(value = "${test.ppq.keystore.type:JKS}")
 	private String clientKeyStoreType;
 	
+	@Value(value = "${test.truststore.file:src/test/resources/truststore.p12}")
+	private String clientTrustStore;
+	@Value(value = "${test.truststore.password:changeit}")
+	private String clientTrustStorePass;
+	@Value(value = "${test.truststore.type:pkcs12}")
+	private String clientTrustStoreType;
+	
 	@Value(value = "${test.log.file:log/TestEHC.log}")
 	private String logFile;
 
@@ -118,9 +125,9 @@ class SimplePpfClientAtnaAuditTest {
 			System.setProperty("javax.net.ssl.keyStore", clientKeyStore);
 			System.setProperty("javax.net.ssl.keyStorePassword", clientKeyStorePass);
 			System.setProperty("javax.net.ssl.keyStoreType", clientKeyStoreType);
-			System.setProperty("javax.net.ssl.trustStore", clientKeyStore);
-			System.setProperty("javax.net.ssl.trustStorePassword", clientKeyStorePass);
-			System.setProperty("javax.net.ssl.trustStoreType", clientKeyStoreType);
+			System.setProperty("javax.net.ssl.trustStore", clientTrustStore);
+			System.setProperty("javax.net.ssl.trustStorePassword", clientTrustStorePass);
+			System.setProperty("javax.net.ssl.trustStoreType", clientTrustStoreType);
 		} catch (InitializationException e1) {
 			e1.printStackTrace();
 		}
