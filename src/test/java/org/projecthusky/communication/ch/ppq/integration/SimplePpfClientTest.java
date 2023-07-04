@@ -96,7 +96,7 @@ public class SimplePpfClientTest {
 	private AuditContext auditContext;
 
 	@Value(value = "${test.ppf.uri:https://ehealthsuisse.ihe-europe.net:10443/ppq-repository}")
-	private String urlToPpq;
+	private String urlToPpf;
 
 	@Value(value = "${test.xua.uri:https://ehealthsuisse.ihe-europe.net:10443/STS}")
 	private String urlToXua;
@@ -110,6 +110,13 @@ public class SimplePpfClientTest {
 	private String clientKeyStorePass;
 	@Value(value = "${test.ppf.keystore.type:JKS}")
 	private String clientKeyStoreType;
+
+	@Value(value = "${test.truststore.file:src/test/resources/truststore.p12}")
+	private String clientTrustStore;
+	@Value(value = "${test.truststore.password:changeit}")
+	private String clientTrustStorePass;
+	@Value(value = "${test.truststore.type:pkcs12}")
+	private String clientTrustStoreType;
 
 	private static SecurityHeaderElement xuaAssertion = null;
 
@@ -127,9 +134,9 @@ public class SimplePpfClientTest {
 			System.setProperty("javax.net.ssl.keyStore", clientKeyStore);
 			System.setProperty("javax.net.ssl.keyStorePassword", clientKeyStorePass);
 			System.setProperty("javax.net.ssl.keyStoreType", clientKeyStoreType);
-			System.setProperty("javax.net.ssl.trustStore", clientKeyStore);
-			System.setProperty("javax.net.ssl.trustStorePassword", clientKeyStorePass);
-			System.setProperty("javax.net.ssl.trustStoreType", clientKeyStoreType);
+			System.setProperty("javax.net.ssl.trustStore", clientTrustStore);
+			System.setProperty("javax.net.ssl.trustStorePassword", clientTrustStorePass);
+			System.setProperty("javax.net.ssl.trustStoreType", clientTrustStoreType);
 		} catch (InitializationException e1) {
 			e1.printStackTrace();
 		}
@@ -160,8 +167,8 @@ public class SimplePpfClientTest {
 				.purposeOfUse(purposeOfUse).subjectRole(role)
 				.resourceId("761337610411265304^^^SPID&2.16.756.5.30.1.127.3.10.3&ISO").create();
 
-		List<XUserAssertionResponse> response = xuaClient.send(requestIdpAssertion("aandrews", "azerty"),
-				assertionRequest);
+		Assertion assertion = requestIdpAssertion("aandrews", "azerty");
+		List<XUserAssertionResponse> response = xuaClient.send(assertion, assertionRequest);
 
 		// cache XUA assertion for other requests
 		xuaAssertion = response.get(0).getAssertion();
@@ -207,7 +214,7 @@ public class SimplePpfClientTest {
 	void testSendPpq1AddPolicy() throws Exception {
 
 		// initialize client to add policy
-		PpClientConfig config = new PpClientConfigBuilderImpl().url(urlToPpq).clientKeyStore(clientKeyStore)
+		PpClientConfig config = new PpClientConfigBuilderImpl().url(urlToPpf).clientKeyStore(clientKeyStore)
 				.clientKeyStorePassword(clientKeyStorePass).create();
 		SimplePpfClient client = ClientFactoryCh.getPpfClient(config);
 		client.setCamelContext(camelContext);
@@ -332,12 +339,11 @@ public class SimplePpfClientTest {
 
 		org.opensaml.saml.saml2.core.Assertion addPolicyAssertionOpenSaml = (org.opensaml.saml.saml2.core.Assertion) new AssertionBuilderImpl()
 				.create(addPolicyAssertion).getWrappedObject();
-		
 
 		// create policy feed object with method add to add policy
 		PrivacyPolicyFeed ppFeedRequest = new PrivacyPolicyFeedBuilderImpl().method(PpfMethod.ADD_POLICY)
 				.create(addPolicyAssertionOpenSaml);
-		
+
 		// add policy
 		PrivacyPolicyFeedResponse response = client.send(xuaAssertion, ppFeedRequest);
 
@@ -372,7 +378,7 @@ public class SimplePpfClientTest {
 		assertNotNull(xuaAssertion);
 
 		// initialize client to query policies
-		PpClientConfig configQuery = new PpClientConfigBuilderImpl().url(urlToPpq).clientKeyStore(clientKeyStore)
+		PpClientConfig configQuery = new PpClientConfigBuilderImpl().url(urlToPpf).clientKeyStore(clientKeyStore)
 				.clientKeyStorePassword(clientKeyStorePass).create();
 		SimplePpqClient clientPpq = ClientFactoryCh.getPpqClient(configQuery);
 		clientPpq.setCamelContext(camelContext);
@@ -430,7 +436,7 @@ public class SimplePpfClientTest {
 		String policySetId = policySetExist.getPolicySetId();
 
 		// initialize client to update policy
-		PpClientConfig config = new PpClientConfigBuilderImpl().url(urlToPpq).clientKeyStore(clientKeyStore)
+		PpClientConfig config = new PpClientConfigBuilderImpl().url(urlToPpf).clientKeyStore(clientKeyStore)
 				.clientKeyStorePassword(clientKeyStorePass).create();
 		SimplePpfClient client = ClientFactoryCh.getPpfClient(config);
 		client.setCamelContext(camelContext);
@@ -579,7 +585,7 @@ public class SimplePpfClientTest {
 	@Order(3)
 	void testSendPpq1DeletePolicy() throws Exception {
 		// initialize client to query policies
-		PpClientConfig configQuery = new PpClientConfigBuilderImpl().url(urlToPpq).clientKeyStore(clientKeyStore)
+		PpClientConfig configQuery = new PpClientConfigBuilderImpl().url(urlToPpf).clientKeyStore(clientKeyStore)
 				.clientKeyStorePassword(clientKeyStorePass).create();
 		SimplePpqClient clientPpq = ClientFactoryCh.getPpqClient(configQuery);
 		clientPpq.setCamelContext(camelContext);
@@ -623,7 +629,7 @@ public class SimplePpfClientTest {
 		String policySetId = policySetQueried.getPolicySetId();
 
 		// initialize client to delete policy
-		PpClientConfig config = new PpClientConfigBuilderImpl().url(urlToPpq).clientKeyStore(clientKeyStore)
+		PpClientConfig config = new PpClientConfigBuilderImpl().url(urlToPpf).clientKeyStore(clientKeyStore)
 				.clientKeyStorePassword(clientKeyStorePass).create();
 		SimplePpfClient client = ClientFactoryCh.getPpfClient(config);
 		client.setCamelContext(camelContext);
@@ -658,6 +664,7 @@ public class SimplePpfClientTest {
 		PrivacyPolicyFeedResponse response = client.send(xuaAssertion, ppFeedRequest);
 
 		// check if policy was successfully deleted
+		assertTrue(response.getStatus().startsWith("urn:e-health-suisse:2015:response-status:"));
 		assertTrue(response.getExceptions().isEmpty());
 		assertEquals("urn:e-health-suisse:2015:response-status:success", response.getStatus());
 	}
@@ -673,7 +680,7 @@ public class SimplePpfClientTest {
 	@Order(4)
 	void testSendPpq1AddPolicyWrongPolicyStructure() throws Exception {
 		// initialize client to add policy
-		PpClientConfig config = new PpClientConfigBuilderImpl().url(urlToPpq).clientKeyStore(clientKeyStore)
+		PpClientConfig config = new PpClientConfigBuilderImpl().url(urlToPpf).clientKeyStore(clientKeyStore)
 				.clientKeyStorePassword(clientKeyStorePass).create();
 		SimplePpfClient client = ClientFactoryCh.getPpfClient(config);
 		client.setCamelContext(camelContext);

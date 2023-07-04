@@ -122,7 +122,8 @@ class CHPixV3FeedTest {
 
 		// the EPR SPID
 		final Identifier identifier2 = new Identifier();
-		identifier2.setValue(eprSPID);
+//		identifier2.setValue(eprSPID);
+		identifier2.setValue("husky-spid-"+UUID.randomUUID().toString());
 		identifier2.setSystem(spidAssigningAuthorityOid);
 		patient.getIdentifier().add(identifier2);
 
