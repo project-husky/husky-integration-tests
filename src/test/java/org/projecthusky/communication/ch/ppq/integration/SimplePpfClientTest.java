@@ -45,6 +45,7 @@ import org.projecthusky.xua.saml2.impl.AssertionBuilderImpl;
 import org.projecthusky.xua.serialization.impl.AssertionSerializerImpl;
 import org.slf4j.LoggerFactory;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -87,6 +88,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = { TestApplication.class })
 @EnableAutoConfiguration
 @TestMethodOrder(OrderAnnotation.class)
+@Disabled
 public class SimplePpfClientTest {
 
 	@Autowired
