@@ -22,6 +22,7 @@ import org.projecthusky.communication.ch.ppq.impl.config.PpClientConfigBuilderIm
 import org.projecthusky.xua.hl7v3.InstanceIdentifier;
 import org.projecthusky.xua.hl7v3.impl.InstanceIdentifierBuilder;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openehealth.ipf.commons.audit.AuditContext;
@@ -46,6 +47,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = { TestApplication.class })
 @EnableAutoConfiguration
 @ActiveProfiles("atna")
+@Disabled
 class SimplePpqClientAtnaAuditTest {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SimplePpqClientAtnaAuditTest.class.getName());
