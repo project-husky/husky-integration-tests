@@ -30,6 +30,7 @@
 
 	<logger name="org.openehealth.ipf.commons.audit.protocol" level="trace" additivity="false">
 		<appender-ref ref="RollingFile" />
+		<appender-ref ref="Console" />
 	</logger>
 
 	<!-- LOG everything at ERROR level -->
