@@ -11,7 +11,7 @@
 		<maven.compiler.release>17</maven.compiler.release>
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>
-		<husky.version>2.2.0</husky.version>
+		<husky.version>2.2.1-SNAPSHOT</husky.version>
 		<spring.boot.version>2.7.13</spring.boot.version>
 		<camel.version>3.21.0</camel.version>
 		<junit.version>5.10.1</junit.version>
