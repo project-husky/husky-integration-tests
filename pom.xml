@@ -38,6 +38,12 @@
 		</repository>
 
 	</repositories>
+	<scm>
+		<connection>scm:git:https://github.com/project-husky/husky-integration-tests.git</connection>
+		<developerConnection>scm:git:git@github.com:project-husky/husky-integration-tests.git</developerConnection>
+		<url>https://github.com/project-husky/husky-integration-tests/tree/master</url>
+		<tag>HEAD</tag>
+	</scm>
 	<!--
 	<distributionManagement>
 		<snapshotRepository>
