@@ -120,7 +120,7 @@ class ConvenienceCommunicationXdmContentsTest extends XdmTestUtils {
 		setSubmissionMetadata(subSet, patientId);
 
 		// create a FileOutputStream to store the zip file
-		final File targetFile = new File("src/test/resources/xdmTest_Java.zip");
+		final File targetFile = new File("target/xdmTest_Java.zip");
 		try (final FileOutputStream outputStream = new FileOutputStream(targetFile)) {
 			// create and store zip.
 			convenienceCommunication.createXdmContents(subSet, outputStream);
@@ -141,7 +141,7 @@ class ConvenienceCommunicationXdmContentsTest extends XdmTestUtils {
 		String readmeFile = null;
 		String indexHtmFile = null;
 		Path iheXdmFolder = null;
-		File targetUnzip = new File("src/test/resources/xdmTest_Java");
+		File targetUnzip = new File("target/xdmTest_Java");
 
 		// iterate each entry of the zip file and check if README.TXT, INDEX.HTM and
 		// subdirectory for XDM contents exists

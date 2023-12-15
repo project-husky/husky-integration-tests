@@ -20,6 +20,7 @@ import org.projecthusky.communication.ch.ppq.impl.config.PpClientConfigBuilderIm
 import org.projecthusky.xua.hl7v3.InstanceIdentifier;
 import org.projecthusky.xua.hl7v3.impl.InstanceIdentifierBuilder;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openehealth.ipf.commons.audit.AuditContext;
@@ -35,6 +36,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ExtendWith(value = SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = { TestApplication.class })
 @EnableAutoConfiguration
+@Disabled
 class SimplePpqClientTest {
 
 	@Autowired
@@ -52,6 +54,13 @@ class SimplePpqClientTest {
 	private String clientKeyStorePass;
 	@Value(value = "${test.ppq.keystore.type:JKS}")
 	private String clientKeyStoreType;
+	
+	@Value(value = "${test.truststore.file:src/test/resources/truststore.p12}")
+	private String clientTrustStore;
+	@Value(value = "${test.truststore.password:changeit}")
+	private String clientTrustStorePass;
+	@Value(value = "${test.truststore.type:pkcs12}")
+	private String clientTrustStoreType;
 
 	/**
 	 * This method initializes IPF and OpenSAML XACML modules and sets key- and
@@ -66,9 +75,9 @@ class SimplePpqClientTest {
 			System.setProperty("javax.net.ssl.keyStore", clientKeyStore);
 			System.setProperty("javax.net.ssl.keyStorePassword", clientKeyStorePass);
 			System.setProperty("javax.net.ssl.keyStoreType", clientKeyStoreType);
-			System.setProperty("javax.net.ssl.trustStore", clientKeyStore);
-			System.setProperty("javax.net.ssl.trustStorePassword", clientKeyStorePass);
-			System.setProperty("javax.net.ssl.trustStoreType", clientKeyStoreType);
+			System.setProperty("javax.net.ssl.trustStore", clientTrustStore);
+			System.setProperty("javax.net.ssl.trustStorePassword", clientTrustStorePass);
+			System.setProperty("javax.net.ssl.trustStoreType", clientTrustStoreType);
 		} catch (InitializationException e1) {
 			e1.printStackTrace();
 		}

@@ -118,10 +118,14 @@ class ConvenienceMasterPatientIndexV3AtnaAuditTest {
 		final Identificator identificator = new Identificator("1.3.6.1.4.1.12559.11.20.1", "4711");
 		mpiQuery.addPatientIdentificator(identificator);
 		
+		convenienceMasterPatientIndexV3Client.getAuditContext().setAuditEnabled(true);
+		
 		// query patient demographics
 		final MasterPatientIndexQueryResponse response = convenienceMasterPatientIndexV3Client
 				.queryPatientDemographics(mpiQuery, affinityDomain, null, null);
 		assertTrue(response.getSuccess());
+		
+		
 
 		// check audit logging entries
 		String logContent = checkAuditLogging();

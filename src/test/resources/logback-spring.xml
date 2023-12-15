@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+	<appender name="Console"
+		class="ch.qos.logback.core.ConsoleAppender">
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>
+				%d{ISO8601} %highlight(%-5level) [%blue(%t)] %green(${application.title}) %yellow(%C{30}): 
+				            %msg%n%throwable
+			</Pattern>
+		</layout>
+	</appender>
+
+	<appender name="RollingFile"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>./log/TestEHC.log</file>
+		<encoder
+			class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<Pattern>%d{ISO8601} %-5level %t %C{30}: %msg%n%throwable
+			</Pattern>
+		</encoder>
+
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>./log/archived/TestEHC-%d{yyyy-MM-dd}.log
+			</fileNamePattern>
+		</rollingPolicy>
+	</appender>
+
+
+
+	<logger name="org.openehealth.ipf.commons.audit.protocol" level="trace" additivity="false">
+		<appender-ref ref="RollingFile" />
+		<appender-ref ref="Console" />
+	</logger>
+
+	<!-- LOG everything at ERROR level -->
+	<root level="debug">
+		<appender-ref ref="Console" />
+	</root>
+
+</configuration>
