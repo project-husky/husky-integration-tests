@@ -1,4 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.husky.test.integration</groupId>
 	<artifactId>husky-integration-tests</artifactId>
@@ -11,10 +13,12 @@
 		<maven.compiler.release>17</maven.compiler.release>
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>
-		<husky.version>2.2.0</husky.version>
-		<spring.boot.version>2.7.13</spring.boot.version>
+		<husky.version>2.2.1-SNAPSHOT</husky.version>
+		<spring.version>5.3.31</spring.version>
+		<spring.boot.version>2.7.18</spring.boot.version>
 		<camel.version>3.21.0</camel.version>
 		<junit.version>5.10.1</junit.version>
+		<ipf.version>4.7.0</ipf.version>
 		<maven-surefire-plugin.version>3.2.2</maven-surefire-plugin.version>
 	</properties>
 	<repositories>
@@ -39,9 +43,12 @@
 
 	</repositories>
 	<scm>
-		<connection>scm:git:https://github.com/project-husky/husky-integration-tests.git</connection>
-		<developerConnection>scm:git:git@github.com:project-husky/husky-integration-tests.git</developerConnection>
-		<url>https://github.com/project-husky/husky-integration-tests/tree/master</url>
+		<connection>
+			scm:git:https://github.com/project-husky/husky-integration-tests.git</connection>
+		<developerConnection>
+			scm:git:git@github.com:project-husky/husky-integration-tests.git</developerConnection>
+		<url>
+			https://github.com/project-husky/husky-integration-tests/tree/master</url>
 		<tag>HEAD</tag>
 	</scm>
 	<!--
@@ -81,6 +88,13 @@
 				<artifactId>husky-xua-gen-impl</artifactId>
 				<version>${husky.version}</version>
 			</dependency>
+
+			<dependency>
+				<groupId>org.projecthusky.communication</groupId>
+				<artifactId>husky-service</artifactId>
+				<version>${husky.version}</version>
+			</dependency>
+
 			<dependency>
 				<groupId>org.apache.maven.surefire</groupId>
 				<artifactId>surefire-junit-platform</artifactId>
@@ -180,6 +194,10 @@
 			</exclusions>
 		</dependency>
 		<dependency>
+			<groupId>org.projecthusky.communication</groupId>
+			<artifactId>husky-service</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-engine</artifactId>
 			<scope>test</scope>
@@ -211,6 +229,7 @@
 			<artifactId>camel-cxf</artifactId>
 			<scope>test</scope>
 		</dependency>
+
 	</dependencies>
 	<build>
 		<plugins>
