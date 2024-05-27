@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.IOException;
 import java.net.URI;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
@@ -100,6 +101,25 @@ public class PixAddPatientTest {
 	}
 	
 	@Test
+	public void addPatientWithProviderOrganization_multipleIDs_showAllIdsInTelegram() throws Exception {
+	  Organization organization = new Organization().addIdentifier(new Identifier().setValue("Husky").setSystem(FhirCommon.addUrnOid(homeCommunityOid)));
+	  PixAddPatientFeed query = this.service.createPixAddPatientFeed(testWSDestination, organization)
+	      .identifier(new Identifier().setValue(String.valueOf(System.currentTimeMillis())).setSystem(FhirCommon.addUrnOid(homeCommunityOid)))
+	      .identifier(new Identifier().setValue(String.valueOf(System.currentTimeMillis())).setSystem(spidEprOid))
+	      .patientName(new HumanName().setFamily("Anders").addGiven("Miriam").addGiven("Maria").addPrefix("Dr.").addSuffix("Msc.").setUse(NameUse.OFFICIAL))
+	      .birthday(new SimpleDateFormat("dd.MM.yyyy").parse("24.03.1950"))
+	      .gender(AdministrativeGender.OTHER)
+	      .providerOrganization(new Organization()
+	          .addIdentifier(new Identifier().setSystem("systemA"))
+	          .addIdentifier(new Identifier().setSystem("systemB"))
+	          .setName("provOrganization")
+	          .setTelecom(List.of(new ContactPoint().setUse(ContactPointUse.HOME).setSystem(ContactPointSystem.PHONE).setValue("+4366793384455"))))
+	      .employeeOccupation(new CodeableConcept().setText("Senior Lamp Technicial"))
+	      .build();
+	  assertTrue(this.service.send(query));
+	}
+
+	@Test
 	public void addMinimalPatient() throws JAXBException, SerializeException, ParserConfigurationException, IOException {
 		Organization organization = new Organization().addIdentifier(new Identifier().setValue("Husky").setSystem(FhirCommon.addUrnOid(homeCommunityOid)));
 		PixAddPatientFeed query = this.service.createPixAddPatientFeed(testWSDestination, organization)
@@ -109,7 +129,7 @@ public class PixAddPatientTest {
 				.build();
 			assertTrue(this.service.send(query));
 	}
-	
+
 	@Test
 	@Disabled("This test is to prove that adding a patient without a name works (unfortunately).")
 	public void addSubminimalPatient() throws JAXBException, SerializeException, ParserConfigurationException, IOException {
