@@ -22,7 +22,7 @@ import java.util.GregorianCalendar;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.commons.io.IOUtils;
+import org.junit.jupiter.api.Test;
 import org.projecthusky.common.basetypes.IdentificatorBaseType;
 import org.projecthusky.common.utils.LangText;
 import org.projecthusky.valueset.api.ValueSetManager;
@@ -32,7 +32,7 @@ import org.projecthusky.valueset.enums.SourceSystemType;
 import org.projecthusky.valueset.exceptions.InitializationException;
 import org.projecthusky.valueset.model.ValueSet;
 import org.projecthusky.valueset.model.ValueSetEntry;
-import org.junit.jupiter.api.Test;
+import org.projecthusky.valueset.utils.VsUtils;
 import org.xml.sax.SAXException;
 
 /**
@@ -41,12 +41,11 @@ import org.xml.sax.SAXException;
  */
 class ValueSetManagerIntegrationTest {
 
-
 	/**
 	 * This test checks the behavior of the
-	 * {@link ValueSetManager#downloadValueSetRaw(ValueSetConfig)} when downloading
-	 * value sets as a byte array. As an example the possible values for
-	 * EprAuthorRole (2.16.756.5.30.1.127.3.10.1) are downloaded.
+	 * {@link ValueSetManager#downloadValueSetRaw(ValueSetConfig)} when
+	 * downloading value sets as a byte array. As an example the possible values
+	 * for EprAuthorRole (2.16.756.5.30.1.127.3.10.1) are downloaded.
 	 * 
 	 * @throws MalformedURLException
 	 * @throws IOException
@@ -56,12 +55,14 @@ class ValueSetManagerIntegrationTest {
 		String testUrl = "https://art-decor.org/decor/services/RetrieveValueSet?prefix=ch-epr-&format=json&id=2.16.756.5.30.1.127.3.10.1";
 
 		// download expected values from fixed URL
-		String downloadedString = IOUtils.toString(new URL(testUrl), StandardCharsets.UTF_8);
+		String downloadedString = VsUtils.downloadAsString(new URL(testUrl));
+
 		ValueSetManager valueSetManager = new ValueSetManager();
 
 		// configure URL and the source system type for downloading value sets
-		ValueSetConfig valueSetConfig = ValueSetConfig.builder().withSourceSystemType(SourceSystemType.ARTDECOR_FHIR)
-				.withSourceUrl(testUrl).build();
+		ValueSetConfig valueSetConfig = ValueSetConfig.builder()
+				.withSourceSystemType(SourceSystemType.ARTDECOR_FHIR).withSourceUrl(testUrl)
+				.build();
 
 		// download value sets
 		byte[] downloadedByteArray = valueSetManager.downloadValueSetRaw(valueSetConfig);
@@ -71,9 +72,10 @@ class ValueSetManagerIntegrationTest {
 
 	/**
 	 * This test checks the behavior of the
-	 * {@link ValueSetManager#downloadValueSetRaw(ValueSetConfig)} when downloading
-	 * value sets with an ID, which doesn't exist. As an example the possible values
-	 * for EprAuthorRole (2.16.756.5.30.1.127.3.10.1) are downloaded.
+	 * {@link ValueSetManager#downloadValueSetRaw(ValueSetConfig)} when
+	 * downloading value sets with an ID, which doesn't exist. As an example the
+	 * possible values for EprAuthorRole (2.16.756.5.30.1.127.3.10.1) are
+	 * downloaded.
 	 * 
 	 * @throws MalformedURLException
 	 * @throws IOException
@@ -86,8 +88,9 @@ class ValueSetManagerIntegrationTest {
 		ValueSetManager valueSetManager = new ValueSetManager();
 
 		// configure URL and the source system type for downloading value sets
-		ValueSetConfig valueSetConfig = ValueSetConfig.builder().withSourceSystemType(SourceSystemType.ARTDECOR_FHIR)
-				.withSourceUrl(testUrl).build();
+		ValueSetConfig valueSetConfig = ValueSetConfig.builder()
+				.withSourceSystemType(SourceSystemType.ARTDECOR_FHIR).withSourceUrl(testUrl)
+				.build();
 
 		// download value sets
 		byte[] downloadedByteArray = valueSetManager.downloadValueSetRaw(valueSetConfig);
@@ -98,8 +101,8 @@ class ValueSetManagerIntegrationTest {
 	/**
 	 * This test checks the behavior of the
 	 * {@link ValueSetManager#downloadValueSet(ValueSetConfig)} when downloading
-	 * value sets as {@link ValueSet} in JSON, XML or IHE SVS format. As an example
-	 * the possible values for DocumentEntry.author.authorRole
+	 * value sets as {@link ValueSet} in JSON, XML or IHE SVS format. As an
+	 * example the possible values for DocumentEntry.author.authorRole
 	 * (2.16.756.5.30.1.127.3.10.1.1.3) are downloaded.
 	 * 
 	 * @throws IOException
@@ -108,8 +111,8 @@ class ValueSetManagerIntegrationTest {
 	 * @throws InitializationException
 	 */
 	@Test
-	void downloadValueSetTest() throws IOException, ParserConfigurationException,
-			SAXException, InitializationException {
+	void downloadValueSetTest() throws IOException, ParserConfigurationException, SAXException,
+			InitializationException {
 		String baseUrlJson = "https://art-decor.org/decor/services/RetrieveValueSet?prefix=ch-epr-&format=json";
 		String baseUrlIheSvs = "https://art-decor.org/decor/services/RetrieveValueSet?prefix=ch-epr-&format=svs";
 		String baseUrlXml = "https://art-decor.org/decor/services/RetrieveValueSet?prefix=ch-epr-&format=xml";
@@ -129,7 +132,8 @@ class ValueSetManagerIntegrationTest {
 		authorRoleSourceUrlJsonString = authorRoleSourceUrlJson.toString();
 
 		// configuring the download of value sets in JSON format
-		// sets the URL for downloading and specifies the class name and the folder
+		// sets the URL for downloading and specifies the class name and the
+		// folder
 		// where the values should be saved
 		ValueSetConfig valueSetConfigJson = ValueSetConfig.builder().withClassName(className1)
 				.withProjectFolder(projectFolder).withSourceFormatType(SourceFormatType.JSON)
@@ -142,9 +146,9 @@ class ValueSetManagerIntegrationTest {
 				authorRoleId, authorRoleTimeStamp);
 		authorRoleSourceUrlIheSvsString = authorRoleSourceUrlIheSvs.toString();
 
-
 		// configuring the download of value sets in IHE SVS XML format
-		// sets the URL for downloading and specifies the class name and the folder
+		// sets the URL for downloading and specifies the class name and the
+		// folder
 		// where the values should be saved
 		ValueSetConfig valueSetConfigIheSvs = ValueSetConfig.builder().withClassName(className1)
 				.withProjectFolder(projectFolder).withSourceFormatType(SourceFormatType.IHESVS)
@@ -158,7 +162,8 @@ class ValueSetManagerIntegrationTest {
 		authorRoleSourceUrlXmlString = authorRoleSourceUrlXml.toString();
 
 		// configuring the download of value sets in XML format
-		// sets the URL for downloading and specifies the class name and the folder
+		// sets the URL for downloading and specifies the class name and the
+		// folder
 		// where the values should be saved
 		ValueSetConfig valueSetConfigXml = ValueSetConfig.builder().withClassName(className1)
 				.withProjectFolder(projectFolder).withSourceFormatType(SourceFormatType.XML)
@@ -181,7 +186,8 @@ class ValueSetManagerIntegrationTest {
 		assertEquals(valueSetJson.getVersion(), valueSetIheSvs.getVersion());
 
 		// IHE SVS does only provide Purpose (which is loaded as English
-		// description). It couldn't be tested because different namespaces are used
+		// description). It couldn't be tested because different namespaces are
+		// used
 		/*
 		 * assertEquals(valueSetJson.getDescription(LanguageCode.ENGLISH),
 		 * valueSetIheSvs.getDescription(LanguageCode.ENGLISH));
