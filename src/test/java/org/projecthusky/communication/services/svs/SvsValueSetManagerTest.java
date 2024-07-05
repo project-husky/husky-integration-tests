@@ -21,7 +21,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import javax.xml.parsers.ParserConfigurationException;
-import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 import org.projecthusky.common.basetypes.IdentificatorBaseType;
 import org.projecthusky.common.utils.LangText;
@@ -36,6 +35,7 @@ import org.projecthusky.valueset.enums.SourceSystemType;
 import org.projecthusky.valueset.exceptions.InitializationException;
 import org.projecthusky.valueset.model.ValueSet;
 import org.projecthusky.valueset.model.ValueSetEntry;
+import org.projecthusky.valueset.utils.VsUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -66,7 +66,7 @@ class SvsValueSetManagerTest {
     String testUrl = "https://art-decor.org/decor/services/RetrieveValueSet?prefix=ch-epr-&format=json&id=2.16.756.5.30.1.127.3.10.1";
 
     // download expected values from fixed URL
-    String downloadedString = IOUtils.toString(new URL(testUrl), StandardCharsets.UTF_8);
+    String downloadedString = VsUtils.downloadAsString(new URL(testUrl));
 
     // configure URL and the source system type for downloading value sets
     SvsValueSetRequest valueSetRequest = this.huskyService.createValueSetRequest()
