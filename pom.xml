@@ -11,35 +11,15 @@
 		<maven.compiler.release>17</maven.compiler.release>
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>
-		<husky.version>2.5.0</husky.version>
+		<husky.version>2.5.1-Snapshot</husky.version>
 		<spring.version>5.3.31</spring.version>
 		<spring.boot.version>2.7.18</spring.boot.version>
 		<camel.version>3.21.0</camel.version>
 		<junit.version>5.10.1</junit.version>
 		<ipf.version>4.7.0</ipf.version>
-		<maven-surefire-plugin.version>3.2.2</maven-surefire-plugin.version>
+		<maven-surefire-plugin.version>3.3.1</maven-surefire-plugin.version>
 	</properties>
-	<repositories>
-		<!--
-		<repository>
-			<id>husky-releases</id>
-			<name>husky-releases</name>
-			<url>https://archiva.et-innovations.org/repository/internal/</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-				-->
-		<repository>
-			<id>husky-snapshots</id>
-			<name>husky-snapshots</name>
-			<url>https://archiva.et-innovations.org/repository/snapshots/</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-
-	</repositories>
+	
 	<scm>
 		<connection>
 			scm:git:https://github.com/project-husky/husky-integration-tests.git</connection>
