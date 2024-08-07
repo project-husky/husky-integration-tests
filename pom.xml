@@ -19,6 +19,28 @@
 		<ipf.version>4.7.0</ipf.version>
 		<maven-surefire-plugin.version>3.3.1</maven-surefire-plugin.version>
 	</properties>
+
+	<repositories>
+		<!--
+		<repository>
+			<id>husky-releases</id>
+			<name>husky-releases</name>
+			<url>https://archiva.et-innovations.org/repository/internal/</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+				-->
+		<repository>
+			<id>husky-snapshots</id>
+			<name>husky-snapshots</name>
+			<url>https://archiva.et-innovations.org/repository/snapshots/</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+
+	</repositories>
 	
 	<scm>
 		<connection>
