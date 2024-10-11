@@ -24,7 +24,7 @@ import org.junit.jupiter.api.Test;
 import org.openehealth.ipf.commons.ihe.hpd.stub.dsmlv2.SearchRequest.DerefAliasesType;
 import org.openehealth.ipf.commons.ihe.hpd.stub.dsmlv2.SearchRequest.SearchScope;
 import org.projecthusky.common.communication.Destination;
-import org.projecthusky.communication.TestApplication;
+import org.projecthusky.communication.testhelper.TestApplication;
 import org.projecthusky.communication.requests.hpd.data.HpdFilterOperation;
 import org.projecthusky.communication.requests.hpd.data.HpdFilterOperation.OperationType;
 import org.projecthusky.communication.requests.hpd.data.HpdOperationParameters;

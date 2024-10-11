@@ -6,10 +6,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.util.GregorianCalendar;
 import java.util.UUID;
 
-import javax.xml.bind.JAXBException;
+import jakarta.xml.bind.JAXBException;
 
 import org.apache.camel.CamelContext;
-import org.projecthusky.communication.ch.ppq.TestApplication;
+import org.projecthusky.communication.testhelper.TestApplication;
 import org.projecthusky.communication.ch.ppq.api.PrivacyPolicyQuery;
 import org.projecthusky.communication.ch.ppq.api.config.PpClientConfig;
 import org.projecthusky.communication.ch.ppq.impl.PrivacyPolicyQueryBuilderImpl;

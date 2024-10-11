@@ -15,7 +15,7 @@ import org.openehealth.ipf.commons.ihe.xacml20.stub.saml20.assertion.AttributeTy
 import org.openehealth.ipf.commons.ihe.xacml20.stub.saml20.assertion.StatementAbstractType;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.impl.AttributeValueImpl;
-import org.projecthusky.communication.TestApplication;
+import org.projecthusky.communication.testhelper.TestApplication;
 import org.projecthusky.communication.config.ServerTestHelper;
 import org.projecthusky.communication.requests.xua.XuaRequest;
 import org.projecthusky.communication.responses.xua.XuaResponse;

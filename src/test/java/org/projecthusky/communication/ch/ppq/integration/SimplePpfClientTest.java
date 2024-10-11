@@ -6,7 +6,7 @@ import org.herasaf.xacml.core.dataTypeAttribute.impl.StringDataTypeAttribute;
 import org.herasaf.xacml.core.function.impl.equalityPredicates.StringEqualFunction;
 import org.herasaf.xacml.core.policy.impl.*;
 import org.projecthusky.communication.ch.enums.stable.PurposeOfUse;
-import org.projecthusky.communication.ch.ppq.TestApplication;
+import org.projecthusky.communication.testhelper.TestApplication;
 import org.projecthusky.communication.ch.ppq.api.PrivacyPolicyFeed;
 import org.projecthusky.communication.ch.ppq.api.PrivacyPolicyFeed.PpfMethod;
 import org.projecthusky.communication.ch.ppq.api.PrivacyPolicyFeedResponse;
@@ -70,7 +70,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import javax.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBElement;
 import javax.xml.namespace.QName;
 import java.io.FileNotFoundException;
 import java.io.IOException;

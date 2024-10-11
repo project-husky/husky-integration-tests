@@ -11,7 +11,7 @@ import java.nio.file.Files;
 import java.util.GregorianCalendar;
 import java.util.UUID;
 
-import javax.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBElement;
 import javax.xml.namespace.QName;
 
 import org.apache.camel.CamelContext;
@@ -31,7 +31,6 @@ import org.herasaf.xacml.core.policy.impl.SubjectMatchType;
 import org.herasaf.xacml.core.policy.impl.SubjectType;
 import org.herasaf.xacml.core.policy.impl.SubjectsType;
 import org.herasaf.xacml.core.policy.impl.TargetType;
-import org.projecthusky.communication.ch.ppq.TestApplication;
 import org.projecthusky.communication.ch.ppq.api.PrivacyPolicyFeed;
 import org.projecthusky.communication.ch.ppq.api.PrivacyPolicyFeed.PpfMethod;
 import org.projecthusky.communication.ch.ppq.api.PrivacyPolicyFeedResponse;
@@ -44,6 +43,7 @@ import org.projecthusky.communication.ch.ppq.impl.clients.ClientFactoryCh;
 import org.projecthusky.communication.ch.ppq.impl.clients.SimplePpfClient;
 import org.projecthusky.communication.ch.ppq.impl.clients.SimplePpqClient;
 import org.projecthusky.communication.ch.ppq.impl.config.PpClientConfigBuilderImpl;
+import org.projecthusky.communication.testhelper.TestApplication;
 import org.projecthusky.xua.hl7v3.InstanceIdentifier;
 import org.projecthusky.xua.hl7v3.impl.InstanceIdentifierBuilder;
 import org.projecthusky.xua.saml2.Assertion;

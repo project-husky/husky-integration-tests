@@ -20,7 +20,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-import javax.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBContext;
 
 import org.hl7.fhir.r4.model.Organization;
 import org.projecthusky.common.basetypes.AddressBaseType;

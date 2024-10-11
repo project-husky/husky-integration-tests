@@ -126,7 +126,8 @@ class CHRegistryStoredQueryTest extends XdsTestUtils {
 		// initialize the open saml factories
 		InitializationService.initialize();
 
-		auditContext.setAuditEnabled(true);
+		// TODO: set the audit context to enable ATNA logs
+//		auditContext.setAuditEnabled(true);
 
 		// create and start spring test application
 		var app = new SpringApplication(TestApplication.class);

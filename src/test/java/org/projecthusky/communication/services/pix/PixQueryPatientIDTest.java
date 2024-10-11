@@ -18,7 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.projecthusky.common.communication.Destination;
 import org.projecthusky.communication.requests.pix.PixPatientIDQuery;
 import org.projecthusky.communication.responses.pix.PixPatientIDResult;
-import org.projecthusky.communication.TestApplication;
+import org.projecthusky.communication.testhelper.TestApplication;
 import org.projecthusky.communication.services.HuskyService;
 import org.projecthusky.communication.testhelper.IpfApplicationConfig;
 import org.springframework.beans.factory.annotation.Autowired;

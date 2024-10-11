@@ -26,7 +26,7 @@ import org.openehealth.ipf.commons.ihe.xds.core.responses.Status;
 import org.projecthusky.common.communication.Destination;
 import org.projecthusky.common.model.Identificator;
 import org.projecthusky.communication.requests.xds.XdsRegistryStoredFindDocumentsQuery;
-import org.projecthusky.communication.TestApplication;
+import org.projecthusky.communication.testhelper.TestApplication;
 import org.projecthusky.communication.services.HuskyWebServiceClient;
 import org.projecthusky.communication.testhelper.IpfApplicationConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +59,7 @@ public class XdsFindDocumentsLowLevelTest {
 
 		XdsRegistryStoredFindDocumentsQuery query = XdsRegistryStoredFindDocumentsQuery.builder().destination(dest)
 				.patientID(identificator).availabilityStatus(AvailabilityStatus.APPROVED).build();
-		QueryResponse queryResponse = this.wsClient.sendRegistryStoredFindDocumentsQuery(query, null, query.getDestination().getUri(), QueryReturnType.LEAF_CLASS, null);
+		QueryResponse queryResponse = this.wsClient.sendRegistryStoredFindDocumentsQuery(query, query.getDestination().getUri(), QueryReturnType.LEAF_CLASS, null);
 		assertNotNull(queryResponse);
 		assertTrue(queryResponse.getErrors().isEmpty());
 		assertEquals(Status.SUCCESS, queryResponse.getStatus());
@@ -72,7 +72,7 @@ public class XdsFindDocumentsLowLevelTest {
 
 		XdsRegistryStoredFindDocumentsQuery query = XdsRegistryStoredFindDocumentsQuery.builder().destination(dest)
 				.patientID(patientId).availabilityStatus(AvailabilityStatus.APPROVED).build();
-		final QueryResponse response = this.wsClient.sendRegistryStoredFindDocumentsQuery(query, null, query.getDestination().getUri(), QueryReturnType.LEAF_CLASS, null);
+		final QueryResponse response = this.wsClient.sendRegistryStoredFindDocumentsQuery(query, query.getDestination().getUri(), QueryReturnType.LEAF_CLASS, null);
 
 		// check if query was successful
 		assertTrue(response.getErrors().isEmpty());

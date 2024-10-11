@@ -28,7 +28,7 @@ import org.projecthusky.common.model.Code;
 import org.projecthusky.common.model.Identificator;
 import org.projecthusky.communication.requests.xds.XdsFindFoldersStoredQuery;
 import org.projecthusky.communication.requests.xds.XdsRegistryStoredFindDocumentsQuery;
-import org.projecthusky.communication.TestApplication;
+import org.projecthusky.communication.testhelper.TestApplication;
 import org.projecthusky.communication.services.HuskyService;
 import org.projecthusky.communication.testhelper.IpfApplicationConfig;
 import org.springframework.beans.factory.annotation.Autowired;

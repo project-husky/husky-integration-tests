@@ -41,7 +41,7 @@ import org.projecthusky.common.communication.AffinityDomain;
 import org.projecthusky.common.communication.Destination;
 import org.projecthusky.common.enums.CountryCode;
 import org.projecthusky.communication.ConvenienceMasterPatientIndexV3;
-import org.projecthusky.communication.TestApplication;
+import org.projecthusky.communication.testhelper.TestApplication;
 import org.projecthusky.communication.mpi.impl.PixV3Query;
 import org.projecthusky.communication.testhelper.IpfApplicationConfig;
 import org.projecthusky.fhir.structures.gen.FhirCommon;
