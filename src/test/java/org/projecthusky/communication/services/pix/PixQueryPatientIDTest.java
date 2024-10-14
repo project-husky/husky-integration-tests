@@ -11,10 +11,13 @@
 package org.projecthusky.communication.services.pix;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.net.URI;
 
 import org.junit.jupiter.api.Test;
+import org.openehealth.ipf.commons.ihe.hl7v3.core.metadata.Device;
+import org.openehealth.ipf.commons.ihe.hl7v3.core.requests.PixV3QueryRequest;
 import org.projecthusky.common.communication.Destination;
 import org.projecthusky.communication.requests.pix.PixPatientIDQuery;
 import org.projecthusky.communication.responses.pix.PixPatientIDResult;
@@ -26,6 +29,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import net.ihe.gazelle.hl7v3.datatypes.II;
+
+import org.apache.camel.CamelContext;
+import org.apache.camel.Exchange;
+import org.apache.camel.support.DefaultExchange;
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = {TestApplication.class,
     IpfApplicationConfig.class})
 @ActiveProfiles("atna")
@@ -36,6 +45,9 @@ public class PixQueryPatientIDTest {
 
   @Value(value = "${test.pixq.uri:https://ehealthsuisse.ihe-europe.net/PAMSimulator-ejb/PIXManager_Service/PIXManager_PortType}")
   private String pixUri;
+
+  @Autowired
+  private CamelContext camelContext;
 
   @Test
   void test1() throws Exception {
@@ -50,6 +62,25 @@ public class PixQueryPatientIDTest {
         .build();
     PixPatientIDResult result = this.service.send(query);
     assertNotNull(result);
+  }
+  
+  @Test
+  public void testPixV3QueryRequestTranslation() throws Exception {	 
+	  
+	  
+	  camelContext.setDebugging(true);
+	  camelContext.setTracing(true);
+	  
+      PixV3QueryRequest request = new PixV3QueryRequest();
+      request.setReceiver(new Device());
+      request.setSender(new Device());
+      request.setQueryPatientId(new II("patient1", "3.14.15.926"));
+
+      Exchange exchange = new DefaultExchange(camelContext);
+      exchange.getIn( ).setBody(request);
+
+      String s = exchange.getMessage().getMandatoryBody(String.class);
+      assertTrue(s.startsWith("<"));
   }
 
 }
