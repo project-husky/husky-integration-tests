@@ -25,6 +25,8 @@ import org.projecthusky.common.utils.LangText;
 import org.projecthusky.communication.requests.svs.SvsValueSetRequest;
 import org.projecthusky.communication.responses.svs.SvsValueSetResponse;
 import org.projecthusky.communication.services.HuskyService;
+import org.projecthusky.communication.testhelper.IpfApplicationConfig;
+import org.projecthusky.communication.testhelper.TestApplication;
 import org.projecthusky.valueset.api.ValueSetManager;
 import org.projecthusky.valueset.config.ValueSetConfig;
 import org.projecthusky.valueset.enums.SourceFormatType;
@@ -35,13 +37,13 @@ import org.projecthusky.valueset.utils.VsUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 /**
  * The Test Class for ValueSetManager with downloading value sets from
  * ART-DECOR.
  */
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = {})
-@EnableAutoConfiguration
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = { TestApplication.class })
 class SvsValueSetManagerTest {
 
 	@Autowired
