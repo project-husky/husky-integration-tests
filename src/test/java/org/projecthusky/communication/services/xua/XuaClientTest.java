@@ -14,6 +14,8 @@ import org.openehealth.ipf.commons.ihe.xacml20.stub.saml20.assertion.AttributeSt
 import org.openehealth.ipf.commons.ihe.xacml20.stub.saml20.assertion.AttributeType;
 import org.openehealth.ipf.commons.ihe.xacml20.stub.saml20.assertion.StatementAbstractType;
 import org.opensaml.saml.saml2.core.Assertion;
+import org.opensaml.saml.saml2.core.Attribute;
+import org.opensaml.saml.saml2.core.AttributeStatement;
 import org.opensaml.saml.saml2.core.impl.AttributeValueImpl;
 import org.projecthusky.communication.testhelper.TestApplication;
 import org.projecthusky.communication.config.ServerTestHelper;
@@ -35,6 +37,8 @@ import org.projecthusky.xua.exceptions.SoapException;
 import org.projecthusky.xua.hl7v3.PurposeOfUse;
 import org.projecthusky.xua.hl7v3.Role;
 import org.projecthusky.xua.hl7v3.impl.CodedWithEquivalentsBuilder;
+import org.projecthusky.xua.saml2.impl.AssertionImpl;
+import org.projecthusky.xua.saml2.impl.AttributeBuilderImpl;
 import org.projecthusky.xua.saml2.impl.AttributeImpl;
 import org.projecthusky.xua.serialization.impl.XUserAssertionResponseSerializerImpl;
 import org.slf4j.Logger;
@@ -123,37 +127,40 @@ class XuaClientTest extends ServerTestHelper {
       String actualSubjectId = null;
       String actualResourceId = null;
 
-      for (StatementAbstractType statement : response.getAssertion()
-          .getStatementOrAuthnStatementOrAuthzDecisionStatement()) {
-        if (statement instanceof AttributeStatementType) {
-          AttributeStatementType attributeStatementType = (AttributeStatementType) statement;
+      
+	for (AttributeStatement statement : ((AssertionImpl)response.getAssertion()).getAttributeStatements()) {
 
-          for (Object obj : attributeStatementType.getAttributeOrEncryptedAttribute()) {
-            if (obj instanceof AttributeType) {
-              AttributeImpl attribute = (AttributeImpl) obj;
+//        if (statement instanceof AttributeStatementType) {
+//          AttributeStatementType attributeStatementType = (AttributeStatementType) statement;
 
-              if (attribute.isValueARole()) {
-                actualRole = attribute.getValueAsRole().getCode();
+          for (Attribute attribute  : statement.getAttributes()) {
+        	  AttributeImpl attrImpl = (AttributeImpl)new AttributeBuilderImpl().create(attribute);
+          
+//            if (obj instanceof AttributeType) {
+//              AttributeImpl attribute = (AttributeImpl) obj;
+
+              if (attrImpl.isValueARole()) {
+                actualRole = attrImpl.getValueAsRole().getCode();
               }
 
-              if (attribute.isValueAPurposeOfUse()) {
-                actualPurposeOfUse = attribute.getValueAsPurposeOfUse().getCode();
+              if (attrImpl.isValueAPurposeOfUse()) {
+                actualPurposeOfUse = attrImpl.getValueAsPurposeOfUse().getCode();
               }
 
               if (attribute.getName()
                   .equalsIgnoreCase("urn:oasis:names:tc:xspa:1.0:subject:subject-id")) {
-                actualSubjectId = ((AttributeValueImpl) attribute.getWrappedObject()
+                actualSubjectId = ((AttributeValueImpl) attrImpl.getWrappedObject()
                     .getAttributeValues().get(0)).getTextContent();
               }
 
               if (attribute.getName()
                   .equalsIgnoreCase("urn:oasis:names:tc:xacml:2.0:resource:resource-id")) {
-                actualResourceId = (((AttributeValueImpl) attribute.getWrappedObject()
+                actualResourceId = (((AttributeValueImpl) attrImpl.getWrappedObject()
                     .getAttributeValues().get(0))).getTextContent();
               }
 
-            }
-          }
+//            }
+//          }
         }
       }
 

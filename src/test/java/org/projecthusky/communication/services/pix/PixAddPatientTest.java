@@ -147,7 +147,7 @@ public class PixAddPatientTest {
 			assertTrue(this.service.send(query));
 		});
 		assertTrue(exception.getCause() instanceof SOAPFaultException);
-		assertEquals("javax.xml.ws.soap.SOAPFaultException: A patient must contain exactly 2 patient identifier (1 provided)", exception.getMessage());
+		assertEquals("jakarta.xml.ws.soap.SOAPFaultException: A patient must contain exactly 2 patient identifier (1 provided)", exception.getMessage());
 	}
 	
 	@Test

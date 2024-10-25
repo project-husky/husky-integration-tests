@@ -46,6 +46,7 @@ class HpdSearchRequestTest {
   private static final String SPITAL_X = "Spital X";
   private static final String KLINIK_HOHEWEG = "Klinik Höheweg";
   private static final String PRAXIS_AM_KREUZWEG = "Praxis am Kreuzweg";
+  private static final String PRAXIS_REGISTERED_NAME = "Registered Name 3";
   private static final String IDENTIFIER_VALUE = "RefData:GLN:7601000000002:ACTIVE";
   private static final String DN_ORG = "ou=HCRegulatedOrganization,dc=HPD,o=BAG,c=CH";
   private static final String DN_INDIVIDUAL = "ou=HCProfessional,dc=HPD,o=BAG,c=CH";
@@ -182,7 +183,7 @@ class HpdSearchRequestTest {
   @Test
   void searchRequest_equalityMatchOrganization_EPDPlayground_returnsListContainingAttrNames() throws Exception {
     HpdSimpleParameters simpleParameters = HpdOperationParameters.createSimpleParameters(
-        HpdAttributeName.HC_REGISTERED_NAME, PRAXIS_AM_KREUZWEG);
+        HpdAttributeName.HC_REGISTERED_NAME, PRAXIS_REGISTERED_NAME);
 
     HpdFilterOperation filter = new HpdFilterOperation(false, simpleParameters, OperationType.EQUALITY_MATCH);
 
