@@ -1,4 +1,4 @@
-package org.projecthusky.communication.ch.ppq;
+package org.projecthusky.communication.testhelper;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,11 +8,11 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages = "org.projecthusky.communication")
-public class TestApplication extends SpringBootServletInitializer {
+@ComponentScan(basePackages = {"org.projecthusky.communication"})
+public class TestHelperTestApplication extends SpringBootServletInitializer {
 
 	public static void main(final String[] args) {
-		final SpringApplication application = new SpringApplication(TestApplication.class);
+		final SpringApplication application = new SpringApplication(TestHelperTestApplication.class);
 		addApplicationStartupHook(application);
 		var context = application.run(args);
 		context.close();

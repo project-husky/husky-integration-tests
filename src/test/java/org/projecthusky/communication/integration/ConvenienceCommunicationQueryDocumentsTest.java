@@ -29,13 +29,12 @@ import org.projecthusky.common.model.Identificator;
 import org.projecthusky.common.model.Name;
 import org.projecthusky.common.model.Person;
 import org.projecthusky.communication.ConvenienceCommunication;
-import org.projecthusky.communication.testhelper.TestApplication;
+import org.projecthusky.communication.testhelper.TestHelperTestApplication;
 import org.projecthusky.communication.testhelper.XdsTestUtils;
 import org.projecthusky.communication.xd.storedquery.FindDocumentsQuery;
 import org.projecthusky.communication.xd.storedquery.GetDocumentsQuery;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.openehealth.ipf.commons.audit.AuditContext;
 import org.openehealth.ipf.commons.ihe.xds.core.metadata.AvailabilityStatus;
 import org.openehealth.ipf.commons.ihe.xds.core.metadata.DocumentEntry;
@@ -51,17 +50,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 /**
  * The purpose of this test class is to check whether document metadata
  * retrieval (XDS ITI-18) works with a wide variety of parameters.
  */
-@ExtendWith(value = SpringExtension.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = { TestApplication.class })
-@EnableAutoConfiguration
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = { TestHelperTestApplication.class })
 class ConvenienceCommunicationQueryDocumentsTest extends XdsTestUtils {
 
 	private static final Logger LOGGER = LoggerFactory
@@ -94,7 +89,7 @@ class ConvenienceCommunicationQueryDocumentsTest extends XdsTestUtils {
 	@BeforeEach
 	public void setUp() throws Exception {
 		// create and start spring test application
-		var app = new SpringApplication(TestApplication.class);
+		var app = new SpringApplication(TestHelperTestApplication.class);
 		app.setWebApplicationType(WebApplicationType.NONE);
 		app.run();
 
@@ -126,7 +121,7 @@ class ConvenienceCommunicationQueryDocumentsTest extends XdsTestUtils {
 
 	/**
 	 * This test checks the behavior of the
-	 * {@link ConvenienceCommunication#queryDocuments(org.projecthusky.communication.xd.storedquery.AbstractStoredQuery, org.projecthusky.xua.core.SecurityHeaderElement)}
+	 * {@link ConvenienceCommunication#queryDocuments(org.projecthusky.communication.xd.storedquery.AbstractStoredQuery, org.projecthusky.xua.core.SecurityHeaderElement, String)}
 	 * when no documents are found.
 	 * 
 	 * @throws Exception
@@ -158,7 +153,7 @@ class ConvenienceCommunicationQueryDocumentsTest extends XdsTestUtils {
 
 	/**
 	 * This test checks the behavior of the
-	 * {@link ConvenienceCommunication#queryDocuments(org.projecthusky.communication.xd.storedquery.AbstractStoredQuery, org.projecthusky.xua.core.SecurityHeaderElement)}
+	 * {@link ConvenienceCommunication#queryDocuments(org.projecthusky.communication.xd.storedquery.AbstractStoredQuery, org.projecthusky.xua.core.SecurityHeaderElement, String)}
 	 * if no patient ID is passed.
 	 * 
 	 * @throws Exception
@@ -193,7 +188,7 @@ class ConvenienceCommunicationQueryDocumentsTest extends XdsTestUtils {
 
 	/**
 	 * This test checks the behavior of the
-	 * {@link ConvenienceCommunication#queryDocuments(org.projecthusky.communication.xd.storedquery.AbstractStoredQuery, org.projecthusky.xua.core.SecurityHeaderElement)}
+	 * {@link ConvenienceCommunication#queryDocuments(org.projecthusky.communication.xd.storedquery.AbstractStoredQuery, org.projecthusky.xua.core.SecurityHeaderElement, String)}
 	 * when at least metadata is found for one PDF document
 	 * 
 	 * @throws Exception
@@ -304,7 +299,7 @@ class ConvenienceCommunicationQueryDocumentsTest extends XdsTestUtils {
 
 	/**
 	 * This test checks the behavior of the
-	 * {@link ConvenienceCommunication#queryDocuments(org.projecthusky.communication.xd.storedquery.AbstractStoredQuery, org.projecthusky.xua.core.SecurityHeaderElement)}
+	 * {@link ConvenienceCommunication#queryDocuments(org.projecthusky.communication.xd.storedquery.AbstractStoredQuery, org.projecthusky.xua.core.SecurityHeaderElement, String)}
 	 * when at least metadata is found for one CDA document with following metadata:
 	 * 
 	 * <ul>
@@ -445,7 +440,7 @@ class ConvenienceCommunicationQueryDocumentsTest extends XdsTestUtils {
 
 	/**
 	 * This test checks the behavior of the
-	 * {@link ConvenienceCommunication#queryDocumentReferencesOnly(org.projecthusky.communication.xd.storedquery.AbstractStoredQuery, org.projecthusky.xua.core.SecurityHeaderElement)}
+	 * {@link ConvenienceCommunication#queryDocumentReferencesOnly(org.projecthusky.communication.xd.storedquery.AbstractStoredQuery, org.projecthusky.xua.core.SecurityHeaderElement, String)}
 	 * when only the reference to a document is to be returned in the query.
 	 * 
 	 * @throws Exception
@@ -462,7 +457,7 @@ class ConvenienceCommunicationQueryDocumentsTest extends XdsTestUtils {
 		convenienceCommunication.setAffinityDomain(affinityDomain);
 
 		final QueryResponse response = convenienceCommunication.queryDocumentReferencesOnly(getDocumentsQuery, null,
-				String.format("urn:uuid:testMessage-%s", UUID.randomUUID().toString()));
+				"urn:uuid:testMessage-%s".formatted(UUID.randomUUID().toString()));
 
 		// check if query was successful
 		assertTrue(response.getErrors().isEmpty());

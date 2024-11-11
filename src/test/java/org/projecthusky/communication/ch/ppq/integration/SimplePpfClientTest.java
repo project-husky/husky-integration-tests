@@ -6,7 +6,7 @@ import org.herasaf.xacml.core.dataTypeAttribute.impl.StringDataTypeAttribute;
 import org.herasaf.xacml.core.function.impl.equalityPredicates.StringEqualFunction;
 import org.herasaf.xacml.core.policy.impl.*;
 import org.projecthusky.communication.ch.enums.stable.PurposeOfUse;
-import org.projecthusky.communication.ch.ppq.TestApplication;
+import org.projecthusky.communication.ch.ppq.PpqTestApplication;
 import org.projecthusky.communication.ch.ppq.api.PrivacyPolicyFeed;
 import org.projecthusky.communication.ch.ppq.api.PrivacyPolicyFeed.PpfMethod;
 import org.projecthusky.communication.ch.ppq.api.PrivacyPolicyFeedResponse;
@@ -50,7 +50,6 @@ import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.openehealth.ipf.commons.audit.AuditContext;
 import org.openehealth.ipf.commons.ihe.xacml20.Xacml20Utils;
 import org.openehealth.ipf.commons.ihe.xacml20.herasaf.functions.CvEqualFunction;
@@ -66,11 +65,9 @@ import org.opensaml.core.config.InitializationException;
 import org.opensaml.core.config.InitializationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import javax.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBElement;
 import javax.xml.namespace.QName;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -84,9 +81,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * The purpose of this test class is to check whether adding, updating and
  * deleting (CH-PPQ-1) policies works.
  */
-@ExtendWith(value = SpringExtension.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = { TestApplication.class })
-@EnableAutoConfiguration
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = { PpqTestApplication.class })
 @TestMethodOrder(OrderAnnotation.class)
 @Disabled
 public class SimplePpfClientTest {
@@ -237,7 +232,7 @@ public class SimplePpfClientTest {
 		PolicySetType policySet = new PolicySetType();
 		policySet.setCombiningAlg(new PolicyDenyOverridesAlgorithm());
 
-		var id = new EvaluatableIDImpl(String.format("urn:uuid:%s", UUID.randomUUID().toString()));
+		var id = new EvaluatableIDImpl("urn:uuid:%s".formatted(UUID.randomUUID().toString()));
 		policySet.setPolicySetId(id);
 
 		TargetType target = new TargetType();
@@ -703,7 +698,7 @@ public class SimplePpfClientTest {
 		PolicySetType policySet = new PolicySetType();
 		policySet.setCombiningAlg(new PolicyDenyOverridesAlgorithm());
 
-		var id = new EvaluatableIDImpl(String.format("urn:uuid:%s", UUID.randomUUID().toString()));
+		var id = new EvaluatableIDImpl("urn:uuid:%s".formatted(UUID.randomUUID().toString()));
 		policySet.setPolicySetId(id);
 
 		TargetType target = new TargetType();

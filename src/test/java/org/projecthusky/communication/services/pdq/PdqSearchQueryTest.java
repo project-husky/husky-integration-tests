@@ -14,15 +14,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.IOException;
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
-
-import javax.xml.bind.DataBindingException;
-import javax.xml.bind.JAXBException;
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -37,7 +32,6 @@ import org.projecthusky.communication.TestApplication;
 import org.projecthusky.communication.services.HuskyService;
 import org.projecthusky.communication.testhelper.IpfApplicationConfig;
 import org.projecthusky.fhir.structures.gen.FhirPatient;
-import org.projecthusky.xua.exceptions.SerializeException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -117,7 +111,7 @@ public class PdqSearchQueryTest {
 	}
 	
 	@Test
-	public void whenQueryingForPatientBirthday_thenPatientIsReturned() throws DataBindingException, JAXBException, ParserConfigurationException, SerializeException, IOException {
+	public void whenQueryingForPatientBirthday_thenPatientIsReturned() throws Exception {
 		LocalDate birthday = LocalDate.of(1950, 5, 31);
 		PdqSearchQuery patienQuery = this.service.createPdqSearchQuery(testWSDestination)
 				.patientDateOfBirth(Date.from(birthday.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant())).build();
@@ -197,7 +191,7 @@ public class PdqSearchQueryTest {
 	@Test
 	@Disabled("This test does not find just the one patient with the mother specified, but finds 42. Fix is needed before it works.")
 	//TODO: FIxing mother's maiden name query is needed for this to work correctly.
-	public void whenQueryingForMothersMaidenName_thenPatientsAreFound() throws DataBindingException, JAXBException, ParserConfigurationException, SerializeException, IOException {
+	public void whenQueryingForMothersMaidenName_thenPatientsAreFound() throws Exception {
 		Name patientName = new Name(Name.builder().withFamily("Ramelet").build());
 		PdqSearchQuery patientQuery = this.service.createPdqSearchQuery(testWSDestination).mothersMaidenName(patientName).build();
 		PdqSearchResults results =  this.service.send(patientQuery);

@@ -11,7 +11,7 @@ import java.util.GregorianCalendar;
 import java.util.UUID;
 
 import org.apache.camel.CamelContext;
-import org.projecthusky.communication.ch.ppq.TestApplication;
+import org.projecthusky.communication.ch.ppq.PpqTestApplication;
 import org.projecthusky.communication.ch.ppq.api.PrivacyPolicyQuery;
 import org.projecthusky.communication.ch.ppq.api.PrivacyPolicyQueryResponse;
 import org.projecthusky.communication.ch.ppq.api.config.PpClientConfig;
@@ -24,7 +24,6 @@ import org.projecthusky.xua.hl7v3.impl.InstanceIdentifierBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.openehealth.ipf.commons.audit.AuditContext;
 import org.openehealth.ipf.commons.ihe.xacml20.Xacml20Utils;
 import org.opensaml.core.config.InitializationException;
@@ -33,19 +32,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 /**
  * This test class is to check whether ATNA audit messages are sent in the
  * course of CH-PPQ-2 transactions. This is tested by checking whether audit
  * entries have been written to the LOG file.
  */
-@ExtendWith(value = SpringExtension.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = { TestApplication.class })
-@EnableAutoConfiguration
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = { PpqTestApplication.class })
 @ActiveProfiles("atna")
 @Disabled
 class SimplePpqClientAtnaAuditTest {

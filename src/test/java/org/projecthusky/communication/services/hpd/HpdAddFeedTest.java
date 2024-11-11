@@ -14,12 +14,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.Collections;
 import java.util.List;
-import javax.xml.bind.JAXBException;
-import javax.xml.parsers.ParserConfigurationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.projecthusky.common.communication.Destination;
@@ -30,7 +27,6 @@ import org.projecthusky.communication.requests.hpd.HpdDeleteFeed;
 import org.projecthusky.communication.responses.hpd.HpdResponse;
 import org.projecthusky.communication.services.HuskyService;
 import org.projecthusky.communication.testhelper.IpfApplicationConfig;
-import org.projecthusky.xua.exceptions.SerializeException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -208,8 +204,7 @@ class HpdAddFeedTest {
   }
 
   @Test
-  void batchRequest_addRequestAndDeleteRequest_shouldReturnResponseCodeZero()
-      throws SerializeException, JAXBException, ParserConfigurationException, IOException {
+  void batchRequest_addRequestAndDeleteRequest_shouldReturnResponseCodeZero() throws Exception {
     HpdAddFeed hpdAddRequest = huskyService.createHpdAddFeed();
     hpdAddRequest.createHCRelationshipAttributes(HC_REGISTRATION_STATUS,
         RELATIONSHIP_CN, RELATIONSHIP_DN, List.of(GROUP_OF_NAMES, TOP), null);

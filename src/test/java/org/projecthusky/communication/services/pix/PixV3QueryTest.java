@@ -20,7 +20,6 @@ import ca.uhn.fhir.context.FhirVersionEnum;
 import java.net.URI;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import org.hl7.fhir.dstu2016may.model.codesystems.V3MaritalStatus;
 import org.hl7.fhir.r4.model.Address;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Coding;
@@ -33,9 +32,9 @@ import org.hl7.fhir.r4.model.HumanName.NameUse;
 import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.Organization;
 import org.hl7.fhir.r4.model.Patient.PatientCommunicationComponent;
+import org.hl7.fhir.r4.model.codesystems.V3MaritalStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.openehealth.ipf.commons.audit.AuditContext;
 import org.projecthusky.common.communication.AffinityDomain;
 import org.projecthusky.common.communication.Destination;
@@ -53,7 +52,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 /**
  * See https://pixpdqtests.nist.gov/pixpdqtool/ IHE PIX and PDQ Pre-Connectathon
@@ -68,7 +66,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
  * webpage otherwise the test will not run through, you need also to remove
  * the @Ignore to perform the tests directly
  */
-@ExtendWith(value = SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = { TestApplication.class, IpfApplicationConfig.class })
 class PixV3QueryTest {
 

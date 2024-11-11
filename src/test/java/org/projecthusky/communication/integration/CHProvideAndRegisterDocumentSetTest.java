@@ -22,7 +22,7 @@ import org.projecthusky.common.model.Identificator;
 import org.projecthusky.common.model.Name;
 import org.projecthusky.common.utils.datatypes.IheCx;
 import org.projecthusky.communication.ConvenienceCommunication;
-import org.projecthusky.communication.testhelper.TestApplication;
+import org.projecthusky.communication.testhelper.TestHelperTestApplication;
 import org.projecthusky.communication.testhelper.XdsTestUtils;
 import org.projecthusky.xua.communication.clients.XuaClient;
 import org.projecthusky.xua.communication.clients.impl.ClientFactory;
@@ -39,7 +39,6 @@ import org.projecthusky.xua.hl7v3.impl.CodedWithEquivalentsBuilder;
 import org.projecthusky.xua.saml2.Assertion;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.openehealth.ipf.commons.core.OidGenerator;
 import org.openehealth.ipf.commons.ihe.xds.core.responses.*;
 import org.opensaml.core.config.InitializationService;
@@ -49,9 +48,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -71,9 +68,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * 3. Use the X-User Assertion in conjunction with a specific set of XDS metadata and the JSON file from disk in a
  * ProvideAndRegisterDocumentSet [ITI-41] transaction.
  */
-@ExtendWith(value = SpringExtension.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = {TestApplication.class})
-@EnableAutoConfiguration
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = {TestHelperTestApplication.class})
 class CHProvideAndRegisterDocumentSetTest extends XdsTestUtils {
 
     static final Logger LOGGER = LoggerFactory.getLogger(CHProvideAndRegisterDocumentSetTest.class.getName());
@@ -126,7 +121,7 @@ class CHProvideAndRegisterDocumentSetTest extends XdsTestUtils {
         InitializationService.initialize();
 
         // create and start spring test application
-        var app = new SpringApplication(TestApplication.class);
+        var app = new SpringApplication(TestHelperTestApplication.class);
         app.setWebApplicationType(WebApplicationType.NONE);
         app.run();
 

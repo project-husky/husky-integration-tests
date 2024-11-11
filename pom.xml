@@ -11,13 +11,15 @@
 		<maven.compiler.release>17</maven.compiler.release>
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>
-		<husky.version>2.5.0</husky.version>
-		<spring.version>5.3.31</spring.version>
-		<spring.boot.version>2.7.18</spring.boot.version>
-		<camel.version>3.21.0</camel.version>
+		<husky.version>3.0.1-SNAPSHOT</husky.version>
+		<spring.version>6.1.14</spring.version>
+		<spring.boot.version>3.3.4</spring.boot.version>
+		<camel.version>4.8.0</camel.version>
 		<junit.version>5.10.1</junit.version>
-		<ipf.version>4.7.0</ipf.version>
+<!--		<ipf.version>4.7.0</ipf.version>-->
 		<maven-surefire-plugin.version>3.2.2</maven-surefire-plugin.version>
+		<org.hl7.fhir.version>6.3.23</org.hl7.fhir.version>
+		<tomcat.embed.version>10.1.31</tomcat.embed.version>
 	</properties>
 	<repositories>
 		<!--
@@ -135,11 +137,12 @@
 				<scope>test</scope>
 			</dependency>
 			<dependency>
-				<groupId>org.apache.camel</groupId>
-				<artifactId>camel-cxf</artifactId>
-				<version>3.17.0</version>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-core</artifactId>
+				<version>4.0.5</version>
 				<scope>test</scope>
 			</dependency>
+			<!-- Apache Camel section	-->
 			<dependency>
 				<groupId>org.apache.camel</groupId>
 				<artifactId>camel-base</artifactId>
@@ -160,6 +163,54 @@
 				<artifactId>camel-spring-xml</artifactId>
 				<version>${camel.version}</version>
 			</dependency>
+			<!-- Jakarta section -->
+			<dependency>
+				<groupId>jakarta.xml.ws</groupId>
+				<artifactId>jakarta.xml.ws-api</artifactId>
+				<version>4.0.2</version>
+			</dependency>
+			<!--	Tomcat Embed section -->
+			<dependency>
+				<groupId>org.apache.tomcat.embed</groupId>
+				<artifactId>tomcat-embed-core</artifactId>
+				<version>${tomcat.embed.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.tomcat.embed</groupId>
+				<artifactId>tomcat-embed-el</artifactId>
+				<version>${tomcat.embed.version}</version>
+			</dependency>
+			<!-- Hapi Fhir section -->
+			<dependency>
+				<groupId>ca.uhn.hapi.fhir</groupId>
+				<artifactId>org.hl7.fhir.convertors</artifactId>
+				<version>${org.hl7.fhir.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>ca.uhn.hapi.fhir</groupId>
+				<artifactId>org.hl7.fhir.dstu2</artifactId>
+				<version>${org.hl7.fhir.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>ca.uhn.hapi.fhir</groupId>
+				<artifactId>org.hl7.fhir.dstu3</artifactId>
+				<version>${org.hl7.fhir.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>ca.uhn.hapi.fhir</groupId>
+				<artifactId>org.hl7.fhir.r4b</artifactId>
+				<version>${org.hl7.fhir.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>ca.uhn.hapi.fhir</groupId>
+				<artifactId>org.hl7.fhir.r5</artifactId>
+				<version>${org.hl7.fhir.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>ca.uhn.hapi.fhir</groupId>
+				<artifactId>org.hl7.fhir.validation</artifactId>
+				<version>${org.hl7.fhir.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>
@@ -170,6 +221,11 @@
 				<exclusion>
 					<groupId>xml-apis</groupId>
 					<artifactId>xml-apis</artifactId>
+				</exclusion>
+				<!-- Excluded not used dependency	-->
+				<exclusion>
+					<groupId>org.apache.tomcat.embed</groupId>
+					<artifactId>tomcat-embed-websocket</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
@@ -223,8 +279,14 @@
 		</dependency>
 		-->
 		<dependency>
-			<groupId>org.apache.camel</groupId>
-			<artifactId>camel-cxf</artifactId>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-core</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.messaging.saaj</groupId>
+			<artifactId>saaj-impl</artifactId>
+			<version>3.0.4</version>
 			<scope>test</scope>
 		</dependency>
 

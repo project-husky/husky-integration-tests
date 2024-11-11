@@ -22,12 +22,11 @@ import org.projecthusky.common.enums.DocumentDescriptor;
 import org.projecthusky.common.model.Identificator;
 import org.projecthusky.communication.ConvenienceCommunication;
 import org.projecthusky.communication.DocumentRequest;
-import org.projecthusky.communication.testhelper.TestApplication;
+import org.projecthusky.communication.testhelper.TestHelperTestApplication;
 import org.projecthusky.communication.testhelper.XdsTestUtils;
 import org.projecthusky.communication.xd.storedquery.GetDocumentsQuery;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.openehealth.ipf.commons.audit.AuditContext;
 import org.openehealth.ipf.commons.ihe.xds.core.metadata.ObjectReference;
 import org.openehealth.ipf.commons.ihe.xds.core.responses.QueryResponse;
@@ -38,19 +37,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 /**
  * This test class is to check whether ATNA audit messages are sent in the
  * course of XDS transactions. This is tested by checking whether audit entries
  * have been written to the LOG file.
  */
-@ExtendWith(value = SpringExtension.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = { TestApplication.class })
-@EnableAutoConfiguration
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = { TestHelperTestApplication.class })
 @ActiveProfiles("atna")
 class ConvenienceCommunicationAtnaAuditTest extends XdsTestUtils {
 
@@ -84,7 +79,7 @@ class ConvenienceCommunicationAtnaAuditTest extends XdsTestUtils {
 	 */
 	@BeforeEach
 	public void setUp() throws Exception {
-		var app = new SpringApplication(TestApplication.class);
+		var app = new SpringApplication(TestHelperTestApplication.class);
 		app.setWebApplicationType(WebApplicationType.NONE);
 		app.run();
 	}

@@ -15,18 +15,15 @@ import org.projecthusky.common.communication.AtnaConfig;
 import org.projecthusky.common.communication.Destination;
 import org.projecthusky.communication.ConvenienceCommunication;
 import org.projecthusky.communication.DocumentRequest;
-import org.projecthusky.communication.testhelper.TestApplication;
+import org.projecthusky.communication.testhelper.TestHelperTestApplication;
 import org.projecthusky.communication.testhelper.XdsTestUtils;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.openehealth.ipf.commons.ihe.xds.core.responses.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.net.URI;
 import java.util.UUID;
@@ -36,9 +33,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Test document retrieval (XDS ITI-43) with the EPR Playground.
  */
-@ExtendWith(value = SpringExtension.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = {TestApplication.class})
-@EnableAutoConfiguration
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = {TestHelperTestApplication.class})
 class CHRetrieveDocumentsPGTest extends XdsTestUtils {
 
     private static final Logger LOGGER = LoggerFactory
@@ -97,7 +92,7 @@ class CHRetrieveDocumentsPGTest extends XdsTestUtils {
         convenienceCommunication.setAtnaConfig(AtnaConfig.AtnaConfigMode.SECURE);
 
         final RetrievedDocumentSet response = convenienceCommunication.retrieveDocuments(documentRequests, null,
-                String.format("test_%s", UUID.randomUUID().toString()));
+						"test_%s".formatted(UUID.randomUUID().toString()));
 
         // check if request was successful
         assertEquals(Status.SUCCESS, response.getStatus());

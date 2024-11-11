@@ -11,7 +11,7 @@ import java.nio.file.Files;
 import java.util.GregorianCalendar;
 import java.util.UUID;
 
-import javax.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBElement;
 import javax.xml.namespace.QName;
 
 import org.apache.camel.CamelContext;
@@ -31,7 +31,7 @@ import org.herasaf.xacml.core.policy.impl.SubjectMatchType;
 import org.herasaf.xacml.core.policy.impl.SubjectType;
 import org.herasaf.xacml.core.policy.impl.SubjectsType;
 import org.herasaf.xacml.core.policy.impl.TargetType;
-import org.projecthusky.communication.ch.ppq.TestApplication;
+import org.projecthusky.communication.ch.ppq.PpqTestApplication;
 import org.projecthusky.communication.ch.ppq.api.PrivacyPolicyFeed;
 import org.projecthusky.communication.ch.ppq.api.PrivacyPolicyFeed.PpfMethod;
 import org.projecthusky.communication.ch.ppq.api.PrivacyPolicyFeedResponse;
@@ -51,7 +51,6 @@ import org.projecthusky.xua.saml2.impl.AssertionBuilderImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.openehealth.ipf.commons.audit.AuditContext;
 import org.openehealth.ipf.commons.ihe.xacml20.Xacml20Utils;
 import org.openehealth.ipf.commons.ihe.xacml20.herasaf.functions.CvEqualFunction;
@@ -69,19 +68,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 /**
  * This test class is to check whether ATNA audit messages are sent in the
  * course of CH-PPQ-1 transactions. This is tested by checking whether audit
  * entries have been written to the LOG file.
  */
-@ExtendWith(value = SpringExtension.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = { TestApplication.class })
-@EnableAutoConfiguration
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = { PpqTestApplication.class })
 @ActiveProfiles("atna")
 @Disabled
 class SimplePpfClientAtnaAuditTest {
@@ -163,7 +158,7 @@ class SimplePpfClientAtnaAuditTest {
 		PolicySetType policySetAdd = new PolicySetType();
 		policySetAdd.setCombiningAlg(new PolicyDenyOverridesAlgorithm());
 
-		var id = new EvaluatableIDImpl(String.format("urn:uuid:%s", UUID.randomUUID().toString()));
+		var id = new EvaluatableIDImpl("urn:uuid:%s".formatted(UUID.randomUUID().toString()));
 		policySetAdd.setPolicySetId(id);
 
 		TargetType target = new TargetType();

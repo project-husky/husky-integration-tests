@@ -20,7 +20,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-import javax.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBContext;
 
 import org.hl7.fhir.r4.model.Organization;
 import org.projecthusky.common.basetypes.AddressBaseType;
@@ -36,31 +36,25 @@ import org.projecthusky.communication.MasterPatientIndexQuery;
 import org.projecthusky.communication.MasterPatientIndexQueryResponse;
 import org.projecthusky.communication.mpi.impl.PdqV3Query;
 import org.projecthusky.communication.mpi.impl.pdq.V3PdqConsumerResponse;
-import org.projecthusky.communication.testhelper.TestApplication;
+import org.projecthusky.communication.testhelper.TestHelperTestApplication;
 import org.projecthusky.fhir.structures.gen.FhirCommon;
 import org.projecthusky.fhir.structures.gen.FhirPatient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import net.ihe.gazelle.hl7v3.prpain201306UV02.PRPAIN201306UV02Type;
-
 
 /**
  * Test of class PdqV3Query
  */
-@ExtendWith(value = SpringExtension.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = { TestApplication.class })
-@EnableAutoConfiguration
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = { TestHelperTestApplication.class })
 class PdqV3QueryTest {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(PdqV3QueryTest.class.getName());
@@ -103,7 +97,7 @@ class PdqV3QueryTest {
 	 */
 	@BeforeEach
 	public void setUp() throws Exception {
-		var app = new SpringApplication(TestApplication.class);
+		var app = new SpringApplication(TestHelperTestApplication.class);
 		app.setWebApplicationType(WebApplicationType.NONE);
 		app.run();
 	}

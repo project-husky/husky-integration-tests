@@ -1,7 +1,7 @@
 package org.projecthusky.xua.communication.xua.impl.ch.integration;
 
 import org.apache.commons.io.IOUtils;
-import org.projecthusky.communication.testhelper.TestApplication;
+import org.projecthusky.communication.testhelper.TestHelperTestApplication;
 import org.projecthusky.xua.authentication.AuthnRequest;
 import org.projecthusky.xua.authentication.impl.AuthnRequestBuilderImpl;
 import org.projecthusky.xua.communication.clients.XuaClient;
@@ -27,11 +27,8 @@ import org.projecthusky.xua.hl7v3.impl.CodedWithEquivalentsBuilder;
 import org.projecthusky.xua.saml2.Assertion;
 import org.projecthusky.xua.saml2.impl.AttributeImpl;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.openehealth.ipf.commons.ihe.xacml20.stub.saml20.assertion.AttributeStatementType;
 import org.openehealth.ipf.commons.ihe.xacml20.stub.saml20.assertion.AttributeType;
 import org.openehealth.ipf.commons.ihe.xacml20.stub.saml20.assertion.StatementAbstractType;
@@ -53,9 +50,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * The purpose of this test class is to check if the assertion query works for a
  * user.
  */
-@ExtendWith(value = SpringExtension.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = { TestApplication.class })
-@EnableAutoConfiguration
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = { TestHelperTestApplication.class })
 class XuaClientTest extends ServerTestHelper {
 
 	@Value(value = "${test.xua.uri:https://ehealthsuisse.ihe-europe.net:10443/STS}")
@@ -141,8 +136,7 @@ class XuaClientTest extends ServerTestHelper {
 
 		for (StatementAbstractType statement : response.get(0).getAssertion()
 				.getStatementOrAuthnStatementOrAuthzDecisionStatement()) {
-			if (statement instanceof AttributeStatementType) {
-				AttributeStatementType attributeStatment = (AttributeStatementType) statement;
+			if (statement instanceof AttributeStatementType attributeStatment) {
 
 				for (Object obj : attributeStatment.getAttributeOrEncryptedAttribute()) {
 					if (obj instanceof AttributeType) {
@@ -239,8 +233,7 @@ class XuaClientTest extends ServerTestHelper {
 
 			for (StatementAbstractType statement : response.get(0).getAssertion()
 					.getStatementOrAuthnStatementOrAuthzDecisionStatement()) {
-				if (statement instanceof AttributeStatementType) {
-					AttributeStatementType attributeStatment = (AttributeStatementType) statement;
+				if (statement instanceof AttributeStatementType attributeStatment) {
 
 					for (Object obj : attributeStatment.getAttributeOrEncryptedAttribute()) {
 						if (obj instanceof AttributeType) {
@@ -337,8 +330,7 @@ class XuaClientTest extends ServerTestHelper {
 
 			for (StatementAbstractType statement : response.get(0).getAssertion()
 					.getStatementOrAuthnStatementOrAuthzDecisionStatement()) {
-				if (statement instanceof AttributeStatementType) {
-					AttributeStatementType attributeStatment = (AttributeStatementType) statement;
+				if (statement instanceof AttributeStatementType attributeStatment) {
 
 					for (Object obj : attributeStatment.getAttributeOrEncryptedAttribute()) {
 						if (obj instanceof AttributeType) {
@@ -434,8 +426,7 @@ class XuaClientTest extends ServerTestHelper {
 
 			for (StatementAbstractType statement : response.get(0).getAssertion()
 					.getStatementOrAuthnStatementOrAuthzDecisionStatement()) {
-				if (statement instanceof AttributeStatementType) {
-					AttributeStatementType attributeStatment = (AttributeStatementType) statement;
+				if (statement instanceof AttributeStatementType attributeStatment) {
 
 					for (Object obj : attributeStatment.getAttributeOrEncryptedAttribute()) {
 						if (obj instanceof AttributeType) {

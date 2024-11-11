@@ -23,10 +23,9 @@ import org.projecthusky.common.communication.AffinityDomain;
 import org.projecthusky.common.communication.Destination;
 import org.projecthusky.communication.ConvenienceCommunication;
 import org.projecthusky.communication.DocumentRequest;
-import org.projecthusky.communication.testhelper.TestApplication;
+import org.projecthusky.communication.testhelper.TestHelperTestApplication;
 import org.projecthusky.communication.testhelper.XdsTestUtils;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.openehealth.ipf.commons.ihe.xds.core.responses.ErrorCode;
 import org.openehealth.ipf.commons.ihe.xds.core.responses.ErrorInfo;
 import org.openehealth.ipf.commons.ihe.xds.core.responses.RetrievedDocument;
@@ -37,17 +36,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 /**
  * The purpose of this test class is to check whether document retrieval (XDS
  * ITI-43) works.
  */
-@ExtendWith(value = SpringExtension.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = { TestApplication.class })
-@EnableAutoConfiguration
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = { TestHelperTestApplication.class })
 class ConvenienceCommunicationRetrieveDocumentsTest extends XdsTestUtils {
 
 	private static final Logger LOGGER = LoggerFactory
@@ -77,7 +72,7 @@ class ConvenienceCommunicationRetrieveDocumentsTest extends XdsTestUtils {
 
 	/**
 	 * This test checks the behavior of the
-	 * {@link ConvenienceCommunication#retrieveDocument(DocumentRequest, org.projecthusky.xua.core.SecurityHeaderElement)}
+	 * {@link ConvenienceCommunication#retrieveDocument(DocumentRequest, org.projecthusky.xua.core.SecurityHeaderElement, String)}
 	 * when passing IDs of a PDF document.
 	 * 
 	 * @throws Exception
@@ -107,7 +102,7 @@ class ConvenienceCommunicationRetrieveDocumentsTest extends XdsTestUtils {
 				"1.2.820.99999.15031207481211484821638086641062503555190193702785", "urn:oid:1.1.4567334.1.6");
 
 		final RetrievedDocumentSet response = convenienceCommunication.retrieveDocument(documentRequest, null,
-				String.format("test_%s", UUID.randomUUID().toString()));
+				"test_%s".formatted(UUID.randomUUID().toString()));
 
 		// check if request was successful
 		assertEquals(Status.SUCCESS, response.getStatus());
@@ -130,7 +125,7 @@ class ConvenienceCommunicationRetrieveDocumentsTest extends XdsTestUtils {
 
 	/**
 	 * This test checks the behavior of the
-	 * {@link ConvenienceCommunication#retrieveDocument(DocumentRequest, org.projecthusky.xua.core.SecurityHeaderElement)}
+	 * {@link ConvenienceCommunication#retrieveDocument(DocumentRequest, org.projecthusky.xua.core.SecurityHeaderElement, String)}
 	 * when passing IDs of a CDA document.
 	 * 
 	 * @throws Exception
@@ -181,7 +176,7 @@ class ConvenienceCommunicationRetrieveDocumentsTest extends XdsTestUtils {
 
 	/**
 	 * This test checks the behavior of the
-	 * {@link ConvenienceCommunication#retrieveDocument(DocumentRequest, org.projecthusky.xua.core.SecurityHeaderElement)}
+	 * {@link ConvenienceCommunication#retrieveDocument(DocumentRequest, org.projecthusky.xua.core.SecurityHeaderElement, String)}
 	 * when passing unknown IDs.
 	 * 
 	 * @throws Exception

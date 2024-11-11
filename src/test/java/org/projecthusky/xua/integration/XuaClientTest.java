@@ -13,7 +13,7 @@ import java.util.List;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.io.IOUtils;
-import org.projecthusky.communication.testhelper.TestApplication;
+import org.projecthusky.communication.testhelper.TestHelperTestApplication;
 import org.projecthusky.xua.communication.clients.XuaClient;
 import org.projecthusky.xua.communication.clients.impl.ClientFactory;
 import org.projecthusky.xua.communication.clients.impl.ServerTestHelper;
@@ -38,14 +38,10 @@ import org.projecthusky.xua.serialization.impl.XUserAssertionResponseSerializerI
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.openehealth.ipf.commons.ihe.xacml20.stub.saml20.assertion.AttributeStatementType;
 import org.openehealth.ipf.commons.ihe.xacml20.stub.saml20.assertion.AttributeType;
-import org.openehealth.ipf.commons.ihe.xacml20.stub.saml20.assertion.NameIDType;
 import org.openehealth.ipf.commons.ihe.xacml20.stub.saml20.assertion.StatementAbstractType;
 import org.opensaml.saml.saml2.core.impl.AttributeValueImpl;
 import org.xml.sax.SAXException;
@@ -54,9 +50,7 @@ import org.xml.sax.SAXException;
  * The purpose of this test class is to check if the assertion query works for a
  * user.
  */
-@ExtendWith(value = SpringExtension.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = { TestApplication.class })
-@EnableAutoConfiguration
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = { TestHelperTestApplication.class })
 class XuaClientTest extends ServerTestHelper {
 	
 	private Logger logger = LoggerFactory.getLogger(XuaClientTest.class);
@@ -134,8 +128,7 @@ class XuaClientTest extends ServerTestHelper {
 
 			for (StatementAbstractType statement : response.get(0).getAssertion()
 					.getStatementOrAuthnStatementOrAuthzDecisionStatement()) {
-				if (statement instanceof AttributeStatementType) {
-					AttributeStatementType attributeStatment = (AttributeStatementType) statement;
+				if (statement instanceof AttributeStatementType attributeStatment) {
 
 					for (Object obj : attributeStatment.getAttributeOrEncryptedAttribute()) {
 						if (obj instanceof AttributeType) {

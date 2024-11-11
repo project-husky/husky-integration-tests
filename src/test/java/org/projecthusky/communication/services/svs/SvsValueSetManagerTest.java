@@ -37,16 +37,13 @@ import org.projecthusky.valueset.model.ValueSet;
 import org.projecthusky.valueset.model.ValueSetEntry;
 import org.projecthusky.valueset.utils.VsUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.xml.sax.SAXException;
 
 /**
  * The Test Class for ValueSetManager with downloading value sets from ART-DECOR.
  */
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = {
-    TestApplication.class})
-@EnableAutoConfiguration
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = {TestApplication.class})
 class SvsValueSetManagerTest {
 
   @Autowired
@@ -61,8 +58,7 @@ class SvsValueSetManagerTest {
    * @throws IOException
    */
   @Test
-  void downloadRawTest()
-      throws MalformedURLException, IOException, ParserConfigurationException, InitializationException, SAXException {
+  void downloadRawTest() throws Exception {
     String testUrl = "https://art-decor.org/decor/services/RetrieveValueSet?prefix=ch-epr-&format=json&id=2.16.756.5.30.1.127.3.10.1";
 
     // download expected values from fixed URL
@@ -89,8 +85,7 @@ class SvsValueSetManagerTest {
    * @throws IOException
    */
   @Test
-  void downloadRawUnknownIdTest()
-      throws IOException, ParserConfigurationException, InitializationException, SAXException {
+  void downloadRawUnknownIdTest() throws Exception {
     // id in URL doesn't exists
     String testUrl = "https://art-decor.org/decor/services/RetrieveValueSet?prefix=ch-epr-&format=json&id=1.2.3.4.5";
 
@@ -118,8 +113,7 @@ class SvsValueSetManagerTest {
    * @throws InitializationException
    */
   @Test
-  void downloadValueSetTest()
-      throws IOException, ParserConfigurationException, InitializationException, SAXException {
+  void downloadValueSetTest() throws Exception {
     String baseUrlJson = "https://art-decor.org/decor/services/RetrieveValueSet?prefix=ch-epr-&format=json";
     String baseUrlIheSvs = "https://art-decor.org/decor/services/RetrieveValueSet?prefix=ch-epr-&format=svs";
     String baseUrlXml = "https://art-decor.org/decor/services/RetrieveValueSet?prefix=ch-epr-&format=xml";

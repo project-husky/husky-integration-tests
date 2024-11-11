@@ -25,11 +25,10 @@ import org.projecthusky.common.enums.DocumentDescriptor;
 import org.projecthusky.common.model.Code;
 import org.projecthusky.common.model.Identificator;
 import org.projecthusky.communication.ConvenienceCommunication;
-import org.projecthusky.communication.testhelper.TestApplication;
+import org.projecthusky.communication.testhelper.TestHelperTestApplication;
 import org.projecthusky.communication.testhelper.XdsTestUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.openehealth.ipf.commons.ihe.xds.core.responses.ErrorCode;
 import org.openehealth.ipf.commons.ihe.xds.core.responses.ErrorInfo;
 import org.openehealth.ipf.commons.ihe.xds.core.responses.Severity;
@@ -40,17 +39,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 /**
  * The purpose of this test class is to check whether the submission of
  * documents (XDS ITI-41) works.
  */
-@ExtendWith(value = SpringExtension.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = { TestApplication.class })
-@EnableAutoConfiguration
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = { TestHelperTestApplication.class })
 class ConvenienceCommunicationSubmitDocumentTest extends XdsTestUtils {
 
 	private static final Logger LOGGER = LoggerFactory
@@ -79,7 +74,7 @@ class ConvenienceCommunicationSubmitDocumentTest extends XdsTestUtils {
 	@BeforeEach
 	public void setUp() throws Exception {
 		// create and start spring test application
-		var app = new SpringApplication(TestApplication.class);
+		var app = new SpringApplication(TestHelperTestApplication.class);
 		app.setWebApplicationType(WebApplicationType.NONE);
 		app.run();
 

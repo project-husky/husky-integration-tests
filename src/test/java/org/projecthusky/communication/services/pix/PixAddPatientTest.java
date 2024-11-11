@@ -13,14 +13,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.IOException;
+import jakarta.xml.ws.soap.SOAPFaultException;
+
 import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.List;
-
-import javax.xml.bind.JAXBException;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.ws.soap.SOAPFaultException;
 
 import org.hl7.fhir.r4.model.Address;
 import org.hl7.fhir.r4.model.CodeableConcept;
@@ -39,12 +36,11 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.projecthusky.common.communication.Destination;
 import org.projecthusky.common.enums.CountryCode;
-import org.projecthusky.communication.requests.pix.PixAddPatientFeed;
 import org.projecthusky.communication.TestApplication;
+import org.projecthusky.communication.requests.pix.PixAddPatientFeed;
 import org.projecthusky.communication.services.HuskyService;
 import org.projecthusky.communication.testhelper.IpfApplicationConfig;
 import org.projecthusky.fhir.structures.gen.FhirCommon;
-import org.projecthusky.xua.exceptions.SerializeException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -120,7 +116,7 @@ public class PixAddPatientTest {
 	}
 
 	@Test
-	public void addMinimalPatient() throws JAXBException, SerializeException, ParserConfigurationException, IOException {
+	public void addMinimalPatient() throws Exception {
 		Organization organization = new Organization().addIdentifier(new Identifier().setValue("Husky").setSystem(FhirCommon.addUrnOid(homeCommunityOid)));
 		PixAddPatientFeed query = this.service.createPixAddPatientFeed(testWSDestination, organization)
 				.identifier(new Identifier().setValue(String.valueOf(System.currentTimeMillis())).setSystem(FhirCommon.addUrnOid(homeCommunityOid)))
@@ -132,7 +128,7 @@ public class PixAddPatientTest {
 
 	@Test
 	@Disabled("This test is to prove that adding a patient without a name works (unfortunately).")
-	public void addSubminimalPatient() throws JAXBException, SerializeException, ParserConfigurationException, IOException {
+	public void addSubminimalPatient() throws Exception {
 		Organization organization = new Organization().addIdentifier(new Identifier().setValue("Husky").setSystem(FhirCommon.addUrnOid(homeCommunityOid)));
 		PixAddPatientFeed query = this.service.createPixAddPatientFeed(testWSDestination, organization)
 				.identifier(new Identifier().setValue(String.valueOf(System.currentTimeMillis())).setSystem(FhirCommon.addUrnOid(homeCommunityOid)))
@@ -151,11 +147,11 @@ public class PixAddPatientTest {
 			assertTrue(this.service.send(query));
 		});
 		assertTrue(exception.getCause() instanceof SOAPFaultException);
-		assertEquals("javax.xml.ws.soap.SOAPFaultException: A patient must contain exactly 2 patient identifier (1 provided)", exception.getMessage());
+		assertEquals("jakarta.xml.ws.soap.SOAPFaultException: A patient must contain exactly 2 patient identifier (1 provided)", exception.getMessage());
 	}
 	
 	@Test
-	@Disabled("This is a showcase test: what happens when the scoping organization is missing (SOAPFaultExpetion). Case is prevented by the current builder logic in the query.")
+	@Disabled("This is a showcase test: what happens when the scoping organization is missing (SOAPFaultException). Case is prevented by the current builder logic in the query.")
 	public void addSubminimalPatient_noScopingOrganization() {
 		RuntimeException exception = assertThrows(RuntimeException.class, () -> {
 			PixAddPatientFeed query = this.service.createPixAddPatientFeed(testWSDestination, null)
@@ -165,7 +161,7 @@ public class PixAddPatientTest {
 			assertTrue(this.service.send(query));
 		});
 		assertTrue(exception.getCause() instanceof SOAPFaultException);
-		assertEquals("javax.xml.ws.soap.SOAPFaultException: providerOrganization is missing", exception.getMessage());
+		assertEquals("jakarta.xml.ws.soap.SOAPFaultException: providerOrganization is missing", exception.getMessage());
 	}
 	
 }

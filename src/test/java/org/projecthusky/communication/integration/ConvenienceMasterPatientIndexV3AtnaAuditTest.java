@@ -15,6 +15,7 @@ import org.hl7.fhir.r4.model.Enumerations.AdministrativeGender;
 import org.hl7.fhir.r4.model.HumanName;
 import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.Organization;
+import org.openehealth.ipf.commons.audit.DefaultAuditContext;
 import org.projecthusky.common.communication.AffinityDomain;
 import org.projecthusky.common.communication.Destination;
 import org.projecthusky.common.model.Identificator;
@@ -22,19 +23,16 @@ import org.projecthusky.communication.ConvenienceMasterPatientIndexV3;
 import org.projecthusky.communication.MasterPatientIndexQuery;
 import org.projecthusky.communication.MasterPatientIndexQueryResponse;
 import org.projecthusky.communication.mpi.impl.PixV3Query;
-import org.projecthusky.communication.testhelper.TestApplication;
+import org.projecthusky.communication.testhelper.TestHelperTestApplication;
 import org.projecthusky.fhir.structures.gen.FhirCommon;
 import org.projecthusky.fhir.structures.gen.FhirPatient;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.context.FhirVersionEnum;
@@ -44,9 +42,7 @@ import ca.uhn.fhir.context.FhirVersionEnum;
  * course of PIX and PDQ transactions. This is tested by checking whether audit
  * entries have been written to the LOG file.
  */
-@ExtendWith(value = SpringExtension.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = { TestApplication.class })
-@EnableAutoConfiguration
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = { TestHelperTestApplication.class })
 @ActiveProfiles("atna")
 class ConvenienceMasterPatientIndexV3AtnaAuditTest {
 
@@ -87,7 +83,7 @@ class ConvenienceMasterPatientIndexV3AtnaAuditTest {
 
 	/**
 	 * Test method for
-	 * {@link ConvenienceMasterPatientIndexV3#queryPatientDemographics(MasterPatientIndexQuery, AffinityDomain, org.projecthusky.xua.core.SecurityHeaderElement)}.
+	 * {@link ConvenienceMasterPatientIndexV3#queryPatientDemographics(MasterPatientIndexQuery, AffinityDomain, org.projecthusky.xua.core.SecurityHeaderElement, String)}.
 	 * (PDQ ITI-47)
 	 * 
 	 * @throws Exception
@@ -117,8 +113,8 @@ class ConvenienceMasterPatientIndexV3AtnaAuditTest {
 		// for
 		final Identificator identificator = new Identificator("1.3.6.1.4.1.12559.11.20.1", "4711");
 		mpiQuery.addPatientIdentificator(identificator);
-		
-		convenienceMasterPatientIndexV3Client.getAuditContext().setAuditEnabled(true);
+
+		((DefaultAuditContext)convenienceMasterPatientIndexV3Client.getAuditContext()).setAuditEnabled(true);
 		
 		// query patient demographics
 		final MasterPatientIndexQueryResponse response = convenienceMasterPatientIndexV3Client

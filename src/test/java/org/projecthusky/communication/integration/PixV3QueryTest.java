@@ -37,12 +37,11 @@ import org.projecthusky.common.enums.CountryCode;
 import org.projecthusky.common.utils.DateUtil;
 import org.projecthusky.communication.ConvenienceMasterPatientIndexV3;
 import org.projecthusky.communication.mpi.impl.PixV3Query;
-import org.projecthusky.communication.testhelper.TestApplication;
+import org.projecthusky.communication.testhelper.TestHelperTestApplication;
 import org.projecthusky.fhir.structures.gen.FhirCommon;
 import org.projecthusky.fhir.structures.gen.FhirPatient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.openehealth.ipf.commons.audit.AuditContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,9 +49,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.context.FhirVersionEnum;
@@ -70,9 +67,7 @@ import ca.uhn.fhir.context.FhirVersionEnum;
  * webpage otherwise the test will not run through, you need also to remove
  * the @Ignore to perform the tests directly
  */
-@ExtendWith(value = SpringExtension.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = { TestApplication.class })
-@EnableAutoConfiguration
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = { TestHelperTestApplication.class })
 class PixV3QueryTest {
 
 	/** The SLF4J logger instance. */
@@ -116,7 +111,7 @@ class PixV3QueryTest {
 	 */
 	@BeforeEach
 	public void setUp() throws Exception {
-		var app = new SpringApplication(TestApplication.class);
+		var app = new SpringApplication(TestHelperTestApplication.class);
 		app.setWebApplicationType(WebApplicationType.NONE);
 		app.run();
 	}
