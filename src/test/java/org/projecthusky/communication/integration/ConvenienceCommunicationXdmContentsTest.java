@@ -60,13 +60,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
 /**
  * The purpose of this test class is to check whether the import and export of
  * documents via standard storage media such as a USB stick (XDM ITI-32) works.
  */
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT, classes = { TestHelperTestApplication.class })
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = { TestHelperTestApplication.class })
 class ConvenienceCommunicationXdmContentsTest extends XdmTestUtils {
 
 	private static final Logger LOGGER = LoggerFactory
@@ -184,7 +183,7 @@ class ConvenienceCommunicationXdmContentsTest extends XdmTestUtils {
 
 		// check if the content of IHE_XDM/SUBSET01 subdirectory meets the minimum
 		// requirements
-		checkSubsetDirContent(String.format("%s/SUBSET01", iheXdmFolder));
+		checkSubsetDirContent("%s/SUBSET01".formatted(iheXdmFolder));
 	}
 
 	/**

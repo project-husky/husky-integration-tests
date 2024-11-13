@@ -13,11 +13,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import jakarta.xml.ws.soap.SOAPFaultException;
-
 import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.List;
+
+import jakarta.xml.ws.soap.SOAPFaultException;
 
 import org.hl7.fhir.r4.model.Address;
 import org.hl7.fhir.r4.model.CodeableConcept;
@@ -36,17 +36,18 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.projecthusky.common.communication.Destination;
 import org.projecthusky.common.enums.CountryCode;
-import org.projecthusky.communication.TestApplication;
 import org.projecthusky.communication.requests.pix.PixAddPatientFeed;
 import org.projecthusky.communication.services.HuskyService;
 import org.projecthusky.communication.testhelper.IpfApplicationConfig;
+import org.projecthusky.communication.testhelper.TestHelperTestApplication;
 import org.projecthusky.fhir.structures.gen.FhirCommon;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = { TestApplication.class, IpfApplicationConfig.class })
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = { TestHelperTestApplication.class,
+		IpfApplicationConfig.class })
 @ActiveProfiles("atna")
 public class PixAddPatientTest {
 	@Value(value = "${test.pixq.uri:https://ehealthsuisse.ihe-europe.net/PAMSimulator-ejb/PIXManager_Service/PIXManager_PortType}")
@@ -151,7 +152,7 @@ public class PixAddPatientTest {
 	}
 	
 	@Test
-	@Disabled("This is a showcase test: what happens when the scoping organization is missing (SOAPFaultException). Case is prevented by the current builder logic in the query.")
+	@Disabled("This is a showcase test: what happens when the scoping organization is missing (SOAPFaultExpetion). Case is prevented by the current builder logic in the query.")
 	public void addSubminimalPatient_noScopingOrganization() {
 		RuntimeException exception = assertThrows(RuntimeException.class, () -> {
 			PixAddPatientFeed query = this.service.createPixAddPatientFeed(testWSDestination, null)

@@ -24,7 +24,8 @@ import org.junit.jupiter.api.Test;
 import org.openehealth.ipf.commons.ihe.hpd.stub.dsmlv2.SearchRequest.DerefAliasesType;
 import org.openehealth.ipf.commons.ihe.hpd.stub.dsmlv2.SearchRequest.SearchScope;
 import org.projecthusky.common.communication.Destination;
-import org.projecthusky.communication.TestApplication;
+import org.projecthusky.communication.testhelper.TestHelperTestApplication;
+import org.projecthusky.communication.testhelper.IpfApplicationConfig;
 import org.projecthusky.communication.requests.hpd.data.HpdFilterOperation;
 import org.projecthusky.communication.requests.hpd.data.HpdFilterOperation.OperationType;
 import org.projecthusky.communication.requests.hpd.data.HpdOperationParameters;
@@ -40,12 +41,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = {TestApplication.class,
-    org.projecthusky.communication.testhelper.IpfApplicationConfig.class})
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = {TestHelperTestApplication.class,
+    IpfApplicationConfig.class})
 class HpdSearchRequestTest {
   private static final String SPITAL_X = "Spital X";
   private static final String KLINIK_HOHEWEG = "Klinik Höheweg";
-  private static final String PRAXIS_AM_KREUZWEG = "Praxis am Kreuzweg";
+  private static final String PRAXIS_REGISTERED_NAME = "Registered Name 3";
   private static final String IDENTIFIER_VALUE = "RefData:GLN:7601000000002:ACTIVE";
   private static final String DN_ORG = "ou=HCRegulatedOrganization,dc=HPD,o=BAG,c=CH";
   private static final String DN_INDIVIDUAL = "ou=HCProfessional,dc=HPD,o=BAG,c=CH";
@@ -182,7 +183,7 @@ class HpdSearchRequestTest {
   @Test
   void searchRequest_equalityMatchOrganization_EPDPlayground_returnsListContainingAttrNames() throws Exception {
     HpdSimpleParameters simpleParameters = HpdOperationParameters.createSimpleParameters(
-        HpdAttributeName.HC_REGISTERED_NAME, PRAXIS_AM_KREUZWEG);
+        HpdAttributeName.HC_REGISTERED_NAME, PRAXIS_REGISTERED_NAME);
 
     HpdFilterOperation filter = new HpdFilterOperation(false, simpleParameters, OperationType.EQUALITY_MATCH);
 

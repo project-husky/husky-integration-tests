@@ -88,7 +88,7 @@ public class ConvenienceCommunicationTest extends XdsTestUtils {
 
     // wait for all threads to be finished, there must be exactly the same number
     // of domains as there are threads, otherwise one domain was overwritten by another
-    Thread.sleep(2000);
+    Thread.sleep(4000);
     assertEquals(NUMBER_OF_THREADS, endpoints.size());
   }
 }

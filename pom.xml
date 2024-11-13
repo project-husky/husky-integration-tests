@@ -2,21 +2,21 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.husky.test.integration</groupId>
 	<artifactId>husky-integration-tests</artifactId>
-	<version>2.5.0-SNAPSHOT</version>
+	<version>3.0.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
 		<java.version>17</java.version>
-		<maven.compiler.release>17</maven.compiler.release>
-		<maven.compiler.source>17</maven.compiler.source>
-		<maven.compiler.target>17</maven.compiler.target>
+		<maven.compiler.release>${java.version}</maven.compiler.release>
+		<maven.compiler.source>${java.version}</maven.compiler.source>
+		<maven.compiler.target>${java.version}</maven.compiler.target>
 		<husky.version>3.0.1-SNAPSHOT</husky.version>
-		<spring.version>6.1.14</spring.version>
+		<spring.version>6.1.13</spring.version>
 		<spring.boot.version>3.3.4</spring.boot.version>
 		<camel.version>4.8.0</camel.version>
 		<junit.version>5.10.1</junit.version>
-<!--		<ipf.version>4.7.0</ipf.version>-->
+		<ipf.version>5.0-m3</ipf.version>
 		<maven-surefire-plugin.version>3.2.2</maven-surefire-plugin.version>
 		<org.hl7.fhir.version>6.3.23</org.hl7.fhir.version>
 		<tomcat.embed.version>10.1.31</tomcat.embed.version>
@@ -70,7 +70,7 @@
 		<dependencies>
 			<dependency>
 				<groupId>org.projecthusky.communication</groupId>
-				<artifactId>husky-communication-gen</artifactId>
+				<artifactId>husky-communication-ch</artifactId>
 				<version>${husky.version}</version>
 			</dependency>
 			<dependency>
@@ -126,9 +126,8 @@
 			</dependency>
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-starter-log4j2</artifactId>
+				<artifactId>spring-boot-properties-migrator</artifactId>
 				<version>${spring.boot.version}</version>
-				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
@@ -162,6 +161,12 @@
 				<groupId>org.apache.camel</groupId>
 				<artifactId>camel-spring-xml</artifactId>
 				<version>${camel.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.sun.xml.messaging.saaj</groupId>
+				<artifactId>saaj-impl</artifactId>
+				<version>3.0.4</version>
 			</dependency>
 			<!-- Jakarta section -->
 			<dependency>
@@ -216,7 +221,8 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.projecthusky.communication</groupId>
-			<artifactId>husky-communication-gen</artifactId>
+			<artifactId>husky-communication-ch</artifactId>
+			<version>${husky.version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>xml-apis</groupId>
@@ -232,14 +238,17 @@
 		<dependency>
 			<groupId>org.projecthusky.communication</groupId>
 			<artifactId>husky-ppq</artifactId>
+			<version>${husky.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.projecthusky.communication</groupId>
 			<artifactId>husky-valueset-gen</artifactId>
+			<version>${husky.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.projecthusky.communication</groupId>
 			<artifactId>husky-xua-gen-impl</artifactId>
+			<version>${husky.version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>xml-apis</groupId>
@@ -250,7 +259,13 @@
 		<dependency>
 			<groupId>org.projecthusky.communication</groupId>
 			<artifactId>husky-service</artifactId>
+			<version>${husky.version}</version>
 		</dependency>
+
+		<dependency>
+				<groupId>com.sun.xml.messaging.saaj</groupId>
+				<artifactId>saaj-impl</artifactId>
+			</dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-engine</artifactId>
@@ -270,23 +285,16 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.logging.log4j</groupId>
+					<artifactId>log4j-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
-		<!--
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-log4j2</artifactId>
-			<scope>test</scope>
-		</dependency>
-		-->
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-core</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.sun.xml.messaging.saaj</groupId>
-			<artifactId>saaj-impl</artifactId>
-			<version>3.0.4</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -297,11 +305,6 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>${maven-surefire-plugin.version}</version>
-				<!--<configuration>
-                    <excludes>
-                        <exclude>**/integration/*</exclude>
-                    </excludes>
-                </configuration>-->
 				<executions>
 					<execution>
 						<id>test-junit5</id>
