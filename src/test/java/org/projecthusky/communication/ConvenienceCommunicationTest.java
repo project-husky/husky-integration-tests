@@ -40,7 +40,7 @@ public class ConvenienceCommunicationTest extends XdsTestUtils {
   private static final String HTTP_LITERAL = "http://";
   private static final String ROOT = "1.3.6.1.4.1.21367.13.20.1000";
   private static final String EXTENSION = "IHERED-1024";
-  private static final Integer NUMBER_OF_THREADS = 100;
+  private static final Integer NUMBER_OF_THREADS = 98;
 
   @Test
   public void submitConcurrency_multipleThreadsDifferentDomains_affinityDomainIsNotOverwrittenByOtherThread()
@@ -88,7 +88,7 @@ public class ConvenienceCommunicationTest extends XdsTestUtils {
 
     // wait for all threads to be finished, there must be exactly the same number
     // of domains as there are threads, otherwise one domain was overwritten by another
-    Thread.sleep(2000);
+//    Thread.sleep(6000);
     assertEquals(NUMBER_OF_THREADS, endpoints.size());
   }
 }

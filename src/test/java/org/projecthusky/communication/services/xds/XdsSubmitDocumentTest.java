@@ -26,7 +26,7 @@ import org.projecthusky.common.enums.DocumentDescriptor;
 import org.projecthusky.common.model.Code;
 import org.projecthusky.common.model.Identificator;
 import org.projecthusky.communication.ConvenienceCommunication;
-import org.projecthusky.communication.TestApplication;
+import org.projecthusky.communication.testhelper.TestApplication;
 import org.projecthusky.communication.requests.xds.XdsDocumentWithMetadata;
 import org.projecthusky.communication.requests.xds.XdsProvideAndRetrieveDocumentSetQuery;
 import org.projecthusky.communication.services.HuskyService;

@@ -21,7 +21,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.projecthusky.common.communication.Destination;
 import org.projecthusky.communication.requests.pix.PixMergePatientFeed;
-import org.projecthusky.communication.TestApplication;
+import org.projecthusky.communication.testhelper.TestApplication;
 import org.projecthusky.communication.services.HuskyService;
 import org.projecthusky.communication.testhelper.IpfApplicationConfig;
 import org.projecthusky.fhir.structures.gen.FhirCommon;
@@ -71,7 +71,7 @@ public class PixMergePatientTest {
 				.identifier(new Identifier().setValue("1634641399206").setSystem(FhirCommon.addUrnOid(homeCommunityOid)))
 				.identifier(new Identifier().setValue("SPID-1").setSystem(FhirCommon.addUrnOid(spidEprOid)))
 				.homeCommunityOID(homeCommunityOid).homeCommunityNamespace(homeCommunityNamespace)
-				.obsolatePatientID("1634721569120")
+				.obsoletePatientID("1634721569120")
 				.birthday(this.dateFormat.parse("19500324"))
 				.gender(AdministrativeGender.MALE)
 				.build();
