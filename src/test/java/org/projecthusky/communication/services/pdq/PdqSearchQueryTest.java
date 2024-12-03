@@ -56,10 +56,10 @@ public class PdqSearchQueryTest {
 	
 	@BeforeEach
 	public void setUp() {
-		String senderApplicationOidTestValue = "1.2.3.4";
-		this.testWSDestination = new Destination();
+        this.testWSDestination = new Destination();
 		this.testWSDestination.setUri(URI.create(searchWebServiceUri));
-		this.testWSDestination.setSenderApplicationOid(senderApplicationOidTestValue);
+		this.testWSDestination.setSenderApplicationOid("1.2.3.4");
+		this.testWSDestination.setReceiverApplicationOid("1.36.9.303");
 	}
 	
 	@Test
