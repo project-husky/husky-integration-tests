@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.husky.test.integration</groupId>
 	<artifactId>husky-integration-tests</artifactId>
-	<version>3.0.0-SNAPSHOT</version>
+	<version>3.1.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -13,12 +13,12 @@
 		<maven.compiler.release>${java.version}</maven.compiler.release>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
-		<husky.version>3.0.1-SNAPSHOT</husky.version>
-		<spring.version>6.1.14</spring.version>
-		<spring.boot.version>3.3.4</spring.boot.version>
-		<camel.version>4.8.0</camel.version>
+		<husky.version>3.1.0-SNAPSHOT</husky.version>
+		<spring.version>6.2.2</spring.version>
+		<spring.boot.version>3.4.3</spring.boot.version>
+		<camel.version>4.8.3</camel.version>
 		<junit.version>5.10.1</junit.version>
-		<ipf.version>5.0-m3</ipf.version>
+		<ipf.version>5.0.0</ipf.version>
 		<maven-surefire-plugin.version>3.2.2</maven-surefire-plugin.version>
 	</properties>
 	<repositories>
@@ -302,7 +302,7 @@
 					<plugin>
 						<groupId>org.owasp</groupId>
 						<artifactId>dependency-check-maven</artifactId>
-						<version>11.1.0</version>
+						<version>12.1.0</version>
 						<configuration>
 							<skipProvidedScope>true</skipProvidedScope>
 							<skipRuntimeScope>true</skipRuntimeScope>
@@ -314,6 +314,7 @@
 								<format>HTML</format>
 								<format>JSON</format>
 							</formats>
+							<nvdApiServerId>nvd-server</nvdApiServerId>
 						</configuration>
 						<executions>
 							<execution>
@@ -333,7 +334,7 @@
 					<plugin>
 						<groupId>org.owasp</groupId>
 						<artifactId>dependency-check-maven</artifactId>
-						<version>11.1.0</version>
+						<version>12.1.0</version>
 						<reportSets>
 							<reportSet>
 								<reports>
