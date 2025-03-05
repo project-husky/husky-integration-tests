@@ -54,8 +54,8 @@ public abstract class ServerTestHelper extends InitializerTestHelper {
 		return server;
 	}
 
-	public static HttpRequestHandler registerHandler() {
-		return null;
+	public static void registerHandler(String pattern, HttpRequestHandler handler) {
+		bootstrap.registerHandler(pattern, handler);
 	}
 
 	@BeforeAll

@@ -4,8 +4,9 @@
 		class="ch.qos.logback.core.ConsoleAppender">
 		<layout class="ch.qos.logback.classic.PatternLayout">
 			<Pattern>
-				%d{ISO8601} %highlight(%-5level) [%blue(%t)] %green(${application.title}) %yellow(%C{30}): 
-				            %msg%n%throwable
+				%d{ISO8601} %highlight(%-5level) [%blue(%t)]
+				%green(${application.title}) %yellow(%C{30}):
+				%msg%n%throwable
 			</Pattern>
 		</layout>
 	</appender>
@@ -28,8 +29,13 @@
 
 
 
-	<logger name="org.openehealth.ipf.commons.audit.protocol" level="trace" additivity="false">
+	<logger name="org.openehealth.ipf.commons.audit.protocol"
+		level="trace" additivity="false">
 		<appender-ref ref="RollingFile" />
+		<appender-ref ref="Console" />
+	</logger>
+
+	<logger name="org.apache.http" level="trace">
 		<appender-ref ref="Console" />
 	</logger>
 

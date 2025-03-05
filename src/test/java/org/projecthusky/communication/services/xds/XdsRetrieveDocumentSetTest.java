@@ -24,7 +24,7 @@ import org.openehealth.ipf.commons.ihe.xds.core.responses.Status;
 import org.projecthusky.common.communication.Destination;
 import org.projecthusky.communication.DocumentRequest;
 import org.projecthusky.communication.requests.xds.XdsDocumentSetRequest;
-import org.projecthusky.communication.TestApplication;
+import org.projecthusky.communication.testhelper.TestApplication;
 import org.projecthusky.communication.services.HuskyService;
 import org.projecthusky.communication.testhelper.IpfApplicationConfig;
 import org.springframework.beans.factory.annotation.Autowired;

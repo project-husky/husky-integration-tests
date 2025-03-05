@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.openehealth.ipf.commons.ihe.xds.core.metadata.AvailabilityStatus;
 import org.openehealth.ipf.commons.ihe.xds.core.requests.query.FindFoldersQuery;
 import org.projecthusky.common.communication.Destination;
-import org.projecthusky.communication.TestApplication;
+import org.projecthusky.communication.testhelper.TestApplication;
 import org.projecthusky.communication.requests.xds.XdsFindFoldersStoredQuery;
 import org.projecthusky.communication.services.HuskyService;
 import org.projecthusky.communication.testhelper.IpfApplicationConfig;

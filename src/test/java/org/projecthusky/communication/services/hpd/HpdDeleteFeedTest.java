@@ -18,7 +18,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.projecthusky.common.communication.Destination;
-import org.projecthusky.communication.TestApplication;
+import org.projecthusky.communication.testhelper.TestApplication;
 import org.projecthusky.communication.requests.hpd.HpdBatchRequest;
 import org.projecthusky.communication.requests.hpd.HpdDeleteFeed;
 import org.projecthusky.communication.responses.hpd.HpdResponse;

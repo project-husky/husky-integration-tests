@@ -11,7 +11,7 @@ import java.util.GregorianCalendar;
 import java.util.UUID;
 
 import org.apache.camel.CamelContext;
-import org.projecthusky.communication.ch.ppq.TestApplication;
+import org.projecthusky.communication.testhelper.TestApplication;
 import org.projecthusky.communication.ch.ppq.api.PrivacyPolicyQuery;
 import org.projecthusky.communication.ch.ppq.api.PrivacyPolicyQueryResponse;
 import org.projecthusky.communication.ch.ppq.api.config.PpClientConfig;

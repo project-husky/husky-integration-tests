@@ -1,22 +1,24 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.husky.test.integration</groupId>
 	<artifactId>husky-integration-tests</artifactId>
-	<version>2.5.0-SNAPSHOT</version>
+	<version>3.0.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
-		<java.version>17</java.version>
-		<maven.compiler.release>17</maven.compiler.release>
-		<maven.compiler.source>17</maven.compiler.source>
-		<maven.compiler.target>17</maven.compiler.target>
-		<husky.version>2.5.0</husky.version>
-		<spring.version>5.3.31</spring.version>
-		<spring.boot.version>2.7.18</spring.boot.version>
-		<camel.version>3.21.0</camel.version>
+		<java.version>21</java.version>
+		<maven.compiler.release>${java.version}</maven.compiler.release>
+		<maven.compiler.source>${java.version}</maven.compiler.source>
+		<maven.compiler.target>${java.version}</maven.compiler.target>
+		<husky.version>3.0.1-SNAPSHOT</husky.version>
+		<spring.version>6.1.14</spring.version>
+		<spring.boot.version>3.3.4</spring.boot.version>
+		<camel.version>4.8.0</camel.version>
 		<junit.version>5.10.1</junit.version>
-		<ipf.version>4.7.0</ipf.version>
+		<ipf.version>5.0-m3</ipf.version>
 		<maven-surefire-plugin.version>3.2.2</maven-surefire-plugin.version>
 	</properties>
 	<repositories>
@@ -68,7 +70,7 @@
 		<dependencies>
 			<dependency>
 				<groupId>org.projecthusky.communication</groupId>
-				<artifactId>husky-communication-gen</artifactId>
+				<artifactId>husky-communication-ch</artifactId>
 				<version>${husky.version}</version>
 			</dependency>
 			<dependency>
@@ -124,20 +126,13 @@
 			</dependency>
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-starter-log4j2</artifactId>
+				<artifactId>spring-boot-properties-migrator</artifactId>
 				<version>${spring.boot.version}</version>
-				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter-test</artifactId>
 				<version>${spring.boot.version}</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.camel</groupId>
-				<artifactId>camel-cxf</artifactId>
-				<version>3.17.0</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
@@ -160,40 +155,44 @@
 				<artifactId>camel-spring-xml</artifactId>
 				<version>${camel.version}</version>
 			</dependency>
+
+			<dependency>
+				<groupId>com.sun.xml.messaging.saaj</groupId>
+				<artifactId>saaj-impl</artifactId>
+				<version>3.0.4</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>
 		<dependency>
 			<groupId>org.projecthusky.communication</groupId>
-			<artifactId>husky-communication-gen</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>xml-apis</groupId>
-					<artifactId>xml-apis</artifactId>
-				</exclusion>
-			</exclusions>
+			<artifactId>husky-communication-ch</artifactId>
+			<version>${husky.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.projecthusky.communication</groupId>
 			<artifactId>husky-ppq</artifactId>
+			<version>${husky.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.projecthusky.communication</groupId>
 			<artifactId>husky-valueset-gen</artifactId>
+			<version>${husky.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.projecthusky.communication</groupId>
 			<artifactId>husky-xua-gen-impl</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>xml-apis</groupId>
-					<artifactId>xml-apis</artifactId>
-				</exclusion>
-			</exclusions>
+			<version>${husky.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.projecthusky.communication</groupId>
 			<artifactId>husky-service</artifactId>
+			<version>${husky.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.sun.xml.messaging.saaj</groupId>
+			<artifactId>saaj-impl</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
@@ -214,17 +213,17 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.logging.log4j</groupId>
+					<artifactId>log4j-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
-		<!--
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-log4j2</artifactId>
-			<scope>test</scope>
-		</dependency>
-		-->
-		<dependency>
-			<groupId>org.apache.camel</groupId>
-			<artifactId>camel-cxf</artifactId>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${spring.version}</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -294,4 +293,58 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>owasp</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.owasp</groupId>
+						<artifactId>dependency-check-maven</artifactId>
+						<version>11.1.0</version>
+						<configuration>
+							<skipProvidedScope>true</skipProvidedScope>
+							<skipRuntimeScope>true</skipRuntimeScope>
+							<skipSystemScope>true</skipSystemScope>
+							<skipTestScope>true</skipTestScope>
+							<inherited>false</inherited>
+							<formats>
+								<format>XML</format>
+								<format>HTML</format>
+								<format>JSON</format>
+							</formats>
+						</configuration>
+						<executions>
+							<execution>
+								<id>owasp-verify</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>check</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+
+			<reporting>
+				<plugins>
+					<plugin>
+						<groupId>org.owasp</groupId>
+						<artifactId>dependency-check-maven</artifactId>
+						<version>11.1.0</version>
+						<reportSets>
+							<reportSet>
+								<reports>
+									<report>aggregate</report>
+								</reports>
+							</reportSet>
+						</reportSets>
+					</plugin>
+				</plugins>
+			</reporting>
+
+		</profile>
+	</profiles>
 </project>
