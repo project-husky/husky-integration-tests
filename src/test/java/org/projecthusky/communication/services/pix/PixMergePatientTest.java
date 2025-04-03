@@ -71,7 +71,7 @@ public class PixMergePatientTest {
 				.identifier(new Identifier().setValue("1634641399206").setSystem(FhirCommon.addUrnOid(homeCommunityOid)))
 				.identifier(new Identifier().setValue("SPID-1").setSystem(FhirCommon.addUrnOid(spidEprOid)))
 				.homeCommunityOID(homeCommunityOid).homeCommunityNamespace(homeCommunityNamespace)
-				.obsolatePatientID("1634721569120")
+				.obsoletePatientID("1634721569120")
 				.birthday(this.dateFormat.parse("19500324"))
 				.gender(AdministrativeGender.MALE)
 				.build();

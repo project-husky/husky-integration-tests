@@ -13,14 +13,12 @@ package org.projecthusky.communication.services.svs;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import javax.xml.parsers.ParserConfigurationException;
+
 import org.junit.jupiter.api.Test;
 import org.projecthusky.common.basetypes.IdentificatorBaseType;
 import org.projecthusky.common.utils.LangText;
@@ -32,14 +30,12 @@ import org.projecthusky.valueset.api.ValueSetManager;
 import org.projecthusky.valueset.config.ValueSetConfig;
 import org.projecthusky.valueset.enums.SourceFormatType;
 import org.projecthusky.valueset.enums.SourceSystemType;
-import org.projecthusky.valueset.exceptions.InitializationException;
 import org.projecthusky.valueset.model.ValueSet;
 import org.projecthusky.valueset.model.ValueSetEntry;
 import org.projecthusky.valueset.utils.VsUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.xml.sax.SAXException;
 
 /**
  * The Test Class for ValueSetManager with downloading value sets from ART-DECOR.
@@ -56,13 +52,11 @@ class SvsValueSetManagerTest {
    * This test checks the behavior of the {@link ValueSetManager#downloadValueSetRaw(ValueSetConfig)} when downloading
    * value sets as a byte array. As an example the possible values for EprAuthorRole (2.16.756.5.30.1.127.3.10.1) are
    * downloaded.
-   *
-   * @throws MalformedURLException
-   * @throws IOException
+ * @throws Exception 
    */
   @Test
   void downloadRawTest()
-      throws MalformedURLException, IOException, ParserConfigurationException, InitializationException, SAXException {
+      throws Exception {
     String testUrl = "https://art-decor.org/decor/services/RetrieveValueSet?prefix=ch-epr-&format=json&id=2.16.756.5.30.1.127.3.10.1";
 
     // download expected values from fixed URL
@@ -85,12 +79,11 @@ class SvsValueSetManagerTest {
    * This test checks the behavior of the {@link ValueSetManager#downloadValueSetRaw(ValueSetConfig)} when downloading
    * value sets with an ID, which doesn't exist. As an example the possible values for EprAuthorRole
    * (2.16.756.5.30.1.127.3.10.1) are downloaded.
-   *
-   * @throws IOException
+ * @throws Exception 
    */
   @Test
   void downloadRawUnknownIdTest()
-      throws IOException, ParserConfigurationException, InitializationException, SAXException {
+      throws Exception {
     // id in URL doesn't exists
     String testUrl = "https://art-decor.org/decor/services/RetrieveValueSet?prefix=ch-epr-&format=json&id=1.2.3.4.5";
 
@@ -111,15 +104,11 @@ class SvsValueSetManagerTest {
    * This test checks the behavior of the {@link ValueSetManager#downloadValueSet(ValueSetConfig)} when downloading
    * value sets as {@link ValueSet} in JSON, XML or IHE SVS format. As an example the possible values for
    * DocumentEntry.author.authorRole (2.16.756.5.30.1.127.3.10.1.1.3) are downloaded.
-   *
-   * @throws IOException
-   * @throws ParserConfigurationException
-   * @throws SAXException
-   * @throws InitializationException
+ * @throws Exception 
    */
   @Test
   void downloadValueSetTest()
-      throws IOException, ParserConfigurationException, InitializationException, SAXException {
+      throws Exception {
     String baseUrlJson = "https://art-decor.org/decor/services/RetrieveValueSet?prefix=ch-epr-&format=json";
     String baseUrlIheSvs = "https://art-decor.org/decor/services/RetrieveValueSet?prefix=ch-epr-&format=svs";
     String baseUrlXml = "https://art-decor.org/decor/services/RetrieveValueSet?prefix=ch-epr-&format=xml";

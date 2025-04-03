@@ -12,13 +12,8 @@ package org.projecthusky.communication.services.pix;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.IOException;
 import java.net.URI;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-
-import javax.xml.bind.JAXBException;
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.hl7.fhir.r4.model.Address;
 import org.hl7.fhir.r4.model.CodeableConcept;
@@ -41,7 +36,6 @@ import org.projecthusky.communication.requests.pix.PixUpdatePatientFeed;
 import org.projecthusky.communication.TestApplication;
 import org.projecthusky.communication.services.HuskyService;
 import org.projecthusky.fhir.structures.gen.FhirCommon;
-import org.projecthusky.xua.exceptions.SerializeException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -73,7 +67,7 @@ public class PixUpdatePatientTest {
 	}
 
 	@Test
-	public void updatePatient() throws ParseException, JAXBException, SerializeException, ParserConfigurationException, IOException {
+	public void updatePatient() throws Exception {
 		Organization organization = new Organization().addIdentifier(new Identifier().setValue("Husky").setSystem(FhirCommon.addUrnOid(homeCommunityOid)));
 		PixUpdatePatientFeed feed = this.service.createPixUpdatePatientFeed(testWSDestination, organization)
 			.identifier(new Identifier().setValue("1634793774730").setSystem(FhirCommon.addUrnOid(homeCommunityOid)))
@@ -100,10 +94,11 @@ public class PixUpdatePatientTest {
 	/**
 	 * <b>WARNING!</b></br>
 	 * As stated in the documentation, this will remove all other infos about a patient than the IDs and the organization providing it. Use like this only for testing purposes!
+	 * @throws Exception 
 	 */
 	@Test
 	@Disabled("This test is disabled because how the webservice works (replace vs. update, see query documentation), but is fully working if enabled.")
-	public void updatePatientWithAbsoluteMinimalInformation() throws JAXBException, SerializeException, ParserConfigurationException, IOException {
+	public void updatePatientWithAbsoluteMinimalInformation() throws Exception {
 		Organization organization = new Organization().addIdentifier(new Identifier().setValue("Husky").setSystem(FhirCommon.addUrnOid(homeCommunityOid)));
 		PixUpdatePatientFeed feed = this.service.createPixUpdatePatientFeed(testWSDestination, organization)
 			.identifier(new Identifier().setValue("1634793774730").setSystem(FhirCommon.addUrnOid(homeCommunityOid)))
