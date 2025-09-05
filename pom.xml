@@ -13,12 +13,14 @@
 		<maven.compiler.release>${java.version}</maven.compiler.release>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
-		<husky.version>3.1.0-SNAPSHOT</husky.version>
-		<spring.version>6.2.2</spring.version>
-		<spring.boot.version>3.4.3</spring.boot.version>
-		<camel.version>4.8.3</camel.version>
+		<husky.version>3.2.0-SNAPSHOT</husky.version>
+		<spring.version>6.2.10</spring.version>
+		<spring.boot.version>3.5.5</spring.boot.version>
+		<camel.version>4.10.6</camel.version>
 		<junit.version>5.10.1</junit.version>
-		<ipf.version>5.0.0</ipf.version>
+		<ipf.version>5.1.0</ipf.version>
+		<apache-httpclient5>5.4.1</apache-httpclient5>
+		<apache-httpcore5>5.3.4</apache-httpcore5>
 		<maven-surefire-plugin.version>3.2.2</maven-surefire-plugin.version>
 	</properties>
 	<repositories>
@@ -226,6 +228,17 @@
 			<version>${spring.version}</version>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+				<groupId>org.apache.httpcomponents.client5</groupId>
+				<version>${apache-httpclient5}</version>
+				<artifactId>httpclient5</artifactId>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.httpcomponents.core5</groupId>
+				<version>${apache-httpcore5}</version>
+				<artifactId>httpcore5</artifactId>
+			</dependency>
 
 	</dependencies>
 	<build>

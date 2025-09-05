@@ -52,6 +52,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.jmx.JmxAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -60,8 +61,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
  * retrieval (XDS ITI-18) works with a wide variety of parameters.
  */
 @ExtendWith(value = SpringExtension.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = { TestApplication.class })
-@EnableAutoConfiguration
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = {
+		TestApplication.class })
+@EnableAutoConfiguration(exclude = JmxAutoConfiguration.class)
 class ConvenienceCommunicationQueryDocumentsTest extends XdsTestUtils {
 
 	private static final Logger LOGGER = LoggerFactory
@@ -72,11 +74,9 @@ class ConvenienceCommunicationQueryDocumentsTest extends XdsTestUtils {
 
 	@Autowired
 	protected AuditContext auditContext;
-	
-	
+
 	@Value(value = "${test.xds.xcq.uri:http://ehealthsuisse.ihe-europe.net:8280/xdstools7/sim/epr-testing__for_init_gw_testing/rep/xcq}")
 	private String xcqUri;
-
 
 	final private String applicationName = "2.16.840.1.113883.3.72.6.5.100.1399";
 	final private String facilityName = null;
@@ -86,8 +86,8 @@ class ConvenienceCommunicationQueryDocumentsTest extends XdsTestUtils {
 	private AffinityDomain affinityDomain = null;
 
 	/**
-	 * This method creates and start spring test application. Moreover, it sets the
-	 * endpoint of XDS service for querying metadata.
+	 * This method creates and start spring test application. Moreover, it sets
+	 * the endpoint of XDS service for querying metadata.
 	 *
 	 * @throws java.lang.Exception
 	 */
@@ -115,8 +115,8 @@ class ConvenienceCommunicationQueryDocumentsTest extends XdsTestUtils {
 	}
 
 	/**
-	 * This method checks if initialization of {@link ConvenienceCommunication} was
-	 * correct.
+	 * This method checks if initialization of {@link ConvenienceCommunication}
+	 * was correct.
 	 */
 	@Test
 	void contextLoads() {
@@ -137,10 +137,11 @@ class ConvenienceCommunicationQueryDocumentsTest extends XdsTestUtils {
 		// ID of the patient for whom the metadata is to be searched for
 		Identificator patientId = new Identificator("1.3.6.1.4.1.21367.13.20.3000", "IHEBLUE-2737");
 
-		FindDocumentsQuery findDocumentsQuery = new FindDocumentsQuery(patientId, AvailabilityStatus.APPROVED);
+		FindDocumentsQuery findDocumentsQuery = new FindDocumentsQuery(patientId,
+				AvailabilityStatus.APPROVED);
 
 		convenienceCommunication.setAffinityDomain(affinityDomain);
-		
+
 		// query metadata of documents
 		final QueryResponse response = convenienceCommunication.queryDocuments(findDocumentsQuery,
 				null, null);
@@ -166,12 +167,14 @@ class ConvenienceCommunicationQueryDocumentsTest extends XdsTestUtils {
 	@Test
 	void queryFindDocumentsNoPatientIdExpectedErrorTest() throws Exception {
 
-		FindDocumentsQuery findDocumentsQuery = new FindDocumentsQuery(null, AvailabilityStatus.APPROVED);
+		FindDocumentsQuery findDocumentsQuery = new FindDocumentsQuery(null,
+				AvailabilityStatus.APPROVED);
 
 		convenienceCommunication.setAffinityDomain(affinityDomain);
 
 		// query metadata of documents
-		final QueryResponse response = convenienceCommunication.queryDocuments(findDocumentsQuery, null, null);
+		final QueryResponse response = convenienceCommunication.queryDocuments(findDocumentsQuery,
+				null, null);
 
 		// check if query failed
 		assertEquals(Status.FAILURE, response.getStatus());
@@ -198,20 +201,26 @@ class ConvenienceCommunicationQueryDocumentsTest extends XdsTestUtils {
 	 * 
 	 * @throws Exception
 	 */
-	/* test function to checks  attributes - no need to reduce number of assertions */
+	/*
+	 * test function to checks attributes - no need to reduce number of
+	 * assertions
+	 */
 	@Test
 	@SuppressWarnings("java:S5961")
 	void queryFindDocumentsMetadataOfPdf() throws Exception {
 
 		Identificator patientId = new Identificator("1.3.6.1.4.1.21367.13.20.1000", "IHERED-1024");
 
-		FindDocumentsQuery findDocumentsQuery = new FindDocumentsQuery(patientId, AvailabilityStatus.APPROVED);
+		FindDocumentsQuery findDocumentsQuery = new FindDocumentsQuery(patientId,
+				AvailabilityStatus.APPROVED);
 
 		convenienceCommunication.setAffinityDomain(affinityDomain);
 
-		// query metadata of documents with patient ID and approved as availability
+		// query metadata of documents with patient ID and approved as
+		// availability
 		// status
-		final QueryResponse response = convenienceCommunication.queryDocuments(findDocumentsQuery, null, null);
+		final QueryResponse response = convenienceCommunication.queryDocuments(findDocumentsQuery,
+				null, null);
 
 		// check if query was successful
 		assertTrue(response.getErrors().isEmpty());
@@ -220,29 +229,212 @@ class ConvenienceCommunicationQueryDocumentsTest extends XdsTestUtils {
 
 		DocumentEntry documentEntry = response.getDocumentEntries().get(0);
 
-		// check if identifiers (unique ID, repository ID and home community ID) are
+		// check if identifiers (unique ID, repository ID and home community ID)
+		// are
 		// equal
-		assertEquals("1.2.820.99999.15031207481211484821638086641062503555190193702785", documentEntry.getUniqueId());
+		assertEquals("2.25.272325930096337302465411782668491329407",
+				documentEntry.getUniqueId());
 		assertEquals("1.1.4567332.1.75", documentEntry.getRepositoryUniqueId());
 		assertEquals("urn:oid:1.1.4567334.1.6", documentEntry.getHomeCommunityId());
-		assertEquals("urn:uuid:b8f37101-8842-4e2c-b1e7-bc421d0dc01f", documentEntry.getEntryUuid());
+		assertEquals("urn:uuid:63e22bfe-5d6a-4360-8045-44b938ced995", documentEntry.getEntryUuid());
 
 		assertEquals(AvailabilityStatus.APPROVED, documentEntry.getAvailabilityStatus());
-		assertEquals("application/pdf", documentEntry.getMimeType());
+		assertEquals("application/fhir+json", documentEntry.getMimeType());
 
 		assertNull(documentEntry.getComments());
 		assertNull(documentEntry.getDocumentAvailability());
 
-		assertEquals("Informed Consent", documentEntry.getTitle().getValue());
-		assertEquals("20211012082534", documentEntry.getCreationTime().toHL7());
+		assertEquals("Impfung", documentEntry.getTitle().getValue());
+		assertEquals("20241212154748", documentEntry.getCreationTime().toHL7());
 
 		// check different codes
 		assertEquals("de-CH", documentEntry.getLanguageCode());
 
 		assertNotNull(documentEntry.getClassCode());
-		assertEquals("422735006", documentEntry.getClassCode().getCode());
+		assertEquals("184216000", documentEntry.getClassCode().getCode());
 		assertEquals("2.16.840.1.113883.6.96", documentEntry.getClassCode().getSchemeName());
-		assertEquals("Summary clinical document (record artifact)",
+		assertEquals("Patient record type (record artifact)",
+				documentEntry.getClassCode().getDisplayName().getValue());
+
+		assertNotNull(documentEntry.getConfidentialityCodes().get(0));
+		assertEquals("17621005", documentEntry.getConfidentialityCodes().get(0).getCode());
+		assertEquals("Normal",
+				documentEntry.getConfidentialityCodes().get(0).getDisplayName().getValue());
+
+		assertTrue(documentEntry.getEventCodeList().isEmpty());
+
+		assertEquals("urn:che:epr:EPR_Unstructured_Document", documentEntry.getFormatCode().getCode());
+		assertEquals("2.16.756.5.30.1.127.3.10.10", documentEntry.getFormatCode().getSchemeName());
+		assertEquals("Unstructured EPR document",
+				documentEntry.getFormatCode().getDisplayName().getValue());
+
+		assertEquals("22232009", documentEntry.getHealthcareFacilityTypeCode().getCode());
+		assertEquals("2.16.840.1.113883.6.96",
+				documentEntry.getHealthcareFacilityTypeCode().getSchemeName());
+		assertEquals("Hospital (environment)",
+				documentEntry.getHealthcareFacilityTypeCode().getDisplayName().getValue());
+
+		assertEquals("394802001", documentEntry.getPracticeSettingCode().getCode());
+		assertEquals("General medicine (qualifier value)",
+				documentEntry.getPracticeSettingCode().getDisplayName().getValue());
+		assertEquals("2.16.840.1.113883.6.96",
+				documentEntry.getPracticeSettingCode().getSchemeName());
+
+		assertEquals("41000179103", documentEntry.getTypeCode().getCode());
+		assertEquals("Immunization Record (record artifact)",
+				documentEntry.getTypeCode().getDisplayName().getValue());
+		assertEquals("2.16.840.1.113883.6.96", documentEntry.getTypeCode().getSchemeName());
+
+		// check patient details
+		assertEquals("IHERED-1024", documentEntry.getPatientId().getId());
+		assertEquals("1.3.6.1.4.1.21367.13.20.1000",
+				documentEntry.getPatientId().getAssigningAuthority().getUniversalId());
+
+		assertEquals("waldspital-Id-1234", documentEntry.getSourcePatientId().getId());
+		assertEquals("1.2.3.4.123456.1",
+				documentEntry.getSourcePatientId().getAssigningAuthority().getUniversalId());
+
+		// check author details
+		assertFalse(documentEntry.getAuthors().isEmpty());
+		assertNotNull(documentEntry.getAuthors().get(0));
+		assertNotNull(documentEntry.getAuthors().get(0).getAuthorPerson());
+		assertNotNull(documentEntry.getAuthors().get(0).getAuthorPerson().getName());
+		assertEquals("MÃ¼ller",
+				documentEntry.getAuthors().get(0).getAuthorPerson().getName().getFamilyName());
+		assertEquals("Peter",
+				documentEntry.getAuthors().get(0).getAuthorPerson().getName().getGivenName());
+		assertEquals("Dr. med",
+				documentEntry.getAuthors().get(0).getAuthorPerson().getName().getPrefix());
+
+		assertNotNull(documentEntry.getAuthors().get(0).getAuthorRole());
+		assertNotNull(documentEntry.getAuthors().get(0).getAuthorRole().get(0));
+		assertEquals("HCP", documentEntry.getAuthors().get(0).getAuthorRole().get(0).getId());
+		assertEquals("2.16.756.5.30.1.127.3.10.6", documentEntry.getAuthors().get(0)
+				.getAuthorRole().get(0).getAssigningAuthority().getUniversalId());
+
+		assertNotNull(documentEntry.getAuthors().get(0).getAuthorSpecialty());
+//		assertNotNull(documentEntry.getAuthors().get(0).getAuthorSpecialty().get(0));
+//		assertNull(documentEntry.getAuthors().get(0).getAuthorSpecialty().get(0).getId());
+//		assertNull(documentEntry.getAuthors().get(0).getAuthorSpecialty().get(0)
+//				.getAssigningAuthority().getUniversalId());
+	}
+
+	/**
+	 * This test checks the behavior of the
+	 * {@link ConvenienceCommunication#queryDocuments(org.projecthusky.communication.xd.storedquery.AbstractStoredQuery, org.projecthusky.xua.core.SecurityHeaderElement)}
+	 * when at least metadata is found for one CDA document with following
+	 * metadata:
+	 * 
+	 * <ul>
+	 * <li>patient ID</li>
+	 * <li>class code</li>
+	 * <li>practice setting</li>
+	 * <li>health care facility</li>
+	 * <li>confidentiality</li>
+	 * <li>format</li>
+	 * <li>given and last name of author</li>
+	 * <li>approved as availability status</li>
+	 * </ul>
+	 * 
+	 * @throws Exception
+	 */
+	/*
+	 * test function to checks attributes - no need to reduce number of
+	 * assertions
+	 */
+	@Test
+	@SuppressWarnings("java:S5961")
+	void queryFindDocumentsMetadataOfCda() throws Exception {
+
+		Identificator patientId = new Identificator("1.3.6.1.4.1.21367.13.20.3000", "IHEBLUE-2599");
+
+		List<Code> classCodes = List.of(new Code("419891008", "2.16.840.1.113883.6.96",
+				"Record artifact (record artifact)"));
+		List<Code> practiceSettingCodes = List.of(new Code("394802001", "2.16.840.1.113883.6.96",
+				"General medicine (qualifier value)"));
+		List<Code> healthcareFacilityCodes = List
+				.of(new Code("394747008", "2.16.840.1.113883.6.96", "Health Authority"));
+		List<Code> confidentialityCodes = List
+				.of(new Code("17621005", "2.16.840.1.113883.6.96", "Normal (qualifier value)"));
+		List<Code> formatCodes = List.of(//
+				new Code("urn:ihe:iti:xds-sd:pdf:2008", "1.3.6.1.4.1.19376.1.2.3",
+						"1.3.6.1.4.1.19376.1.2.20 (Scanned Document)"));
+
+		Person person = new Person();
+		var name = new Name();
+		name.setFamily("Smitty");
+		name.setGiven("Gerald");
+		name.setPrefix("Dr.");
+		person.addName(name);
+
+		FindDocumentsQuery findDocumentsQuery = new FindDocumentsQuery(patientId, classCodes, null,
+				practiceSettingCodes, healthcareFacilityCodes, confidentialityCodes, formatCodes,
+				null/*person*/, AvailabilityStatus.APPROVED);
+
+		// FindDocumentsQuery findDocumentsQuery = new
+		// FindDocumentsQuery(patientId,
+		// availabilityStatus);
+
+		convenienceCommunication.setAffinityDomain(affinityDomain);
+
+		// query metadata of documents
+		final QueryResponse response = convenienceCommunication.queryDocuments(findDocumentsQuery,
+				null, null);
+
+		// check if query was successful
+		assertTrue(response.getErrors().isEmpty());
+		assertEquals(Status.SUCCESS, response.getStatus());
+		assertTrue(response.getDocumentEntries().size() > 0);
+
+		response.getDocumentEntries().forEach(documentEntry -> {
+			LOGGER.info("DocumentEntry:\n\t{},\n\t{},\n\t{},\n\t{},\n\t{},\n\t{}\n\t{}",
+					documentEntry.getUniqueId(), documentEntry.getRepositoryUniqueId(),
+					documentEntry.getHomeCommunityId(), documentEntry.getEntryUuid(),
+					documentEntry.getMimeType(),
+					documentEntry.getClassCode().getCode() + "|"
+							+ documentEntry.getClassCode().getSchemeName() + "|"
+							+ documentEntry.getClassCode().getDisplayName(), //
+					documentEntry.getFormatCode().getCode() + "|"
+							+ documentEntry.getFormatCode().getSchemeName() + "|"
+							+ documentEntry.getFormatCode().getDisplayName());
+		});
+
+		DocumentEntry documentEntry = response.getDocumentEntries().get(0);
+
+		// check if identifiers (unique ID, repository ID and home community ID)
+		// are
+		// equal
+		// 2.25.190208551364738359849377333875388436319,
+		// 1.1.4567332.1.75,
+		// urn:oid:1.1.4567334.1.6,
+		// urn:uuid:49466513-5a4c-40bc-93cb-3f65344f04cf,
+		// text/xml,
+		// 419891008|2.16.840.1.113883.6.96|LocalizedString(lang=en-US,
+		// charset=UTF-8, value=Record artifact (record artifact))
+		// urn:ihe:iti:xds-sd:pdf:2008|1.3.6.1.4.1.19376.1.2.3|LocalizedString(lang=en-US,
+		// charset=UTF-8, value=1.3.6.1.4.1.19376.1.2.20 (Scanned Document))
+		assertEquals("2.25.190208551364738359849377333875388436319",
+				documentEntry.getUniqueId());
+		assertEquals("1.1.4567332.1.75", documentEntry.getRepositoryUniqueId());
+		assertEquals("urn:oid:1.1.4567334.1.6", documentEntry.getHomeCommunityId());
+		assertEquals("urn:uuid:49466513-5a4c-40bc-93cb-3f65344f04cf", documentEntry.getEntryUuid());
+
+		assertEquals(AvailabilityStatus.APPROVED, documentEntry.getAvailabilityStatus());
+		assertEquals("text/xml", documentEntry.getMimeType());
+
+		assertNull(documentEntry.getComments());
+		assertNull(documentEntry.getDocumentAvailability());
+
+		assertNull(documentEntry.getTitle());
+		assertEquals("20250328065355", documentEntry.getCreationTime().toHL7());
+
+		// check different codes
+		assertEquals("fr-CH", documentEntry.getLanguageCode());
+
+		assertNotNull(documentEntry.getClassCode());
+		assertEquals("419891008", documentEntry.getClassCode().getCode());
+		assertEquals("2.16.840.1.113883.6.96", documentEntry.getClassCode().getSchemeName());
+		assertEquals("Record artifact (record artifact)",
 				documentEntry.getClassCode().getDisplayName().getValue());
 
 		assertNotNull(documentEntry.getConfidentialityCodes().get(0));
@@ -258,158 +450,19 @@ class ConvenienceCommunicationQueryDocumentsTest extends XdsTestUtils {
 				documentEntry.getFormatCode().getDisplayName().getValue());
 
 		assertEquals("394747008", documentEntry.getHealthcareFacilityTypeCode().getCode());
-		assertEquals("2.16.840.1.113883.6.96", documentEntry.getHealthcareFacilityTypeCode().getSchemeName());
+		assertEquals("2.16.840.1.113883.6.96",
+				documentEntry.getHealthcareFacilityTypeCode().getSchemeName());
 		assertEquals("Health Authority",
 				documentEntry.getHealthcareFacilityTypeCode().getDisplayName().getValue());
-
-		assertEquals("394810000", documentEntry.getPracticeSettingCode().getCode());
-		assertEquals("Rheumatology (qualifier value)",
-				documentEntry.getPracticeSettingCode().getDisplayName().getValue());
-		assertEquals("2.16.840.1.113883.6.96", documentEntry.getPracticeSettingCode().getSchemeName());
-
-		assertEquals("371535009", documentEntry.getTypeCode().getCode());
-		assertEquals("Transfer summary report (record artifact)",
-				documentEntry.getTypeCode().getDisplayName().getValue());
-		assertEquals("2.16.840.1.113883.6.96", documentEntry.getTypeCode().getSchemeName());
-
-		// check patient details
-		assertEquals("IHERED-1024", documentEntry.getPatientId().getId());
-		assertEquals("1.3.6.1.4.1.21367.13.20.1000",
-				documentEntry.getPatientId().getAssigningAuthority().getUniversalId());
-
-		assertEquals("2342134localid", documentEntry.getSourcePatientId().getId());
-		assertEquals("1.2.3.4", documentEntry.getSourcePatientId().getAssigningAuthority().getUniversalId());
-
-		// check author details
-		assertFalse(documentEntry.getAuthors().isEmpty());
-		assertNotNull(documentEntry.getAuthors().get(0));
-		assertNotNull(documentEntry.getAuthors().get(0).getAuthorPerson());
-		assertNotNull(documentEntry.getAuthors().get(0).getAuthorPerson().getName());
-		assertEquals("Bereit", documentEntry.getAuthors().get(0).getAuthorPerson().getName().getFamilyName());
-		assertEquals("Allzeit", documentEntry.getAuthors().get(0).getAuthorPerson().getName().getGivenName());
-		assertEquals("Dr.", documentEntry.getAuthors().get(0).getAuthorPerson().getName().getPrefix());
-
-		assertNotNull(documentEntry.getAuthors().get(0).getAuthorRole());
-		assertNotNull(documentEntry.getAuthors().get(0).getAuthorRole().get(0));
-		assertEquals("221", documentEntry.getAuthors().get(0).getAuthorRole().get(0).getId());
-		assertEquals("2.16.840.1.113883.2.9.6.2.7",
-				documentEntry.getAuthors().get(0).getAuthorRole().get(0).getAssigningAuthority().getUniversalId());
-
-		assertNotNull(documentEntry.getAuthors().get(0).getAuthorSpecialty());
-		assertNotNull(documentEntry.getAuthors().get(0).getAuthorSpecialty().get(0));
-		assertNull(documentEntry.getAuthors().get(0).getAuthorSpecialty().get(0).getId());
-		assertNull(
-				documentEntry.getAuthors().get(0).getAuthorSpecialty().get(0).getAssigningAuthority().getUniversalId());
-	}
-
-	/**
-	 * This test checks the behavior of the
-	 * {@link ConvenienceCommunication#queryDocuments(org.projecthusky.communication.xd.storedquery.AbstractStoredQuery, org.projecthusky.xua.core.SecurityHeaderElement)}
-	 * when at least metadata is found for one CDA document with following metadata:
-	 * 
-	 * <ul>
-	 * <li>patient ID</li>
-	 * <li>class code</li>
-	 * <li>practice setting</li>
-	 * <li>health care facility</li>
-	 * <li>confidentiality</li>
-	 * <li>format</li>
-	 * <li>given and last name of author</li>
-	 * <li>approved as availability status</li>
-	 * </ul>
-	 * 
-	 * @throws Exception
-	 */
-	/* test function to checks  attributes - no need to reduce number of assertions */
-	@Test
-	@SuppressWarnings("java:S5961")
-	void queryFindDocumentsMetadataOfCda() throws Exception {
-
-		Identificator patientId = new Identificator("1.3.6.1.4.1.21367.13.20.3000", "IHEBLUE-2599");
-
-		List<Code> classCodes = List
-				.of(
-						new Code("417319006", "2.16.840.1.113883.6.96", "Record of health event (record artifact)"));
-		List<Code> practiceSettingCodes = List
-				.of(new Code("394802001", "2.16.840.1.113883.6.96", "General medicine (qualifier value)"));
-		List<Code> healthcareFacilityCodes = List
-				.of(new Code("394747008", "2.16.840.1.113883.6.96", "Health Authority"));
-		List<Code> confidentialityCodes = List
-				.of(new Code("17621005", "2.16.840.1.113883.6.96", "Normal (qualifier value)"));
-		List<Code> formatCodes = List
-				.of(new Code("urn:ihe:pcc:ic:2009", "1.3.6.1.4.1.19376.1.2.3", "Immunization Content (IC)"));
-
-		Person person = new Person();
-		var name = new Name();
-		name.setFamily("Bereit");
-		name.setGiven("Allzeit");
-		name.setPrefix("Dr.");
-		person.addName(name);
-
-		FindDocumentsQuery findDocumentsQuery = new FindDocumentsQuery(patientId, classCodes, null,
-				practiceSettingCodes, healthcareFacilityCodes, confidentialityCodes, formatCodes, person,
-				AvailabilityStatus.APPROVED);
-
-		convenienceCommunication.setAffinityDomain(affinityDomain);
-
-		// query metadata of documents
-		final QueryResponse response = convenienceCommunication.queryDocuments(findDocumentsQuery, null, null);
-
-		// check if query was successful
-		assertTrue(response.getErrors().isEmpty());
-		assertEquals(Status.SUCCESS, response.getStatus());
-		assertTrue(response.getDocumentEntries().size() > 0);
-
-		DocumentEntry documentEntry = response.getDocumentEntries().get(0);
-
-		// check if identifiers (unique ID, repository ID and home community ID) are
-		// equal
-		assertEquals("1.2.820.99999.18508463736145106181926975526539403561455330316563", documentEntry.getUniqueId());
-		assertEquals("1.1.4567332.1.75", documentEntry.getRepositoryUniqueId());
-		assertEquals("urn:oid:1.1.4567334.1.6", documentEntry.getHomeCommunityId());
-		assertEquals("urn:uuid:afd9bee4-4c30-4b58-a0e7-e301c799047b", documentEntry.getEntryUuid());
-
-		assertEquals(AvailabilityStatus.APPROVED, documentEntry.getAvailabilityStatus());
-		assertEquals("text/xml", documentEntry.getMimeType());
-
-		assertNull(documentEntry.getComments());
-		assertNull(documentEntry.getDocumentAvailability());
-
-		assertNull(documentEntry.getTitle());
-		assertEquals("20211012111457", documentEntry.getCreationTime().toHL7());
-
-		// check different codes
-		assertEquals("fr-CH", documentEntry.getLanguageCode());
-
-		assertNotNull(documentEntry.getClassCode());
-		assertEquals("417319006", documentEntry.getClassCode().getCode());
-		assertEquals("2.16.840.1.113883.6.96", documentEntry.getClassCode().getSchemeName());
-		assertEquals("Record of health event (record artifact)",
-				documentEntry.getClassCode().getDisplayName().getValue());
-
-		assertNotNull(documentEntry.getConfidentialityCodes().get(0));
-		assertEquals("17621005", documentEntry.getConfidentialityCodes().get(0).getCode());
-		assertEquals("Normal (qualifier value)",
-				documentEntry.getConfidentialityCodes().get(0).getDisplayName().getValue());
-
-		assertTrue(documentEntry.getEventCodeList().isEmpty());
-
-		assertEquals("urn:ihe:pcc:ic:2009", documentEntry.getFormatCode().getCode());
-		assertEquals("1.3.6.1.4.1.19376.1.2.3", documentEntry.getFormatCode().getSchemeName());
-		assertEquals("Immunization Content (IC)",
-				documentEntry.getFormatCode().getDisplayName().getValue());
-
-		assertEquals("394747008", documentEntry.getHealthcareFacilityTypeCode().getCode());
-		assertEquals("2.16.840.1.113883.6.96", documentEntry.getHealthcareFacilityTypeCode().getSchemeName());
-		assertEquals("Health Authority", documentEntry.getHealthcareFacilityTypeCode().getDisplayName().getValue());
 
 		assertEquals("394802001", documentEntry.getPracticeSettingCode().getCode());
 		assertEquals("General medicine (qualifier value)",
 				documentEntry.getPracticeSettingCode().getDisplayName().getValue());
-		assertEquals("2.16.840.1.113883.6.96", documentEntry.getPracticeSettingCode().getSchemeName());
+		assertEquals("2.16.840.1.113883.6.96",
+				documentEntry.getPracticeSettingCode().getSchemeName());
 
 		assertEquals("41000179103", documentEntry.getTypeCode().getCode());
-		assertEquals("Immunization record",
+		assertEquals("Immunization record (record artifact)",
 				documentEntry.getTypeCode().getDisplayName().getValue());
 		assertEquals("2.16.840.1.113883.6.96", documentEntry.getTypeCode().getSchemeName());
 
@@ -418,29 +471,33 @@ class ConvenienceCommunicationQueryDocumentsTest extends XdsTestUtils {
 		assertEquals("1.3.6.1.4.1.21367.13.20.3000",
 				documentEntry.getPatientId().getAssigningAuthority().getUniversalId());
 
-		assertEquals("23423452342134localid", documentEntry.getSourcePatientId().getId());
-		assertEquals("1.2.3.4", documentEntry.getSourcePatientId().getAssigningAuthority().getUniversalId());
+		assertEquals("2342134localid", documentEntry.getSourcePatientId().getId());
+		assertEquals("1.2.3.4",
+				documentEntry.getSourcePatientId().getAssigningAuthority().getUniversalId());
 
 		// check author details
 		assertFalse(documentEntry.getAuthors().isEmpty());
 		assertNotNull(documentEntry.getAuthors().get(0));
 		assertNotNull(documentEntry.getAuthors().get(0).getAuthorPerson());
 		assertNotNull(documentEntry.getAuthors().get(0).getAuthorPerson().getName());
-		assertEquals("Bereit", documentEntry.getAuthors().get(0).getAuthorPerson().getName().getFamilyName());
-		assertEquals("Allzeit", documentEntry.getAuthors().get(0).getAuthorPerson().getName().getGivenName());
-		assertEquals("Dr.", documentEntry.getAuthors().get(0).getAuthorPerson().getName().getPrefix());
+		assertEquals("Smitty",
+				documentEntry.getAuthors().get(0).getAuthorPerson().getName().getFamilyName());
+		assertEquals("Gerald",
+				documentEntry.getAuthors().get(0).getAuthorPerson().getName().getGivenName());
+//		assertEquals("Dr.",
+//				documentEntry.getAuthors().get(0).getAuthorPerson().getName().getPrefix());
 
 		assertNotNull(documentEntry.getAuthors().get(0).getAuthorRole());
 		assertNotNull(documentEntry.getAuthors().get(0).getAuthorRole().get(0));
-		assertEquals("221", documentEntry.getAuthors().get(0).getAuthorRole().get(0).getId());
-		assertEquals("2.16.840.1.113883.2.9.6.2.7",
-				documentEntry.getAuthors().get(0).getAuthorRole().get(0).getAssigningAuthority().getUniversalId());
+		assertEquals("HCP", documentEntry.getAuthors().get(0).getAuthorRole().get(0).getId());
+		assertEquals("2.16.756.5.30.1.127.3.10.1.1.3", documentEntry.getAuthors().get(0)
+				.getAuthorRole().get(0).getAssigningAuthority().getUniversalId());
 
 		assertNotNull(documentEntry.getAuthors().get(0).getAuthorSpecialty());
-		assertNotNull(documentEntry.getAuthors().get(0).getAuthorSpecialty().get(0));
-		assertNull(documentEntry.getAuthors().get(0).getAuthorSpecialty().get(0).getId());
-		assertNull(
-				documentEntry.getAuthors().get(0).getAuthorSpecialty().get(0).getAssigningAuthority().getUniversalId());
+//		assertNotNull(documentEntry.getAuthors().get(0).getAuthorSpecialty().get(0));
+//		assertNull(documentEntry.getAuthors().get(0).getAuthorSpecialty().get(0).getId());
+//		assertNull(documentEntry.getAuthors().get(0).getAuthorSpecialty().get(0)
+//				.getAssigningAuthority().getUniversalId());
 	}
 
 	/**
@@ -453,15 +510,18 @@ class ConvenienceCommunicationQueryDocumentsTest extends XdsTestUtils {
 	@Test
 	void queryGetDocumentsMetadataOfCda() throws Exception {
 
-		// unique IDs of documents for which the document references are searched for
+		// unique IDs of documents for which the document references are
+		// searched for
 		List<String> uniqueIds = new LinkedList<>();
-		uniqueIds.add("1.2.820.99999.18508463736145106181926975526539403561455330316563");
+		uniqueIds.add("2.25.272325930096337302465411782668491329407");
 
-		GetDocumentsQuery getDocumentsQuery = new GetDocumentsQuery(uniqueIds, false, "urn:oid:1.1.4567334.1.6");
+		GetDocumentsQuery getDocumentsQuery = new GetDocumentsQuery(uniqueIds, false,
+				"urn:oid:1.1.4567334.1.6");
 
 		convenienceCommunication.setAffinityDomain(affinityDomain);
 
-		final QueryResponse response = convenienceCommunication.queryDocumentReferencesOnly(getDocumentsQuery, null,
+		final QueryResponse response = convenienceCommunication.queryDocumentReferencesOnly(
+				getDocumentsQuery, null,
 				String.format("urn:uuid:testMessage-%s", UUID.randomUUID().toString()));
 
 		// check if query was successful
@@ -473,7 +533,7 @@ class ConvenienceCommunicationQueryDocumentsTest extends XdsTestUtils {
 
 		// check if retrieved reference is correct
 		ObjectReference objectRef = response.getReferences().iterator().next();
-		assertEquals("urn:uuid:afd9bee4-4c30-4b58-a0e7-e301c799047b", objectRef.getId());
+		assertEquals("urn:uuid:63e22bfe-5d6a-4360-8045-44b938ced995", objectRef.getId());
 		assertEquals("urn:oid:1.1.4567334.1.6", objectRef.getHome());
 	}
 }

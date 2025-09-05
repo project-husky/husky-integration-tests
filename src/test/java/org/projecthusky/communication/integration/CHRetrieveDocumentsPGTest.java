@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.jmx.JmxAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -38,7 +39,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @ExtendWith(value = SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = {TestApplication.class})
-@EnableAutoConfiguration
+@EnableAutoConfiguration(exclude = JmxAutoConfiguration.class)
 class CHRetrieveDocumentsPGTest extends XdsTestUtils {
 
     private static final Logger LOGGER = LoggerFactory

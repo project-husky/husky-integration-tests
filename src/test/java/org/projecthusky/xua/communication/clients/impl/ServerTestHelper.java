@@ -10,19 +10,21 @@ package org.projecthusky.xua.communication.clients.impl;
  *
  */
 
-
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
-import org.apache.http.HttpException;
-import org.apache.http.HttpRequest;
-import org.apache.http.HttpResponse;
-import org.apache.http.config.SocketConfig;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.bootstrap.HttpServer;
-import org.apache.http.impl.bootstrap.ServerBootstrap;
-import org.apache.http.protocol.HttpContext;
-import org.apache.http.protocol.HttpRequestHandler;
 import org.projecthusky.xua.utilities.impl.InitializerTestHelper;
+import org.apache.hc.core5.http.ClassicHttpRequest;
+import org.apache.hc.core5.http.ClassicHttpResponse;
+import org.apache.hc.core5.http.HttpException;
+import org.apache.hc.core5.http.HttpRequest;
+import org.apache.hc.core5.http.HttpResponse;
+import org.apache.hc.core5.http.impl.bootstrap.HttpServer;
+import org.apache.hc.core5.http.impl.bootstrap.ServerBootstrap;
+import org.apache.hc.core5.http.io.HttpRequestHandler;
+import org.apache.hc.core5.http.io.SocketConfig;
+import org.apache.hc.core5.http.io.entity.StringEntity;
+import org.apache.hc.core5.http.protocol.HttpContext;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.slf4j.Logger;
@@ -55,24 +57,26 @@ public abstract class ServerTestHelper extends InitializerTestHelper {
 	}
 
 	public static void registerHandler(String pattern, HttpRequestHandler handler) {
-		bootstrap.registerHandler(pattern, handler);
+		bootstrap.register(pattern, handler);
 	}
 
 	@BeforeAll
 	public static void setUpBefore() throws IOException {
-		final SocketConfig socketConfig = SocketConfig.custom().setSoTimeout(15000)
-				.setTcpNoDelay(true).build();
+		final SocketConfig socketConfig = SocketConfig.custom()
+				.setSoTimeout(15000, TimeUnit.MILLISECONDS).setTcpNoDelay(true).build();
 
 		bootstrap = ServerBootstrap.bootstrap();
-		server = bootstrap.setServerInfo("Test/1.1").setSocketConfig(socketConfig)
-				.registerHandler("*", new HttpRequestHandler() {
+		server = bootstrap//
+				// .setServerInfo("Test/1.1").setSocketConfig(socketConfig)
+				.register("*", new HttpRequestHandler() {
 
 					@Override
-					public void handle(HttpRequest request, HttpResponse response,
+					public void handle(ClassicHttpRequest request, ClassicHttpResponse response,
 							HttpContext context) throws HttpException, IOException {
-						logger.debug("The request %s", request.getRequestLine());
-						response.setStatusCode(500);
+						logger.debug("The request %s", request.getRequestUri());
+						response.setCode(500);
 						response.setEntity(new StringEntity("Hello this is a testserver"));
+
 					}
 
 				}).create();

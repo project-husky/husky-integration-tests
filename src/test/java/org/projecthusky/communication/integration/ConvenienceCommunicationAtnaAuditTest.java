@@ -26,6 +26,7 @@ import org.projecthusky.communication.testhelper.TestApplication;
 import org.projecthusky.communication.testhelper.XdsTestUtils;
 import org.projecthusky.communication.xd.storedquery.GetDocumentsQuery;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openehealth.ipf.commons.audit.AuditContext;
@@ -39,6 +40,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.jmx.JmxAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -50,7 +52,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
  */
 @ExtendWith(value = SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = { TestApplication.class })
-@EnableAutoConfiguration
+@EnableAutoConfiguration(exclude = JmxAutoConfiguration.class)
 @ActiveProfiles("atna")
 class ConvenienceCommunicationAtnaAuditTest extends XdsTestUtils {
 
@@ -96,6 +98,7 @@ class ConvenienceCommunicationAtnaAuditTest extends XdsTestUtils {
 	 * @throws Exception
 	 */
 	@Test
+	@Disabled("DISABLED: Simulator has CHANGED!") // TODO: Enable when HUSKY SIM is implemented
 	void queryGetDocumentsMetadataOfCdaWithAuditMessage() throws Exception {
 
 		// sets the endpoint of XDS service for querying metadata
@@ -153,6 +156,7 @@ class ConvenienceCommunicationAtnaAuditTest extends XdsTestUtils {
 	 * @throws Exception
 	 */
 	@Test
+	@Disabled("DISABLED: Simulator has CHANGED!") // TODO: Enable when HUSKY SIM is implemented
 	void retrieveDocumentCdaTest() throws Exception {
 
 		// sets the endpoint of XDS service for retrieving documents

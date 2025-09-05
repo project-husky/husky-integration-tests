@@ -25,6 +25,7 @@ import org.projecthusky.communication.ConvenienceCommunication;
 import org.projecthusky.communication.DocumentRequest;
 import org.projecthusky.communication.testhelper.TestApplication;
 import org.projecthusky.communication.testhelper.XdsTestUtils;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openehealth.ipf.commons.ihe.xds.core.responses.ErrorCode;
@@ -38,6 +39,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.jmx.JmxAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -47,7 +49,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
  */
 @ExtendWith(value = SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = { TestApplication.class })
-@EnableAutoConfiguration
+@EnableAutoConfiguration(exclude = JmxAutoConfiguration.class)
 class ConvenienceCommunicationRetrieveDocumentsTest extends XdsTestUtils {
 
 	private static final Logger LOGGER = LoggerFactory
@@ -83,6 +85,7 @@ class ConvenienceCommunicationRetrieveDocumentsTest extends XdsTestUtils {
 	 * @throws Exception
 	 */
 	@Test
+	@Disabled("DISABLED: Simulator has CHANGED!") // TODO: Enable when HUSKY SIM is implemented
 	void retrieveDocumentTest() throws Exception {
 
 		// sets XDS service endpoint
@@ -136,6 +139,7 @@ class ConvenienceCommunicationRetrieveDocumentsTest extends XdsTestUtils {
 	 * @throws Exception
 	 */
 	@Test
+	@Disabled("DISABLED: Simulator has CHANGED!") // TODO: Enable when HUSKY SIM is implemented
 	void retrieveDocumentCdaTest() throws Exception {
 		// sets XDS service endpoint
 		final AffinityDomain affinityDomain = new AffinityDomain();

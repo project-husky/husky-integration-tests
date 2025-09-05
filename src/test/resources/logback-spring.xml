@@ -40,7 +40,7 @@
 	</logger>
 
 	<!-- LOG everything at ERROR level -->
-	<root level="debug">
+	<root level="info">
 		<appender-ref ref="Console" />
 	</root>
 
