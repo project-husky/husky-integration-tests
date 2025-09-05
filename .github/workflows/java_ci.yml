@@ -32,7 +32,7 @@ jobs:
       with:
         java-version: '21'
         distribution: 'temurin'
-        cache: maven
+        #cache: maven
 
     - name: Build and test with Maven
       run: mvn -B test --file pom.xml
