@@ -34,7 +34,7 @@ public class XdsFindFoldersStoredQueryTest extends XdsTestUtils {
     dest.setSenderApplicationOid("1.2.3.4");
 
     XdsFindFoldersStoredQuery query = this.service.createFindFoldersStoredQuery().destination(dest).patientID(patientId)
-        .availabilityStatus(List.of(AvailabilityStatus.SUBMITTED)).build();
+        .availabilityStatus(List.of(AvailabilityStatus.APPROVED)).build();
 
     assertTrue(query.getIpfQuery() instanceof FindFoldersQuery);
 

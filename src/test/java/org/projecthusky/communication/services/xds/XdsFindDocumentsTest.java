@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.net.URI;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openehealth.ipf.commons.ihe.xds.core.metadata.AvailabilityStatus;
 import org.openehealth.ipf.commons.ihe.xds.core.metadata.DocumentEntry;
@@ -57,6 +58,7 @@ public class XdsFindDocumentsTest {
   }
 
   @Test
+  @Disabled("DISABLED: Simulator has CHANGED!") // TODO: Enable when HUSKY SIM is implemented
   public void whenDocumentQueriedByPatientIdenificator_thenDocumentIsFound() throws Exception {
     Identificator identificator = new Identificator("1.3.6.1.4.1.21367.13.20.1000", "IHERED-1024");
 
@@ -149,6 +151,7 @@ public class XdsFindDocumentsTest {
   }
 
   @Test
+  @Disabled("DISABLED: Simulator has CHANGED!") // TODO: Enable when HUSKY SIM is implemented
   public void whenAllPossibleParametersSetInQuery_thenDocumentIsReturned() throws Exception {
     Identificator identificator = new Identificator("1.3.6.1.4.1.21367.13.20.1000", "IHERED-1024");
 

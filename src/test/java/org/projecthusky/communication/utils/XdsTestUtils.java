@@ -100,7 +100,7 @@ public class XdsTestUtils {
 			eDateTimeRanges = new DateTimeRange[] {
 					eDateTimeRange1, eDateTimeRange2 };
 
-		availabilityStatus = AvailabilityStatus.SUBMITTED;
+		availabilityStatus = AvailabilityStatus.APPROVED;
 
 		// Initialize AuthorPerson
 		authorPerson = new Author();
