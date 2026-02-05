@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.husky.test.integration</groupId>
 	<artifactId>husky-integration-tests</artifactId>
-	<version>3.1.0-SNAPSHOT</version>
+	<version>3.2.2-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -13,7 +13,7 @@
 		<maven.compiler.release>${java.version}</maven.compiler.release>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
-		<husky.version>3.2.0-SNAPSHOT</husky.version>
+		<husky.version>3.2.2-SNAPSHOT</husky.version>
 		<spring.version>6.2.10</spring.version>
 		<spring.boot.version>3.5.5</spring.boot.version>
 		<camel.version>4.10.6</camel.version>
