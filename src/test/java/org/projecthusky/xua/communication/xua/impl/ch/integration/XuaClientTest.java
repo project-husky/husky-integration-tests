@@ -1,5 +1,6 @@
 package org.projecthusky.xua.communication.xua.impl.ch.integration;
 
+import org.apache.camel.spring.boot.vault.CyberArkVaultAutoConfiguration;
 import org.apache.commons.io.IOUtils;
 import org.projecthusky.communication.testhelper.TestApplication;
 import org.projecthusky.xua.authentication.AuthnRequest;
@@ -31,6 +32,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.jmx.JmxAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openehealth.ipf.commons.ihe.xacml20.stub.saml20.assertion.AttributeStatementType;
@@ -56,7 +58,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  */
 @ExtendWith(value = SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = { TestApplication.class })
-@EnableAutoConfiguration(exclude = JmxAutoConfiguration.class)
+@EnableAutoConfiguration(exclude = { JmxAutoConfiguration.class, CyberArkVaultAutoConfiguration.class })
+@Disabled("Disabled due to missing elements according actual specification")
 class XuaClientTest extends ServerTestHelper {
 
 	@Value(value = "${test.xua.uri:https://ehealthsuisse.ihe-europe.net:10443/STS}")

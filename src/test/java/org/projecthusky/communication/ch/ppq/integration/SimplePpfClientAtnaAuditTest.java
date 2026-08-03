@@ -15,6 +15,7 @@ import jakarta.xml.bind.JAXBElement;
 import javax.xml.namespace.QName;
 
 import org.apache.camel.CamelContext;
+import org.apache.camel.spring.boot.vault.CyberArkVaultAutoConfiguration;
 import org.herasaf.xacml.core.combiningAlgorithm.policy.impl.PolicyDenyOverridesAlgorithm;
 import org.herasaf.xacml.core.dataTypeAttribute.impl.StringDataTypeAttribute;
 import org.herasaf.xacml.core.function.impl.equalityPredicates.StringEqualFunction;
@@ -82,7 +83,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
  */
 @ExtendWith(value = SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = { TestApplication.class })
-@EnableAutoConfiguration(exclude = JmxAutoConfiguration.class)
+@EnableAutoConfiguration(exclude = { JmxAutoConfiguration.class, CyberArkVaultAutoConfiguration.class })
 @ActiveProfiles("atna")
 @Disabled
 class SimplePpfClientAtnaAuditTest {

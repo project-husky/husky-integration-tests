@@ -1,6 +1,7 @@
 package org.projecthusky.communication.ch.ppq.integration;
 
 import org.apache.camel.CamelContext;
+import org.apache.camel.spring.boot.vault.CyberArkVaultAutoConfiguration;
 import org.herasaf.xacml.core.combiningAlgorithm.policy.impl.PolicyDenyOverridesAlgorithm;
 import org.herasaf.xacml.core.dataTypeAttribute.impl.StringDataTypeAttribute;
 import org.herasaf.xacml.core.function.impl.equalityPredicates.StringEqualFunction;
@@ -87,7 +88,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @ExtendWith(value = SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = { TestApplication.class })
-@EnableAutoConfiguration(exclude = JmxAutoConfiguration.class)
+@EnableAutoConfiguration(exclude = { JmxAutoConfiguration.class, CyberArkVaultAutoConfiguration.class })
 @TestMethodOrder(OrderAnnotation.class)
 @Disabled
 public class SimplePpfClientTest {
