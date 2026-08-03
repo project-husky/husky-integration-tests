@@ -11,6 +11,7 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.util.GregorianCalendar;
 
+import org.apache.camel.spring.boot.vault.CyberArkVaultAutoConfiguration;
 import org.hl7.fhir.r4.model.Enumerations.AdministrativeGender;
 import org.hl7.fhir.r4.model.HumanName;
 import org.hl7.fhir.r4.model.Identifier;
@@ -47,7 +48,7 @@ import ca.uhn.fhir.context.FhirVersionEnum;
  */
 @ExtendWith(value = SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = { TestApplication.class })
-@EnableAutoConfiguration(exclude = JmxAutoConfiguration.class)
+@EnableAutoConfiguration(exclude = { JmxAutoConfiguration.class, CyberArkVaultAutoConfiguration.class })
 @ActiveProfiles("atna")
 class ConvenienceMasterPatientIndexV3AtnaAuditTest {
 

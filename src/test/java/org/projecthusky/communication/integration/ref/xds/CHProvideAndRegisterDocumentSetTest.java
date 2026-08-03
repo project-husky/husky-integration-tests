@@ -10,6 +10,7 @@
  */
 package org.projecthusky.communication.integration.ref.xds;
 
+import org.apache.camel.spring.boot.vault.CyberArkVaultAutoConfiguration;
 import org.apache.commons.io.IOUtils;
 import org.projecthusky.common.basetypes.NameBaseType;
 import org.projecthusky.common.communication.*;
@@ -74,7 +75,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @ExtendWith(value = SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = {TestApplication.class})
-@EnableAutoConfiguration(exclude = JmxAutoConfiguration.class)
+@EnableAutoConfiguration(exclude = { JmxAutoConfiguration.class, CyberArkVaultAutoConfiguration.class })
 class CHProvideAndRegisterDocumentSetTest extends XdsTestUtils {
 
     static final Logger LOGGER = LoggerFactory.getLogger(CHProvideAndRegisterDocumentSetTest.class.getName());

@@ -10,6 +10,7 @@
  */
 package org.projecthusky.communication.integration.ref.pixpdq;
 
+import org.apache.camel.spring.boot.vault.CyberArkVaultAutoConfiguration;
 import org.hl7.fhir.r4.model.Identifier;
 import org.projecthusky.common.communication.AffinityDomain;
 import org.projecthusky.common.communication.Destination;
@@ -44,7 +45,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 @ExtendWith(value = SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = {TestApplication.class})
-@EnableAutoConfiguration(exclude = JmxAutoConfiguration.class)
+@EnableAutoConfiguration(exclude = { JmxAutoConfiguration.class, CyberArkVaultAutoConfiguration.class })
 class CHPixV3QueryTest {
 
     protected static Logger LOGGER = LoggerFactory.getLogger(CHPixV3QueryTest.class);

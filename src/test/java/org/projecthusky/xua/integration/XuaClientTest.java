@@ -12,6 +12,7 @@ import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.camel.spring.boot.vault.CyberArkVaultAutoConfiguration;
 import org.apache.commons.io.IOUtils;
 import org.projecthusky.communication.testhelper.TestApplication;
 import org.projecthusky.xua.communication.clients.XuaClient;
@@ -57,7 +58,7 @@ import org.xml.sax.SAXException;
  */
 @ExtendWith(value = SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = { TestApplication.class })
-@EnableAutoConfiguration(exclude = JmxAutoConfiguration.class)
+@EnableAutoConfiguration(exclude = { JmxAutoConfiguration.class, CyberArkVaultAutoConfiguration.class })
 class XuaClientTest extends ServerTestHelper {
 	
 	private Logger logger = LoggerFactory.getLogger(XuaClientTest.class);

@@ -22,6 +22,7 @@ import org.projecthusky.common.model.Name;
 import org.projecthusky.communication.ConvenienceCommunication;
 import org.projecthusky.communication.testhelper.TestApplication;
 import org.projecthusky.communication.testhelper.XdsTestUtils;
+import org.apache.camel.spring.boot.vault.CyberArkVaultAutoConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -59,7 +60,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 @ExtendWith(value = SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = {TestApplication.class})
-@EnableAutoConfiguration(exclude = JmxAutoConfiguration.class)
+@EnableAutoConfiguration(exclude = { JmxAutoConfiguration.class, CyberArkVaultAutoConfiguration.class })
 @Disabled("Disabled because the EPD Playground is not always available")
 class CHProvideAndRegisterDocumentSetPGTest extends XdsTestUtils {
 

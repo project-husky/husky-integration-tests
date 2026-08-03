@@ -13,6 +13,8 @@ package org.projecthusky.communication.integration.pg.pix;
 
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.context.FhirVersionEnum;
+
+import org.apache.camel.spring.boot.vault.CyberArkVaultAutoConfiguration;
 import org.hl7.fhir.r4.model.*;
 import org.hl7.fhir.r4.model.Enumerations.AdministrativeGender;
 import org.hl7.fhir.r4.model.HumanName.NameUse;
@@ -50,7 +52,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 @ExtendWith(value = SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = { TestApplication.class })
-@EnableAutoConfiguration(exclude = JmxAutoConfiguration.class)
+@EnableAutoConfiguration(exclude = { JmxAutoConfiguration.class, CyberArkVaultAutoConfiguration.class })
 @Disabled("Disabled because the EPD Playground is not always available")
 class CHPixV3FeedPGTest {
 

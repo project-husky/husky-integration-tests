@@ -22,6 +22,7 @@ import java.util.List;
 
 import jakarta.xml.bind.JAXBContext;
 
+import org.apache.camel.spring.boot.vault.CyberArkVaultAutoConfiguration;
 import org.hl7.fhir.r4.model.Organization;
 import org.projecthusky.common.basetypes.AddressBaseType;
 import org.projecthusky.common.communication.AffinityDomain;
@@ -61,7 +62,7 @@ import net.ihe.gazelle.hl7v3.prpain201306UV02.PRPAIN201306UV02Type;
  */
 @ExtendWith(value = SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = { TestApplication.class })
-@EnableAutoConfiguration(exclude = JmxAutoConfiguration.class)
+@EnableAutoConfiguration(exclude = { JmxAutoConfiguration.class, CyberArkVaultAutoConfiguration.class })
 class PdqV3QueryTest {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(PdqV3QueryTest.class.getName());
