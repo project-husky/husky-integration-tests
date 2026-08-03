@@ -2,13 +2,13 @@
 <configuration scan="true">
 	<appender name="Console"
 		class="ch.qos.logback.core.ConsoleAppender">
-		<layout class="ch.qos.logback.classic.PatternLayout">
-			<Pattern>
-				%d{ISO8601} %highlight(%-5level) [%blue(%t)]
+		<encoder
+			class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<Pattern>%d{ISO8601} %highlight(%-5level) [%blue(%t)]
 				%green(${application.title}) %yellow(%C{30}):
 				%msg%n%throwable
 			</Pattern>
-		</layout>
+		</encoder>
 	</appender>
 
 	<appender name="RollingFile"
@@ -28,6 +28,10 @@
 	</appender>
 
 
+	<logger name="org.projecthusky.xua.communication" level="debug"
+		additivity="false">
+		<appender-ref ref="Console" />
+	</logger>
 
 	<logger name="org.openehealth.ipf.commons.audit.protocol"
 		level="trace" additivity="false">
@@ -40,7 +44,7 @@
 	</logger>
 
 	<!-- LOG everything at ERROR level -->
-	<root level="debug">
+	<root level="info">
 		<appender-ref ref="Console" />
 	</root>
 

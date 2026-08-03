@@ -100,7 +100,7 @@ public class XdsTestUtils {
 			eDateTimeRanges = new DateTimeRange[] {
 					eDateTimeRange1, eDateTimeRange2 };
 
-		availabilityStatus = AvailabilityStatus.SUBMITTED;
+		availabilityStatus = AvailabilityStatus.APPROVED;
 
 		// Initialize AuthorPerson
 		authorPerson = new Author();
@@ -193,15 +193,38 @@ public class XdsTestUtils {
 				new Code("394802001", "2.16.840.1.113883.6.96", "General medicine (qualifier value)"));
 		metaData.addConfidentialityCode(new Code("17621005", "2.16.840.1.113883.6.96", "Normal (qualifier value)"));
 		metaData.setTitle("Informed Consent");
+		
+		metaData.setUniqueId(OidGenerator.uniqueOid().toString());
+		metaData.setEntryUUID(UUID.randomUUID().toString());
+	}
+	
+	protected void setMetadataInGeneral(DocumentMetadata metaData) {
+		Name name = new Name(new NameBaseType());
+		name.setGiven("Allzeit");
+		name.setFamily("Bereit");
+		name.setPrefix("Dr.");
+
+		Author author = new Author();
+		author.addName(name);
+
+		author.setRoleFunction(new Code("HCP", "2.16.756.5.30.1.127.3.10.1.1.3", "Healthcare professional"));
+
+		metaData.addAuthor(author);
+		metaData.setCodedLanguage(LanguageCode.GERMAN_CODE);
+		
+
 	}
 
-	protected void setSubmissionMetadata(SubmissionSetMetadata metadata, Identificator patientId) {
+	protected void setSubmissionMetadata(SubmissionSetMetadata metadata, Identificator patientId, String commentText) {
 		metadata.getAuthor().add(authorPerson);
 		metadata.setUniqueId(OidGenerator.uniqueOid().toString());
 		metadata.setSourceId(EhcVersions.getCurrentVersion().getOid());
 		metadata.setEntryUUID(UUID.randomUUID().toString());
 		metadata.setDestinationPatientId(patientId);
+		metadata.setComments(commentText);
 		metadata.setContentTypeCode(new Code("71388002", "2.16.840.1.113883.6.96", "Procedure (procedure)"));
 	}
+	
+	
 
 }

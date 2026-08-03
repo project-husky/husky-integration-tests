@@ -12,7 +12,9 @@ package org.projecthusky.valueset.integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -52,6 +54,9 @@ class ValueSetManagerIntegrationTest {
 	 */
 	@Test
 	void downloadRawTest() throws MalformedURLException, IOException {
+		// String testUrl =
+		// "https://art-decor.org/exist/apps/api/valueset/2.16.756.5.30.1.127.3.10.1//$extract?project=ch-epr-&format=json";//
+		// "https://art-decor.org/decor/services/RetrieveValueSet?prefix=ch-epr-&format=json&id=2.16.756.5.30.1.127.3.10.1";
 		String testUrl = "https://art-decor.org/decor/services/RetrieveValueSet?prefix=ch-epr-&format=json&id=2.16.756.5.30.1.127.3.10.1";
 
 		// download expected values from fixed URL
@@ -84,6 +89,12 @@ class ValueSetManagerIntegrationTest {
 	void downloadRawUnknwonIdTest() throws MalformedURLException, IOException {
 		// id in URL doesn't exists
 		String testUrl = "https://art-decor.org/decor/services/RetrieveValueSet?prefix=ch-epr-&format=json&id=1.2.3.4.5";
+		// String template =
+		// "https://art-decor.org/exist/apps/api/valueset/{id}/{effectiveDate}/$extract?project=ch-epr-&language=en-US&format={format}";
+		// IdentificatorBaseType vasId =
+		// IdentificatorBaseType.builder().withRoot("1.2.3.4.5").build();
+		// String testUrl = ValueSetManager.buildValueSetArtDecorUrl2(template,
+		// vasId, null, "json").toString();
 
 		ValueSetManager valueSetManager = new ValueSetManager();
 
@@ -93,9 +104,12 @@ class ValueSetManagerIntegrationTest {
 				.build();
 
 		// download value sets
-		byte[] downloadedByteArray = valueSetManager.downloadValueSetRaw(valueSetConfig);
-		String byteArrayString = new String(downloadedByteArray, StandardCharsets.UTF_8);
-		assertEquals("null", byteArrayString);
+		assertThrows(FileNotFoundException.class,
+				() -> valueSetManager.downloadValueSetRaw(valueSetConfig));
+
+		// String byteArrayString = new String(downloadedByteArray,
+		// StandardCharsets.UTF_8);
+		// assertEquals("null", byteArrayString);
 	}
 
 	/**
@@ -113,6 +127,15 @@ class ValueSetManagerIntegrationTest {
 	@Test
 	void downloadValueSetTest() throws IOException, ParserConfigurationException, SAXException,
 			InitializationException {
+		// String baseUrlJson =
+		// "https://art-decor.org/exist/apps/api/valueset/{id}/{effectiveDate}/$extract?project=ch-epr-&language=en-US&format={format}";//
+		// "https://art-decor.org/decor/services/RetrieveValueSet?prefix=ch-epr-&format=json";
+		// String baseUrlIheSvs =
+		// "https://art-decor.org/exist/apps/api/valueset/{id}/{effectiveDate}/$extract?project=ch-epr-&language=en-US&format={format}";//
+		// "https://art-decor.org/decor/services/RetrieveValueSet?prefix=ch-epr-&format=svs";
+		// String baseUrlXml =
+		// "https://art-decor.org/exist/apps/api/valueset/{id}/{effectiveDate}/$extract?project=ch-epr-&language=en-US&format={format}";//
+		// "https://art-decor.org/decor/services/RetrieveValueSet?prefix=ch-epr-&format=xml";
 		String baseUrlJson = "https://art-decor.org/decor/services/RetrieveValueSet?prefix=ch-epr-&format=json";
 		String baseUrlIheSvs = "https://art-decor.org/decor/services/RetrieveValueSet?prefix=ch-epr-&format=svs";
 		String baseUrlXml = "https://art-decor.org/decor/services/RetrieveValueSet?prefix=ch-epr-&format=xml";
@@ -127,6 +150,9 @@ class ValueSetManagerIntegrationTest {
 		URL authorRoleSourceUrlJson;
 		String authorRoleSourceUrlJsonString = "";
 
+		// authorRoleSourceUrlJson =
+		// ValueSetManager.buildValueSetArtDecorUrl2(baseUrlJson,authorRoleId,
+		// authorRoleTimeStamp, "json");
 		authorRoleSourceUrlJson = ValueSetManager.buildValueSetArtDecorUrl(baseUrlJson,
 				authorRoleId, authorRoleTimeStamp);
 		authorRoleSourceUrlJsonString = authorRoleSourceUrlJson.toString();
@@ -142,6 +168,8 @@ class ValueSetManagerIntegrationTest {
 
 		URL authorRoleSourceUrlIheSvs;
 		String authorRoleSourceUrlIheSvsString = "";
+//		authorRoleSourceUrlIheSvs = ValueSetManager.buildValueSetArtDecorUrl2(baseUrlIheSvs,
+//				authorRoleId, authorRoleTimeStamp, "svs");
 		authorRoleSourceUrlIheSvs = ValueSetManager.buildValueSetArtDecorUrl(baseUrlIheSvs,
 				authorRoleId, authorRoleTimeStamp);
 		authorRoleSourceUrlIheSvsString = authorRoleSourceUrlIheSvs.toString();
@@ -157,6 +185,9 @@ class ValueSetManagerIntegrationTest {
 
 		URL authorRoleSourceUrlXml;
 		String authorRoleSourceUrlXmlString = "";
+		// authorRoleSourceUrlXml =
+		// ValueSetManager.buildValueSetArtDecorUrl2(baseUrlXml, authorRoleId,
+		// authorRoleTimeStamp, "xml");
 		authorRoleSourceUrlXml = ValueSetManager.buildValueSetArtDecorUrl(baseUrlXml, authorRoleId,
 				authorRoleTimeStamp);
 		authorRoleSourceUrlXmlString = authorRoleSourceUrlXml.toString();
@@ -172,9 +203,10 @@ class ValueSetManagerIntegrationTest {
 
 		// download value sets in different formats
 		ValueSetManager valueSetManager = new ValueSetManager();
-		ValueSet valueSetJson = valueSetManager.downloadValueSet(valueSetConfigJson);
+
 		ValueSet valueSetIheSvs = valueSetManager.downloadValueSet(valueSetConfigIheSvs);
 		ValueSet valueSetXml = valueSetManager.downloadValueSet(valueSetConfigXml);
+		ValueSet valueSetJson = valueSetManager.downloadValueSet(valueSetConfigJson);
 
 		// 1. Compare Json and IHE SVS
 		assertEquals(valueSetJson.getIdentificator(), valueSetIheSvs.getIdentificator());

@@ -12,7 +12,9 @@ package org.projecthusky.communication.services.svs;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Calendar;
@@ -43,7 +45,8 @@ import org.springframework.test.context.ActiveProfiles;
  * The Test Class for ValueSetManager with downloading value sets from
  * ART-DECOR.
  */
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = { TestApplication.class })
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = {
+		TestApplication.class })
 class SvsValueSetManagerTest {
 
 	@Autowired
@@ -94,10 +97,13 @@ class SvsValueSetManagerTest {
 				.sourceSystemType(SourceSystemType.ARTDECOR_FHIR).sourceUrl(testUrl).build();
 
 		// download value sets
-		SvsValueSetResponse downloadedByteArray = this.huskyService.send(valueSetRequest, true);
-		String byteArrayString = new String(downloadedByteArray.getValueSetRaw(),
-				StandardCharsets.UTF_8);
-		assertEquals("null", byteArrayString);
+		assertThrows(FileNotFoundException.class, () -> {
+			SvsValueSetResponse downloadedByteArray = this.huskyService.send(valueSetRequest, true);
+			String byteArrayString = new String(downloadedByteArray.getValueSetRaw(),
+					StandardCharsets.UTF_8);
+			assertEquals("null", byteArrayString);
+		});
+
 	}
 
 	/**

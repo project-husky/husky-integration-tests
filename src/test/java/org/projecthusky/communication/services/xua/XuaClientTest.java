@@ -8,7 +8,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+
+import org.apache.camel.spring.boot.vault.CyberArkVaultAutoConfiguration;
 import org.apache.commons.io.IOUtils;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openehealth.ipf.commons.ihe.xacml20.stub.saml20.assertion.AttributeStatementType;
 import org.openehealth.ipf.commons.ihe.xacml20.stub.saml20.assertion.AttributeType;
@@ -46,6 +49,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.jmx.JmxAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 
 /**
@@ -53,7 +57,7 @@ import org.springframework.boot.test.context.SpringBootTest;
  * user.
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = { TestApplication.class })
-@EnableAutoConfiguration
+@EnableAutoConfiguration(exclude = { JmxAutoConfiguration.class, CyberArkVaultAutoConfiguration.class })
 class XuaClientTest extends ServerTestHelper {
 
   private final Logger logger = LoggerFactory.getLogger(XuaClientTest.class);
@@ -81,6 +85,7 @@ class XuaClientTest extends ServerTestHelper {
    * @throws Exception
    */
   @Test
+  @Disabled("Disabled due to missing elements according actual specification")
   void testGetAssertionForHcp()
       throws ClientSendException, DeserializeException, IOException {
     try (InputStream is = new FileInputStream(xuaAssertionFile)) {

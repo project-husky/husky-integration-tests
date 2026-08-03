@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.husky.test.integration</groupId>
 	<artifactId>husky-integration-tests</artifactId>
-	<version>3.0.0-SNAPSHOT</version>
+	<version>3.4.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -13,12 +13,16 @@
 		<maven.compiler.release>${java.version}</maven.compiler.release>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
-		<husky.version>3.0.1-SNAPSHOT</husky.version>
-		<spring.version>6.1.14</spring.version>
-		<spring.boot.version>3.3.4</spring.boot.version>
-		<camel.version>4.8.0</camel.version>
+		<husky.version>3.4.0</husky.version>
+		<spring.version>6.2.19</spring.version>
+		<spring.boot.version>3.5.16</spring.boot.version>
+		<camel-version>4.21.0</camel-version>
+		<hapi.fhir.version>8.8.1</hapi.fhir.version>
 		<junit.version>5.10.1</junit.version>
-		<ipf.version>5.0-m3</ipf.version>
+		<ipf.version>5.2.0</ipf.version>
+		<apache-httpclient5>5.5.1</apache-httpclient5>
+		<apache-httpcore5>5.3.4</apache-httpcore5>
+		<camel-version>4.18.0</camel-version>
 		<maven-surefire-plugin.version>3.2.2</maven-surefire-plugin.version>
 	</properties>
 	<repositories>
@@ -138,22 +142,22 @@
 			<dependency>
 				<groupId>org.apache.camel</groupId>
 				<artifactId>camel-base</artifactId>
-				<version>${camel.version}</version>
+				<version>${camel-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.camel</groupId>
 				<artifactId>camel-main</artifactId>
-				<version>${camel.version}</version>
+				<version>${camel-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.camel</groupId>
 				<artifactId>camel-support</artifactId>
-				<version>${camel.version}</version>
+				<version>${camel-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.camel</groupId>
 				<artifactId>camel-spring-xml</artifactId>
-				<version>${camel.version}</version>
+				<version>${camel-version}</version>
 			</dependency>
 
 			<dependency>
@@ -168,6 +172,12 @@
 			<groupId>org.projecthusky.communication</groupId>
 			<artifactId>husky-communication-ch</artifactId>
 			<version>${husky.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.camel</groupId>
+					<artifactId>camel-cloud</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.projecthusky.communication</groupId>
@@ -188,6 +198,47 @@
 			<groupId>org.projecthusky.communication</groupId>
 			<artifactId>husky-service</artifactId>
 			<version>${husky.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.camel</groupId>
+					<artifactId>camel-cloud</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel.springboot</groupId>
+			<artifactId>camel-spring-boot-starter</artifactId>
+			<version>${camel-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-core-engine</artifactId>
+			<version>${camel-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-management</artifactId>
+			<version>${camel-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-http-common</artifactId>
+			<version>${camel-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-core-languages</artifactId>
+			<version>${camel-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-direct</artifactId>
+			<version>${camel-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>ca.uhn.hapi.fhir</groupId>
+			<artifactId>hapi-fhir-base</artifactId>
+			<version>${hapi.fhir.version}</version>
 		</dependency>
 
 		<dependency>
@@ -225,6 +276,17 @@
 			<artifactId>spring-test</artifactId>
 			<version>${spring.version}</version>
 			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.httpcomponents.client5</groupId>
+			<version>${apache-httpclient5}</version>
+			<artifactId>httpclient5</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents.core5</groupId>
+			<version>${apache-httpcore5}</version>
+			<artifactId>httpcore5</artifactId>
 		</dependency>
 
 	</dependencies>
@@ -302,7 +364,7 @@
 					<plugin>
 						<groupId>org.owasp</groupId>
 						<artifactId>dependency-check-maven</artifactId>
-						<version>11.1.0</version>
+						<version>12.2.0</version>
 						<configuration>
 							<skipProvidedScope>true</skipProvidedScope>
 							<skipRuntimeScope>true</skipRuntimeScope>
@@ -314,6 +376,7 @@
 								<format>HTML</format>
 								<format>JSON</format>
 							</formats>
+							<nvdApiServerId>nvd-server</nvdApiServerId>
 						</configuration>
 						<executions>
 							<execution>
@@ -333,7 +396,7 @@
 					<plugin>
 						<groupId>org.owasp</groupId>
 						<artifactId>dependency-check-maven</artifactId>
-						<version>11.1.0</version>
+						<version>12.1.0</version>
 						<reportSets>
 							<reportSet>
 								<reports>

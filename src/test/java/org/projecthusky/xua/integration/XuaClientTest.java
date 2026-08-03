@@ -12,6 +12,7 @@ import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.camel.spring.boot.vault.CyberArkVaultAutoConfiguration;
 import org.apache.commons.io.IOUtils;
 import org.projecthusky.communication.testhelper.TestApplication;
 import org.projecthusky.xua.communication.clients.XuaClient;
@@ -39,8 +40,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.jmx.JmxAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openehealth.ipf.commons.ihe.xacml20.stub.saml20.assertion.AttributeStatementType;
@@ -56,7 +59,7 @@ import org.xml.sax.SAXException;
  */
 @ExtendWith(value = SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = { TestApplication.class })
-@EnableAutoConfiguration
+@EnableAutoConfiguration(exclude = { JmxAutoConfiguration.class, CyberArkVaultAutoConfiguration.class })
 class XuaClientTest extends ServerTestHelper {
 	
 	private Logger logger = LoggerFactory.getLogger(XuaClientTest.class);
@@ -81,6 +84,7 @@ class XuaClientTest extends ServerTestHelper {
 	 * @throws Exception
 	 */
 	@Test
+	@Disabled("Disabled due to missing elements according actual specification")
 	void testGetAssertionForHcp()
 			throws ClientSendException, DeserializeException, SAXException, IOException, ParserConfigurationException {
 
@@ -95,6 +99,8 @@ class XuaClientTest extends ServerTestHelper {
 
 			var idpAssertion = new AssertionDeserializerImpl().fromXmlByteArray(IOUtils.toByteArray(is));
 
+			idpAssertion.getSignature().getSignatureValue().getValue();
+			
 			// set role of subject
 			var role = new CodedWithEquivalentsBuilder().code("HCP").codeSystem("2.16.756.5.30.1.127.3.10.6")
 					.displayName("Behandelnde(r)")

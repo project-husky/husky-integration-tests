@@ -40,12 +40,14 @@ import jakarta.xml.soap.SOAPEnvelope;
 import jakarta.xml.soap.SOAPMessage;
 import jakarta.xml.soap.SOAPPart;
 
+import org.apache.camel.spring.boot.vault.CyberArkVaultAutoConfiguration;
 import org.apache.commons.io.IOUtils;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.ByteArrayEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
+import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.core5.http.ContentType;
+import org.apache.hc.core5.http.io.entity.ByteArrayEntity;
 import org.projecthusky.common.communication.DocumentMetadata;
 import org.projecthusky.common.communication.SubmissionSetMetadata;
 import org.projecthusky.common.enums.DocumentDescriptor;
@@ -60,6 +62,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.jmx.JmxAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -69,7 +72,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
  */
 @ExtendWith(value = SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = { TestApplication.class })
-@EnableAutoConfiguration
+@EnableAutoConfiguration(exclude = { JmxAutoConfiguration.class, CyberArkVaultAutoConfiguration.class })
 class ConvenienceCommunicationXdmContentsTest extends XdmTestUtils {
 
 	private static final Logger LOGGER = LoggerFactory
@@ -309,7 +312,7 @@ class ConvenienceCommunicationXdmContentsTest extends XdmTestUtils {
 		// send SOAP request to gazelle validation service
 		CloseableHttpClient httpClient = HttpClients.custom().build();
 		final var post = new HttpPost("https://gazelle.ihe.net/XDStarClient-ejb/ModelBasedValidationWSService/ModelBasedValidationWS");
-		post.setEntity(new ByteArrayEntity(createSOAPRequest(documentContent)));
+		post.setEntity(new ByteArrayEntity(createSOAPRequest(documentContent), ContentType.create("text/xml", StandardCharsets.UTF_8)));
 		CloseableHttpResponse response = httpClient.execute(post);
 
 		// extract response of validation request

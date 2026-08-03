@@ -9,6 +9,7 @@ import java.util.UUID;
 import jakarta.xml.bind.JAXBException;
 
 import org.apache.camel.CamelContext;
+import org.apache.camel.spring.boot.vault.CyberArkVaultAutoConfiguration;
 import org.projecthusky.communication.testhelper.TestApplication;
 import org.projecthusky.communication.ch.ppq.api.PrivacyPolicyQuery;
 import org.projecthusky.communication.ch.ppq.api.config.PpClientConfig;
@@ -30,12 +31,13 @@ import org.opensaml.core.config.InitializationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.jmx.JmxAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(value = SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = { TestApplication.class })
-@EnableAutoConfiguration
+@EnableAutoConfiguration(exclude = { JmxAutoConfiguration.class, CyberArkVaultAutoConfiguration.class })
 @Disabled
 class SimplePpqClientTest {
 
