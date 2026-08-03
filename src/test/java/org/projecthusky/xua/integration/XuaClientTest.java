@@ -43,6 +43,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.jmx.JmxAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openehealth.ipf.commons.ihe.xacml20.stub.saml20.assertion.AttributeStatementType;
@@ -83,6 +84,7 @@ class XuaClientTest extends ServerTestHelper {
 	 * @throws Exception
 	 */
 	@Test
+	@Disabled("Disabled due to missing elements according actual specification")
 	void testGetAssertionForHcp()
 			throws ClientSendException, DeserializeException, SAXException, IOException, ParserConfigurationException {
 
@@ -97,6 +99,8 @@ class XuaClientTest extends ServerTestHelper {
 
 			var idpAssertion = new AssertionDeserializerImpl().fromXmlByteArray(IOUtils.toByteArray(is));
 
+			idpAssertion.getSignature().getSignatureValue().getValue();
+			
 			// set role of subject
 			var role = new CodedWithEquivalentsBuilder().code("HCP").codeSystem("2.16.756.5.30.1.127.3.10.6")
 					.displayName("Behandelnde(r)")

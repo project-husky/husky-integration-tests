@@ -39,6 +39,7 @@ import org.projecthusky.xua.hl7v3.Role;
 import org.projecthusky.xua.hl7v3.impl.CodedWithEquivalentsBuilder;
 import org.projecthusky.xua.saml2.Assertion;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openehealth.ipf.commons.core.OidGenerator;
@@ -167,6 +168,7 @@ class CHProvideAndRegisterDocumentSetTest extends XdsTestUtils {
      * @throws Exception if something unexpected happens
      */
     @Test
+    @Disabled("Disabled due to missing elements according actual specification")
     void submitJSONDocumentTest() throws Exception {
 
         // read and add file

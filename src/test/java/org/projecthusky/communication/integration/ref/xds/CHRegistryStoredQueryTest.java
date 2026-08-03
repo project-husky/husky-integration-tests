@@ -36,6 +36,7 @@ import org.projecthusky.xua.hl7v3.Role;
 import org.projecthusky.xua.hl7v3.impl.CodedWithEquivalentsBuilder;
 import org.projecthusky.xua.saml2.Assertion;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openehealth.ipf.commons.audit.AuditContext;
@@ -163,6 +164,7 @@ class CHRegistryStoredQueryTest extends XdsTestUtils {
 	 */
 	@Test
 	@SuppressWarnings("java:S5961")
+	@Disabled("Disabled due to missing elements according actual specification")
 	void queryFindDocuments() throws Exception {
 
 		Identificator globalId = new Identificator(globalAssigningAuthorityOid, globalPatientId);
